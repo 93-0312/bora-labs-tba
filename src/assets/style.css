@@ -1,0 +1,25 @@
+html,
+body {
+  height: 100%;
+}
+
+
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+main {
+  flex: 1 1 auto;
+  min-height: 1px;
+}
+
+.ic-metamask::before {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  background: url(./ic-metamask.svg);
+  background-size: cover;
+  content: '';
+}
