@@ -23,3 +23,49 @@ main {
   background-size: cover;
   content: '';
 }
+
+.empty::before {
+  display: block;
+  width: 206px;
+  height: 134px;
+  margin: 0 auto 20px;
+  background: url(./ic-empty.svg);
+  background-size: cover;
+  content: '';
+}
+
+.arrow {
+  display: inline-block;
+  padding: 3px;
+  border: solid hsl(var(--bc));
+  border-width: 0 3px 3px 0;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  transition: transform .2s;
+}
+.arrow.arrow-up {
+  transform: rotate(-135deg);
+}
+
+/* transition */
+.show-down-enter-active, 
+.show-down-leave-active {
+  transition: all 0.32s ease-in-out;
+}
+
+.show-down-enter-from,
+.show-down-leave-to {
+  opacity: 0;
+  transform: translateY(-1.5%);
+}
+
+.btn-white {
+  background-color: hsl(var(--bc));
+  border-color: hsl(var(--bc));
+  color: hsl(var(--b3));
+}
+.btn-white:hover {
+  background-color: hsl(var(--b3));
+  border-color: hsl(var(--b3));
+  color: hsl(var(--bc));
+}
