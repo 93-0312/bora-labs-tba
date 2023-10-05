@@ -8,7 +8,7 @@
       <li class="overflow-hidden relative rounded-t-lg">
         <a href="#">
           <img src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1024000001/2/100109992.png" class="w-full h-auto" alt="" />
-          <div className="absolute left-3 top-3 badge bg-black h-8 rounded-md text-xs shadow-sm md:text-sm">
+          <div class="absolute left-3 top-3 badge bg-black h-8 rounded-md text-xs shadow-sm md:text-sm">
             <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1">
             <path d="M14.25 4H9.75C6.56802 4 4.97703 4 3.98851 5.00421C3 6.00841 3 7.62465 3 10.8571V13.1429C3 16.3753 3 17.9916 3.98851 18.9958C4.97703 20 6.56802 20 9.75 20H14.25C17.432 20 19.023 20 20.0115 18.9958C21 17.9916 21 16.3753 21 13.1429V10.8571C21 7.62465 21 6.00841 20.0115 5.00421C19.023 4 17.432 4 14.25 4Z" stroke="currentColor"/>
             <path d="M7 8H10" stroke="currentColor" stroke-linecap="round"/>
@@ -36,7 +36,7 @@
       <li class="overflow-hidden relative rounded-t-lg">
         <a href="#">
           <img src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1022000005/3/10393.gif" class="w-full h-auto" alt="" />
-          <div className="absolute left-3 top-3 badge bg-neutral-600 border-neutral-600 h-8 rounded-md text-xs shadow-sm md:text-sm">
+          <div class="absolute left-3 top-3 badge bg-neutral-600 border-neutral-600 h-8 rounded-md text-xs shadow-sm md:text-sm">
             ERC-721
           </div>
         </a>
@@ -56,7 +56,7 @@
       <li class="overflow-hidden relative rounded-t-lg">
         <a href="#">
           <img src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1025000002/9/5139.png" class="w-full h-auto" alt="" />
-          <div className="absolute left-3 top-3 badge bg-neutral-600 border-neutral-600 h-8 rounded-md text-xs shadow-sm md:text-sm">ERC-1155</div>
+          <div class="absolute left-3 top-3 badge bg-neutral-600 border-neutral-600 h-8 rounded-md text-xs shadow-sm md:text-sm">ERC-1155</div>
         </a>
         <div class="border border-neutral-600 border-t-0 rounded-b-lg">
           <p class="h-14 truncate px-3 pt-4 md:px-4 md:pt-3.5 md:text-lg">Batter #1234 Baseman Baseman Baseman Baseman</p>
@@ -73,7 +73,7 @@
       <li class="overflow-hidden relative rounded-t-lg">
         <a href="#">
           <img src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1025000003/4/3084.jpg" class="w-full h-auto" alt="" />
-          <div className="absolute left-3 top-3 badge bg-neutral-600 border-neutral-600 h-8 rounded-md text-xs shadow-sm md:text-sm">
+          <div class="absolute left-3 top-3 badge bg-neutral-600 border-neutral-600 h-8 rounded-md text-xs shadow-sm md:text-sm">
             ERC-1155
           </div>
         </a>

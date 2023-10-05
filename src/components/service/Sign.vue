@@ -5,8 +5,8 @@
 
   <template v-else>
     <div class="flex items-center pl-4 pr-1 border border-neutral-50 rounded-full">
-      <div className="dropdown dropdown-bottom dropdown-end">
-        <label tabIndex={0} className="flex items-center h-9 ic-metamask text-sm cursor-pointer md:h-12 md:text-base">
+      <div class="dropdown dropdown-bottom dropdown-end">
+        <label tabIndex={0} class="flex items-center h-9 ic-metamask text-sm cursor-pointer md:h-12 md:text-base">
           0x3e5c...9981Cb
         </label>
 
