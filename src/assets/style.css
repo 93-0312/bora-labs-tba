@@ -34,6 +34,11 @@ main {
   content: '';
 }
 
+.empty.empty-sm::before {
+  width: 130px;
+  height: 85px;
+}
+
 .arrow {
   display: inline-block;
   padding: 3px;

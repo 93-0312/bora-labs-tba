@@ -54,27 +54,32 @@
         </button>
         <transition name="show-down">
           <div class="overflow-hidden p-4 border-t border-neutral-600" v-if="isNFT">
-            <div>
+            <p class="flex flex-col empty empty-sm py-2 text-sm text-center" v-if="emptyNFT">There is no NFT</p>
+
+            <div v-else>
               item list<br />
               item list
             </div>
             
-            <button class="mt-3 btn btn-primary btn-sm float-right md:btn-md md:mt-4">+ Add NFT</button>
+            <button class="mt-3 btn btn-primary btn-sm float-right md:btn-md md:mt-4" v-if="!emptyNFT">+ Add NFT</button>
           </div>
         </transition>
       </div>
 
       <div :class="['mb-6', 'border', 'border-neutral-600', 'rounded-lg', isItem ? 'bg-neutral-600 bg-opacity-20' : '']" v-if="erc1155">
         <button class="flex items-center justify-between w-full p-3 pr-4 pl-5 hover:border-neutral-500" @click="isItem = !isItem">
-          Item (100)
+          Item (99)
           <span :class="['arrow', isItem ? 'arrow-up' : '']" />
         </button>
         <transition name="show-down">
           <div class="overflow-hidden p-4 border-t border-neutral-600" v-if="isItem">
-            <div>
-              item list<br />
-              item list
-            </div>
+            <ul class="text-sm md:text-base">
+              <li class="flex items-center">
+                <img src="https://gfile.boraportal.com/cdn-cgi/image/width=540,format=webp/1024000001/2/100109992.png" class="flex-none w-12 h-12 mr-3 rounded-md" alt="" />
+                <p class="text-neutral-300">item name item name</p>
+                <span class="flex-none w-12 ml-auto text-right">X 99</span>
+              </li>
+            </ul>
           </div>
         </transition>
       </div>
@@ -133,14 +138,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-const erc6551 = ref(false);
+const erc6551 = ref(true);
 const hasErc6551 = ref(false);
-const erc1155 = ref(true);
+const erc1155 = ref(false);
 
 const isNFT = ref(true);
 const isToken = ref(true);
 const isInfo = ref(false);
 const isItem = ref(true);
+
+const emptyNFT = ref(false);
 
 </script>
 
