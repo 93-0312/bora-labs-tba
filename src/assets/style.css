@@ -3,7 +3,6 @@ body {
   height: 100%;
 }
 
-
 #app {
   display: flex;
   flex-direction: column;
@@ -46,22 +45,24 @@ main {
   border-width: 0 3px 3px 0;
   border-radius: 2px;
   transform: rotate(45deg);
-  transition: transform .2s;
+  transition: transform 0.2s;
 }
 .arrow.arrow-up {
   transform: rotate(-135deg);
 }
 
 /* transition */
-.show-down-enter-active, 
+.show-down-enter-active,
 .show-down-leave-active {
   transition: all 0.32s ease-in-out;
+  max-height: 500px;
 }
 
 .show-down-enter-from,
 .show-down-leave-to {
+  overflow: hidden;
   opacity: 0;
-  transform: translateY(-1.5%);
+  max-height: 0 !important;
 }
 
 .btn-white {
@@ -73,4 +74,8 @@ main {
   background-color: hsl(var(--b3));
   border-color: hsl(var(--b3));
   color: hsl(var(--bc));
+}
+.btn-white:disabled {
+  background-color: hsl(var(--n) / var(--tw-bg-opacity));
+  border-color: transparent;
 }
