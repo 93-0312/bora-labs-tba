@@ -66,14 +66,13 @@ main {
 }
 
 .btn-white {
-  background-color: hsl(var(--bc));
-  border-color: hsl(var(--bc));
-  color: hsl(var(--b3));
+  background: hsl(var(--bc) / 0.9);
+  border: none;
+  color: hsl(var(--b3) / 0.9);
 }
 .btn-white:hover {
-  background-color: hsl(var(--b3));
-  border-color: hsl(var(--b3));
-  color: hsl(var(--bc));
+  background-color: #fff;
+  color: hsl(var(--b3));
 }
 .btn-white:disabled {
   background-color: hsl(var(--n) / var(--tw-bg-opacity));
