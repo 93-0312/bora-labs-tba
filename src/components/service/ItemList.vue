@@ -10,14 +10,14 @@
       >
         <div class="grid grid-cols-6">
           <button
-            class="col-span-4 btn btn-primary rounded-none text-xs md:text-sm"
+            class="min-h-0 h-10 col-span-4 btn btn-primary rounded-none text-xs md:h-12 md:text-base"
             type="button"
             @click="modalAddRef?.showModal()"
           >
             Add NFT
           </button>
           <button
-            class="col-span-2 btn btn-white rounded-none text-xs md:text-sm"
+            class="min-h-0 h-10 col-span-2 btn btn-white rounded-none text-xs md:h-12 md:text-base"
             type="button"
             @click="modalSendRef?.showModal()"
           >
@@ -36,14 +36,14 @@
       >
         <div class="grid grid-cols-6">
           <button
-            class="col-span-4 btn btn-secondary rounded-none text-xs md:text-sm"
+            class="min-h-0 h-10 col-span-4 btn btn-secondary rounded-none text-xs md:h-12 md:text-base"
             type="button"
             @click="modalConvertRef?.showModal()"
           >
             Convert to TBA
           </button>
           <button
-            class="col-span-2 btn btn-white rounded-none text-xs md:text-sm"
+            class="min-h-0 h-10 col-span-2 btn btn-white rounded-none text-xs md:h-12 md:text-base"
             type="button"
             @click="modalSendRef?.showModal()"
           >
@@ -60,7 +60,7 @@
         img-src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1025000003/4/3084.jpg"
       >
         <button
-          class="btn btn-white w-full rounded-none text-xs md:text-sm"
+          class="min-h-0 h-10 btn btn-white w-full rounded-none text-xs md:btn-base md:h-12 md:text-base"
           type="button"
           @click="modalSendRef?.showModal()"
         >
@@ -72,7 +72,7 @@
 
   <!-- modal: add nft -->
   <ModalLayout @modal-ref="(ref) => (modalAddRef = ref.value)" title="Add NFT" btn-name="Add">
-    <p class="mb-2 text-sm md:text-base">Pitcher #1234에 추가할 NFT를 선택하세요.</p>
+    <p class="mb-2.5 text-sm md:text-base">Pitcher #1234에 추가할 NFT를 선택하세요.</p>
     <ul
       class="overflow-auto grid grid-cols-3 gap-2 max-h-72 md:grid-cols-4 md:gap-3 md:max-h-[340px]"
     >
@@ -89,7 +89,7 @@
 
   <!-- modal: send nft -->
   <ModalLayout @modal-ref="(ref) => (modalSendRef = ref.value)" title="Send NFT" btn-name="Send">
-    <div class="w-32 mx-auto">
+    <div class="w-28 mx-auto md:w-32">
       <ItemCard
         :is-small="true"
         :has-badge="false"
@@ -98,7 +98,7 @@
     </div>
     <div class="form-control w-full mt-4">
       <label class="label">
-        <span class="label-text">Who are you sending the NFT to?</span>
+        <span class="label-text md:text-base">Who are you sending the NFT to?</span>
       </label>
       <!-- input error시 class에 input-error 추가  -->
       <input
@@ -108,12 +108,12 @@
         maxlength="42"
       />
       <!-- input error시 노출 -->
-      <label v-if="isInputError" class="label">
-        <span class="label-text-alt text-error">This is not a valid wallet address.</span>
+      <label v-if="isInputError" class="label pb-1">
+        <span class="label-text-alt text-error md:text-sm">This is not a valid wallet address.</span>
       </label>
     </div>
 
-    <p class="mt-4 text-xs text-neutral-content/70">
+    <p class="mt-2 text-xs text-neutral-content/70 md:mt-4 md:text-sm">
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>
@@ -134,7 +134,7 @@ import ModalLayout from '@/components/ui/ModalLayout.vue'
 import ModalLoading from '../ui/ModalLoading.vue'
 
 const isEmpty = ref(false)
-const isInputError = ref(false)
+const isInputError = ref(true)
 
 // modal
 const modalAddRef = ref<HTMLDialogElement>()

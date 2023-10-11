@@ -1,5 +1,7 @@
 <template>
-  <main class="grid gap-8 px-5 pt-8 pb-20 align-top md:px-7 md:grid-cols-2 md:grid-rows-[auto_1fr]">
+  <main
+    class="grid gap-9 w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:px-7 md:pb-20 md:grid-cols-2 md:grid-rows-[auto_1fr] md:pt-8"
+  >
     <section
       class="relative w-full max-w-lg mx-auto h-auto text-center md:max-w-[556px] md:row-start-1 md:row-span-2"
     >
@@ -22,6 +24,7 @@
         </svg>
         ERC-6551
       </div>
+
       <!-- badge: 721, 1155 -->
       <p
         v-else
@@ -30,9 +33,13 @@
         {{ is1155 ? 'ERC-1155' : 'ERC-721' }}
       </p>
 
-      <a href="#" class="btn btn-circle mt-3 hover:opacity-80" target="_blank">
+      <a
+        href="#"
+        target="_blank"
+        class="btn btn-circle btn-outline w-[40px] h-[40px] min-h-0 mt-4 md:btn-md"
+      >
         <!-- prettier-ignore -->
-        <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
+        <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
           <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -46,9 +53,11 @@
 
       <!-- erc-6551 -->
       <template v-if="is6551">
-        <p class="flex items-center mt-3 text-sm text-neutral-200 md:text-base">
+        <p
+          class="inline-flex items-center mt-3 py-2 pl-4 bg-base-200 rounded-lg text-sm text-neutral-200 md:mt-4 md:text-lg"
+        >
           0x2D12...34caB1
-          <button class="px-2 hover:text-neutral-300" type="button">
+          <button class="px-3 hover:text-neutral-300" type="button">
             <!-- prettier-ignore -->
             <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
               <path d="M4.79175 17.7502C4.37508 17.7502 4.02091 17.6043 3.72925 17.3127C3.43758 17.021 3.29175 16.6668 3.29175 16.2502V5.66683H4.54175V16.2502C4.54175 16.3196 4.56591 16.3785 4.61425 16.4268C4.66314 16.4757 4.7223 16.5002 4.79175 16.5002H12.8751V17.7502H4.79175ZM7.70841 14.8335C7.29175 14.8335 6.93758 14.6877 6.64591 14.396C6.35425 14.1043 6.20841 13.7502 6.20841 13.3335V3.85433C6.20841 3.42377 6.35425 3.06266 6.64591 2.771C6.93758 2.47933 7.29175 2.3335 7.70841 2.3335H14.6876C15.1181 2.3335 15.4792 2.47933 15.7709 2.771C16.0626 3.06266 16.2084 3.42377 16.2084 3.85433V13.3335C16.2084 13.7502 16.0626 14.1043 15.7709 14.396C15.4792 14.6877 15.1181 14.8335 14.6876 14.8335H7.70841ZM7.70841 13.5835H14.6876C14.757 13.5835 14.8195 13.5591 14.8751 13.5102C14.9306 13.4618 14.9584 13.4029 14.9584 13.3335V3.85433C14.9584 3.78488 14.9306 3.72239 14.8751 3.66683C14.8195 3.61127 14.757 3.5835 14.6876 3.5835H7.70841C7.63897 3.5835 7.58008 3.61127 7.53175 3.66683C7.48286 3.72239 7.45841 3.78488 7.45841 3.85433V13.3335C7.45841 13.4029 7.48286 13.4618 7.53175 13.5102C7.58008 13.5591 7.63897 13.5835 7.70841 13.5835Z" fill="currentColor" />
@@ -58,11 +67,11 @@
 
         <Accordion title="NFT (5)">
           <p v-if="isEmpty" class="flex flex-col empty empty-sm py-2 text-sm text-center">
-            There is no NFT
+            There is no NFT.
           </p>
 
           <template v-else>
-            <ul class="grid grid-cols-3 gap-2 md:grid-cols-4 md:gap-3">
+            <ul class="grid grid-cols-3 gap-x-2.5 gap-y-4 md:grid-cols-4 md:gap-x-3">
               <li v-for="i in 7" :key="i" class="overflow-hidden rounded">
                 <ItemCard
                   :is-small="true"
@@ -71,7 +80,7 @@
                   img-src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1022000005/3/10393.gif"
                 >
                   <button
-                    class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs"
+                    class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
                     type="button"
                   >
                     Send
@@ -94,25 +103,25 @@
         </Accordion>
 
         <Accordion title="Token (2)">
-          <div v-for="i in 3" :key="i" class="flex justify-between items-center mb-3 last:mb-0">
-            <div class="flex items-center mr-4 font-medium text-sm md:text-md">
+          <div v-for="i in 3" :key="i" class="flex justify-between items-center mb-5 last:mb-0">
+            <div class="flex items-center mr-4 font-medium text-md">
               <img
                 src="https://static.boraportal.com/logo/coins/mainnet/token-ic-bid.svg"
                 alt="BID"
-                class="w-6 h-6 mr-2 md:w-8 md:h-8"
+                class="w-8 h-8 mr-2"
               />
               <span>BID</span>
             </div>
 
-            <p class="ml-auto text-xs md:text-sm">12345.0000</p>
+            <p class="ml-auto text-sm md:text-base">12345.0000</p>
 
             <button
-              class="btn btn-white btn-xs btn-circle ml-3 text-right md:btn-sm md:ml-4"
+              class="btn btn-white btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
               type="button"
               @click="modalSendTokenRef?.showModal()"
             >
               <!-- prettier-ignore -->
-              <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 translate-x-[2px] md:w-5 md:w-5">
+              <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 translate-x-[1px]">
                 <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
@@ -158,50 +167,56 @@
       title="Send Token"
       btn-name="Send"
     >
-      <div class="form-control relative w-full mt-4">
+      <div class="form-control w-full mt-4">
         <label class="label">
-          <span class="label-text">How many token are you sending?</span>
+          <span class="label-text md:text-base">How many token are you sending?</span>
         </label>
-        <!-- max 버튼 활성화 시, -->
-        <button
-          type="button"
-          :class="[
-            'btn',
-            'btn-outline',
-            'btn-xs',
-            'w-12',
-            'absolute',
-            'top-12',
-            'left-3',
-            { 'bg-base-content text-base-300 border-base-content': isSelected }
-          ]"
-          @click="isSelected = !isSelected"
-        >
-          Max
-        </button>
-        <!-- input error시 class에 input-error 추가  -->
-        <input
-          type="text"
-          value="1.0000 tBORA"
-          :class="[
-            'input',
-            'input-bordered',
-            'w-full',
-            'pl-20',
-            'text-right',
-            { 'input-error': isInputError }
-          ]"
-        />
+        <div class="relative">
+          <!-- max 버튼 활성화 시, -->
+          <button
+            type="button"
+            :class="[
+              'btn',
+              'btn-outline',
+              'btn-xs',
+              'w-12',
+              'absolute',
+              'top-3',
+              'left-3',
+              { 'bg-base-content text-base-300 border-base-content': isSelected }
+            ]"
+            @click="isSelected = !isSelected"
+          >
+            Max
+          </button>
+          <!-- input error시 class에 input-error 추가  -->
+          <input
+            type="text"
+            value="1.0000 tBORA"
+            :class="[
+              'input',
+              'input-bordered',
+              'w-full',
+              'pl-20',
+              'text-right',
+              { 'input-error': isInputError }
+            ]"
+          />
+        </div>
         <!-- input error시 노출 -->
         <label class="label">
-          <span class="label-text-alt text-neutral-content/70">Balance: 92.3245 tBORA</span>
-          <span v-if="isInputError" class="label-text-alt text-error"> Exceed balance </span>
+          <span class="label-text-alt text-neutral-content/70 md:text-sm"
+            >Balance: 92.3245 tBORA</span
+          >
+          <span v-if="isInputError" class="label-text-alt text-error md:text-sm">
+            Exceed balance
+          </span>
         </label>
       </div>
 
       <div class="form-control w-full mt-10">
         <label class="label">
-          <span class="label-text">Who are you sending the NFT to?</span>
+          <span class="label-text md:text-base">Who are you sending the NFT to?</span>
         </label>
         <!-- input error시 class에 input-error 추가  -->
         <input
@@ -211,12 +226,14 @@
           maxlength="42"
         />
         <!-- input error시 노출 -->
-        <label v-if="isInputError" class="label">
-          <span class="label-text-alt text-error"> This is not a valid wallet address. </span>
+        <label v-if="isInputError" class="label pb-1">
+          <span class="label-text-alt text-error md:text-sm">
+            This is not a valid wallet address.
+          </span>
         </label>
       </div>
 
-      <p class="mt-2 text-xs text-neutral-content/70">
+      <p class="mt-2 text-xs text-neutral-content/70 md:text-sm">
         The recipient must be connected to the same chain as the NFT to check.
       </p>
     </ModalLayout>
@@ -230,7 +247,7 @@ import ItemCard from '@/components/service/ItemCard.vue'
 import ModalLayout from '@/components/ui/ModalLayout.vue'
 
 const is6551 = ref(true)
-const is1155 = ref(true)
+const is1155 = ref(false)
 const isEmpty = ref(false)
 const notIncluded = ref(true)
 const isInputError = ref(true)
@@ -238,11 +255,3 @@ const isSelected = ref(false)
 
 const modalSendTokenRef = ref<HTMLDialogElement>()
 </script>
-
-<style scoped>
-main {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-</style>

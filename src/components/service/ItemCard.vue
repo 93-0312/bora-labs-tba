@@ -41,7 +41,7 @@
   <input
     v-if="props.hasCheckbox"
     type="checkbox"
-    class="checkbox absolute top-1.5 right-1.5 bg-base-300/60"
+    class="checkbox absolute top-1.5 right-1.5 bg-base-300/70"
   />
 
   <!-- information -->
@@ -49,7 +49,7 @@
     <!-- address: 6551 -->
     <p
       v-if="props.is6551"
-      class="flex items-center h-10 px-2.5 text-sm md:h-12 md:px-3 md:text-base"
+      class="flex items-center h-10 px-2.5 text-sm md:h-12 md:px-4 md:text-lg"
     >
       0x2D12...34caB1
       <button class="p-2 hover:text-neutral-300" type="button">
@@ -65,8 +65,8 @@
       :class="[
         'truncate',
         props.isSmall
-          ? 'h-7 p-1.5 text-xs md:text-md'
-          : 'h-10 p-2.5 px-3 text-sm md:h-12 md:p-3 md:text-base'
+          ? 'h-8 p-1.5 py-2 text-xs md:text-md'
+          : 'h-10 p-2.5 px-3 text-sm md:h-12 md:px-4 md:text-lg'
       ]"
     >
       Batteryyg #1232342
@@ -83,7 +83,7 @@
         'text-neutral-300',
         props.isSmall
           ? 'h-7 p-1 text-[10px] border-t border-neutral-600 md:text-md'
-          : 'h-10 pl-3 text-xs md:h-12 md:text-sm'
+          : 'h-10 pl-2 text-xs md:h-12 md:text-base md:pl-3'
       ]"
     >
       <img

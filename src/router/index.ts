@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import TbaDetail from '@/views/Detail.vue'
+import NotFound from '@/components/service/NotFound.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -14,6 +15,11 @@ const router = createRouter({
       path: '/tba/:id',
       name: 'detail',
       component: TbaDetail
+    },
+    {
+      path: '/:pathMach(.*)',
+      name: 'notfound',
+      component: NotFound
     }
   ]
 })
