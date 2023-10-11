@@ -6,6 +6,8 @@
       class="relative w-full max-w-lg mx-auto h-auto text-center md:max-w-[556px] md:row-start-1 md:row-span-2"
     >
       <img
+        width="100"
+        height="100"
         src="https://gfile.boraportal.com/cdn-cgi/image/width=540,format=webp/1025000003/4/5264.jpg"
         class="w-full h-auto rounded-lg"
         alt="nft"
@@ -37,6 +39,7 @@
         href="#"
         target="_blank"
         class="btn btn-circle btn-outline w-[40px] h-[40px] min-h-0 mt-4 md:btn-md"
+        aria-label="go to borascope"
       >
         <!-- prettier-ignore -->
         <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
@@ -57,7 +60,7 @@
           class="inline-flex items-center mt-3 py-2 pl-4 bg-base-200 rounded-lg text-sm text-neutral-200 md:mt-4 md:text-lg"
         >
           0x2D12...34caB1
-          <button class="px-3 hover:text-neutral-300" type="button">
+          <button class="px-3 hover:text-neutral-300" type="button" aria-label="copy">
             <!-- prettier-ignore -->
             <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
               <path d="M4.79175 17.7502C4.37508 17.7502 4.02091 17.6043 3.72925 17.3127C3.43758 17.021 3.29175 16.6668 3.29175 16.2502V5.66683H4.54175V16.2502C4.54175 16.3196 4.56591 16.3785 4.61425 16.4268C4.66314 16.4757 4.7223 16.5002 4.79175 16.5002H12.8751V17.7502H4.79175ZM7.70841 14.8335C7.29175 14.8335 6.93758 14.6877 6.64591 14.396C6.35425 14.1043 6.20841 13.7502 6.20841 13.3335V3.85433C6.20841 3.42377 6.35425 3.06266 6.64591 2.771C6.93758 2.47933 7.29175 2.3335 7.70841 2.3335H14.6876C15.1181 2.3335 15.4792 2.47933 15.7709 2.771C16.0626 3.06266 16.2084 3.42377 16.2084 3.85433V13.3335C16.2084 13.7502 16.0626 14.1043 15.7709 14.396C15.4792 14.6877 15.1181 14.8335 14.6876 14.8335H7.70841ZM7.70841 13.5835H14.6876C14.757 13.5835 14.8195 13.5591 14.8751 13.5102C14.9306 13.4618 14.9584 13.4029 14.9584 13.3335V3.85433C14.9584 3.78488 14.9306 3.72239 14.8751 3.66683C14.8195 3.61127 14.757 3.5835 14.6876 3.5835H7.70841C7.63897 3.5835 7.58008 3.61127 7.53175 3.66683C7.48286 3.72239 7.45841 3.78488 7.45841 3.85433V13.3335C7.45841 13.4029 7.48286 13.4618 7.53175 13.5102C7.58008 13.5591 7.63897 13.5835 7.70841 13.5835Z" fill="currentColor" />
@@ -119,6 +122,7 @@
               class="btn btn-white btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
               type="button"
               @click="modalSendTokenRef?.showModal()"
+              aria-label="send"
             >
               <!-- prettier-ignore -->
               <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 translate-x-[1px]">
@@ -201,6 +205,7 @@
               'text-right',
               { 'input-error': isInputError }
             ]"
+            aria-label="token input"
           />
         </div>
         <!-- input error시 노출 -->

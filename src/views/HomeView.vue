@@ -11,7 +11,7 @@
       </ul>
 
       <!-- Like -->
-      <label class="swap absolute right-1 top-1">
+      <label class="swap absolute right-1 top-1" aria-label="heart">
         <input type="checkbox" />
         <div class="swap-on">
           <!-- prettier-ignore -->
