@@ -12,13 +12,16 @@
         <path d="M0.0272923 24.397C0.0447999 24.4273 0.0702083 24.4532 0.101523 24.4713L6.67848 28.2685C6.74139 28.3048 6.81889 28.3048 6.88181 28.2685L13.2551 24.5889C13.3907 24.5106 13.3907 24.3149 13.2551 24.2367L6.78004 20.4983L0.0272923 24.397Z" fill="#D1D1D1"/>
       </svg>
       TBA
-      <span class="badge badge-xs badge-outline h-4 ml-1.5 rounded-sm md:badge-sm md:h-5 md:rounded-md">Beta</span>
+      <span
+        class="badge badge-xs badge-outline h-4 ml-1.5 rounded-sm md:badge-sm md:h-5 md:rounded-md"
+        >Beta</span
+      >
     </a>
 
-    <Sign />
+    <SignBtn />
   </header>
 </template>
 
 <script setup lang="ts">
-import Sign from '@/components/service/Sign.vue'
+import SignBtn from '@/components/service/SignBtn.vue'
 </script>

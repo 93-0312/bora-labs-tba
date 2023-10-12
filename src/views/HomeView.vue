@@ -29,6 +29,7 @@
       </label>
 
       <!-- Create wallet -->
+
       <button
         class="btn btn-sm btn-accent mt-6 md:btn-md md:mt-9"
         type="button"
@@ -90,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ItemList from '@/components/service/ItemList.vue'
 import ModalLoading from '@/components/ui/ModalLoading.vue'
 import Toast from '@/components/ui/Toast.vue'

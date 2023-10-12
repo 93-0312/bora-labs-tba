@@ -48,10 +48,7 @@
   <!-- information -->
   <div class="border border-neutral-600 border-t-0 rounded-b-lg">
     <!-- address: 6551 -->
-    <p
-      v-if="props.is6551"
-      class="flex items-center h-10 px-2.5 text-sm md:h-12 md:px-4 md:text-lg"
-    >
+    <p v-if="props.is6551" class="flex items-center h-10 px-2.5 text-sm md:h-12 md:px-4 md:text-lg">
       0x2D12...34caB1
       <button class="p-2 hover:text-neutral-300" type="button" aria-label="copy">
         <!-- prettier-ignore -->
@@ -70,7 +67,7 @@
           : 'h-10 p-2.5 px-3 text-sm md:h-12 md:px-4 md:text-lg'
       ]"
     >
-      Batteryyg #1232342
+      {{ props.cardName }}
     </p>
 
     <slot />
@@ -123,6 +120,7 @@ const props = defineProps({
     default: true
   },
   imgSrc: String,
-  badgeName: String
+  badgeName: String,
+  cardName: String
 })
 </script>

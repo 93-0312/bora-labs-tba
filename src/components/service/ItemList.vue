@@ -1,9 +1,14 @@
 <template>
-  <section v-if="isEmpty" class="flex flex-col empty text-center mt-12">There is no NFT</section>
+  <div @click="tbaMint">tbaMint</div>
+  <div @click="searchAsset">searchAsset</div>
+
+  <section v-if="!hasAsset" class="flex flex-col empty text-center mt-12">
+    <span>There is no NFT</span>
+  </section>
 
   <ul v-else class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
     <!-- 6551 -->
-    <li class="overflow-hidden relative rounded-t-lg">
+    <!-- <li class="overflow-hidden relative rounded-t-lg">
       <ItemCard
         is6551
         img-src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1024000001/2/100109992.png"
@@ -25,20 +30,21 @@
           </button>
         </div>
       </ItemCard>
-    </li>
+    </li> -->
 
     <!-- 721 -->
-    <li v-for="i in 2" :key="i" class="overflow-hidden relative rounded-t-lg">
+    <li v-for="(id, index) in asset721" :key="id" class="overflow-hidden relative rounded-t-lg">
       <ItemCard
         is721
         badge-name="ERC-721"
-        img-src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1022000005/3/10393.gif"
+        :card-name="metadataList721?.[index]?.name"
+        :img-src="metadataList721?.[index]?.image"
       >
         <div class="grid grid-cols-6">
           <button
             class="min-h-0 h-10 col-span-4 btn btn-secondary rounded-none text-xs md:h-12 md:text-base"
             type="button"
-            @click="modalConvertRef?.showModal()"
+            @click="modalConvertRef?.showModal(), convert721to6551(id)"
           >
             Convert to TBA
           </button>
@@ -54,10 +60,11 @@
     </li>
 
     <!-- 1155 -->
-    <li v-for="i in 5" :key="i" class="overflow-hidden relative rounded-t-lg">
+    <li v-for="(id, index) in asset1155[0]" :key="id" class="overflow-hidden relative rounded-t-lg">
       <ItemCard
         badge-name="ERC-1155"
-        img-src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1025000003/4/3084.jpg"
+        :card-name="metadataList1155?.[index]?.name"
+        :img-src="metadataList1155?.[index]?.image"
       >
         <button
           class="min-h-0 h-10 btn btn-white w-full rounded-none text-xs md:btn-base md:h-12 md:text-base"
@@ -109,7 +116,9 @@
       />
       <!-- input error시 노출 -->
       <label v-if="isInputError" class="label pb-1">
-        <span class="label-text-alt text-error md:text-sm">This is not a valid wallet address.</span>
+        <span class="label-text-alt text-error md:text-sm"
+          >This is not a valid wallet address.</span
+        >
       </label>
     </div>
 
@@ -132,12 +141,115 @@ import { ref } from 'vue'
 import ItemCard from '@/components/service/ItemCard.vue'
 import ModalLayout from '@/components/ui/ModalLayout.vue'
 import ModalLoading from '../ui/ModalLoading.vue'
-
-const isEmpty = ref(false)
+import MetamaskService from '@/services/metamask.service'
+import { DEPLOYED, IERC721, IERC1155, IERC20, IREG, ITBA } from '@/types/abi'
+import { Contract } from 'ethers'
+import { useAssetStore } from '@/stores/asset.module.ts'
+import { storeToRefs } from 'pinia'
+import axios from 'axios'
+const isEmpty = ref(true)
 const isInputError = ref(true)
 
 // modal
 const modalAddRef = ref<HTMLDialogElement>()
 const modalSendRef = ref<HTMLDialogElement>()
 const modalConvertRef = ref<HTMLDialogElement>()
+//
+
+const assetStore = useAssetStore()
+
+const { setHasAsset, setAsset721, setAsset1155, setMetadataList721, setMetadataList1155 } =
+  assetStore
+const { hasAsset, asset721, asset1155, metadataList721, metadataList1155 } = storeToRefs(assetStore)
+
+const tbaMint = async () => {
+  const wallet = new MetamaskService()
+  await wallet.init()
+  const address = wallet.getAddress()
+  const provider = await wallet.getWeb3Provider()
+  const signer = await provider.getSigner()
+  console.log(DEPLOYED)
+
+  // ::CHECKLIST 20 mint onlyOwner
+  // const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
+  const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+  const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+
+  // await tkn.mint(address, 10000000000000000000000n)
+  await nft.tbaMint(address)
+  await mts.tbaMint(address, 5, '0x')
+}
+
+const searchAsset = async () => {
+  const wallet = new MetamaskService()
+  await wallet.init()
+  const address = wallet.getAddress()
+  const provider = await wallet.getWeb3Provider()
+  const signer = await provider.getSigner()
+  console.log(DEPLOYED)
+
+  // ::CHECKLIST 20 mint onlyOwner
+  // const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
+  const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+  const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+
+  const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+
+  const nftList = await nft.tokensOf(address)
+  const mtsList = await mts.tokensOf(address)
+  // const [mtsList, mstAmount] = await mts.tokensOf(address)
+
+  console.log(nftList)
+  console.log(mtsList)
+  // console.log(mstAmount)
+
+  const metadataList721 = await Promise.all(
+    nftList.map(async (tokenId: any) => {
+      const uri = await nft.tokenURI(tokenId)
+      const metadata = await axios.get(uri)
+      console.log('metadata', metadata.data)
+      return metadata.data
+    })
+  )
+
+  const metadataList1155 = await Promise.all(
+    mtsList[0].map(async (tokenId: any) => {
+      const uri = await mts.uri(tokenId)
+      const metadata = await axios.get(uri)
+      console.log('metadata', metadata.data)
+      return metadata.data
+    })
+  )
+
+  setMetadataList721(metadataList721)
+  setMetadataList1155(metadataList1155)
+
+  setAsset721(nftList)
+  setAsset1155(mtsList)
+
+  const test = await reg.account(DEPLOYED.tAcc, 55001, DEPLOYED.nft, Number(10000001), 0n)
+  const test2 = await reg.account(DEPLOYED.tAcc, 55001, DEPLOYED.nft, Number(12345), 0n)
+
+  console.log({ test, test2 })
+  setHasAsset(true)
+}
+
+const convert721to6551 = async (nft721Id: number) => {
+  const wallet = new MetamaskService()
+  await wallet.init()
+  const provider = await wallet.getWeb3Provider()
+  const signer = await provider.getSigner()
+
+  const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+
+  await reg.createAccount(DEPLOYED.tAcc, 55001, DEPLOYED.nft, Number(nft721Id), 0n, '0x')
+
+  const tba = await reg.account(DEPLOYED.tAcc, 55001, DEPLOYED.nft, Number(nft721Id), 0n)
+
+  const tbaToken = new Contract(tba, ITBA, signer)
+
+  console.log(tba, 'tba')
+}
+
+// searchAsset()
 </script>

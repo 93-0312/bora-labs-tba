@@ -12,7 +12,7 @@
         tabIndex="{0}"
         class="flex items-center ic-metamask text-xs cursor-pointer md:text-base"
       >
-        0x3e5c...9981Cb
+        {{ connectedAccount }}
       </label>
 
       <button
@@ -35,11 +35,40 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+
+import MetamaskService from '@/services/metamask.service.ts'
+
+//
+
+const connectedAccount = ref<string>('')
+
+const connectWallet = async () => {
+  try {
+    const wallet = new MetamaskService()
+    await wallet.init()
+    await wallet.switchNetworkChain(55001)
+    await wallet.signMessage('Connect wallet to Borachain governance site')
+    const cntWallet = await wallet.getAddress()
+    connectedAccount.value = cntWallet
+  } catch (err) {
+    console.error({ err })
+  }
+}
+
+const disconnectWallet = () => {
+  connectedAccount.value = ''
+  const ans = confirm('Disconnect Wallet?')
+  const wallet = new MetamaskService()
+  // if (ans) setAccount('')
+}
+
+onMounted(() => {})
 
 const isSigned = ref(false)
 
-const signIn = () => {
+const signIn = async () => {
+  await connectWallet()
   isSigned.value = true
 }
 </script>
