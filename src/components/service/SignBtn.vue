@@ -47,8 +47,9 @@ const connectWallet = async () => {
   try {
     const wallet = new MetamaskService()
     await wallet.init()
-    await wallet.switchNetworkChain(55001)
-    await wallet.signMessage('Connect wallet to Borachain governance site')
+
+    await wallet.switchNetworkChain(Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID))
+    await wallet.signMessage('Connect wallet to Borachain TBA labs')
     const cntWallet = await wallet.getAddress()
     connectedAccount.value = cntWallet
   } catch (err) {

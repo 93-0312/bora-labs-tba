@@ -6,8 +6,7 @@ export const setupAssetStore = () => {
   const asset721 = ref<any>([])
   const asset1155 = ref<any>([])
 
-  const metadataList721 = ref<any>([])
-  const metadataList1155 = ref<any>([])
+  const sendAsset = ref<any>()
 
   const setHasAsset = (data: boolean) => {
     hasAsset.value = data
@@ -20,12 +19,8 @@ export const setupAssetStore = () => {
     asset1155.value = data
   }
 
-  const setMetadataList721 = (data: any) => {
-    metadataList721.value = data
-  }
-
-  const setMetadataList1155 = (data: any) => {
-    metadataList1155.value = data
+  const setSendAsset = (data: any) => {
+    sendAsset.value = data
   }
 
   return {
@@ -33,15 +28,15 @@ export const setupAssetStore = () => {
     hasAsset,
     asset721,
     asset1155,
-    metadataList721,
-    metadataList1155,
+
+    sendAsset,
 
     // modifiers
     setHasAsset,
     setAsset721,
     setAsset1155,
-    setMetadataList721,
-    setMetadataList1155
+
+    setSendAsset
   }
 }
 

@@ -21,6 +21,7 @@ export default class MetamaskService {
   }
 
   async switchNetworkChain(chainId: number) {
+    console.log(chainId, 'chainId')
     await this.metamask.request({
       method: 'wallet_addEthereumChain',
       params: [getNetworkChainConfig(chainId)]

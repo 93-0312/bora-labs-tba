@@ -46,6 +46,7 @@ export const ITBA = [
   'function execute(address to, uint256 value, bytes calldata data, uint256 operation) external payable returns (bytes memory result)'
 ]
 
+// DEV TEST CONTRACT JH
 export const DEPLOYED = {
   nft: '0x54615c4682cc43e2112f5100e9867B720F7Bd3A8',
   tkn: '0x6676bef8246b9E80DDc9e39Da31042b13BddD04b',
