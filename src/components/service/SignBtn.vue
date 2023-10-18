@@ -1,5 +1,10 @@
 <template>
-  <button v-if="!isSigned" type="button" class="btn btn-sm btn-primary md:btn-md" @click="signIn">
+  <button
+    v-if="!isSigned"
+    type="button"
+    class="btn btn-sm btn-primary md:btn-md"
+    @click="connectWallet"
+  >
     Sign in
   </button>
 
@@ -12,14 +17,14 @@
         tabIndex="{0}"
         class="flex items-center ic-metamask text-xs cursor-pointer md:text-base"
       >
-        {{ connectedAccount }}
+        {{ walletAddress }}
       </label>
 
       <button
         tabIndex="{0}"
         type="button"
         class="dropdown-content relative z-1 h-8 px-4 -mr-[37px] mt-3 border border-gray-500 bg-gray-800 bg-opacity-80 rounded-md text-xs shadow-sm text-neutral-content backdrop-blur-md hover:bg-opacity-100 hover:text-base-content md:h-10 md:mt-4 md:text-sm"
-        @click="isSigned = false"
+        @click="disconnectWallet"
       >
         Sign Out
       </button>
@@ -35,41 +40,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { useAccountStore } from '@/stores/account.module.ts'
+import { setupAccount } from '@/setups/account.composition'
+import { storeToRefs } from 'pinia'
 
-import MetamaskService from '@/services/metamask.service.ts'
+const accountStore = useAccountStore()
 
-//
+const { isSigned, walletAddress } = storeToRefs(accountStore)
 
-const connectedAccount = ref<string>('')
-
-const connectWallet = async () => {
-  try {
-    const wallet = new MetamaskService()
-    await wallet.init()
-
-    await wallet.switchNetworkChain(Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID))
-    await wallet.signMessage('Connect wallet to Borachain TBA labs')
-    const cntWallet = await wallet.getAddress()
-    connectedAccount.value = cntWallet
-  } catch (err) {
-    console.error({ err })
-  }
-}
-
-const disconnectWallet = () => {
-  connectedAccount.value = ''
-  const ans = confirm('Disconnect Wallet?')
-  const wallet = new MetamaskService()
-  // if (ans) setAccount('')
-}
-
-onMounted(() => {})
-
-const isSigned = ref(false)
-
-const signIn = async () => {
-  await connectWallet()
-  isSigned.value = true
-}
+const { connectWallet, disconnectWallet } = setupAccount()
 </script>

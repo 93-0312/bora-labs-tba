@@ -1,8 +1,5 @@
 <template>
-  <div @click="tbaMint">tbaMint</div>
-  <div @click="searchAsset">searchAsset</div>
-
-  <section v-if="!hasAsset" class="flex flex-col empty text-center mt-12">
+  <section v-if="!hasAsset || !isSigned" class="flex flex-col empty text-center mt-12">
     <span>There is no NFT</span>
   </section>
 
@@ -133,7 +130,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import ItemCard from '@/components/service/ItemCard.vue'
 import ModalLayout from '@/components/ui/ModalLayout.vue'
 import ModalLoading from '../ui/ModalLoading.vue'
@@ -144,7 +141,13 @@ import { useAssetStore } from '@/stores/asset.module.ts'
 import { storeToRefs } from 'pinia'
 import axios from 'axios'
 
-const consoleLog = (data) => console.log({ data })
+import { useAccountStore } from '@/stores/account.module.ts'
+
+const accountStore = useAccountStore()
+
+const { isSigned } = storeToRefs(accountStore)
+
+// const consoleLog = (data) => console.log({ data })
 
 // const isEmpty = ref(true)
 const isInputError = ref(true)
@@ -157,72 +160,8 @@ const modalConvertRef = ref<HTMLDialogElement>()
 
 const assetStore = useAssetStore()
 
-const { setHasAsset, setAsset721, setAsset1155, setSendAsset } = assetStore
+const { setAsset721, setAsset1155, setSendAsset } = assetStore
 const { hasAsset, asset721, asset1155, sendAsset } = storeToRefs(assetStore)
-
-const tbaMint = async () => {
-  const wallet = new MetamaskService()
-  await wallet.init()
-  const address = wallet.getAddress()
-  const provider = await wallet.getWeb3Provider()
-  const signer = await provider.getSigner()
-  console.log(DEPLOYED)
-
-  // ::CHECKLIST 20 mint onlyOwner
-  // const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
-  const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-  const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
-
-  // await tkn.mint(address, 10000000000000000000000n)
-  await nft.tbaMint(address)
-  await mts.tbaMint(address, 5, '0x')
-}
-
-const searchAsset = async () => {
-  const wallet = new MetamaskService()
-  await wallet.init()
-  const address = wallet.getAddress()
-  const provider = await wallet.getWeb3Provider()
-  const signer = await provider.getSigner()
-  console.log(DEPLOYED)
-
-  // ::CHECKLIST 20 mint onlyOwner
-  // const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
-  const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-  const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
-
-  const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-
-  const nftList = await nft.tokensOf(address)
-  const mtsList = await mts.tokensOf(address)
-  // const [mtsList, mstAmount] = await mts.tokensOf(address)
-
-  const asset721 = new Map()
-  const asset1155 = new Map()
-
-  await Promise.all(
-    nftList.map(async (tokenId: any) => {
-      const uri = await nft.tokenURI(tokenId)
-      const metadata = await axios.get(uri)
-      asset721.set(tokenId, { metadata: metadata.data })
-    })
-  )
-
-  await Promise.all(
-    mtsList[0].map(async (tokenId: any, i: number) => {
-      const uri = await mts.uri(tokenId)
-      const metadata = await axios.get(uri)
-      asset1155.set(tokenId, { metadata: metadata.data, amount: mtsList[1][i] })
-    })
-  )
-
-  console.log(asset1155)
-
-  setAsset721(asset721)
-  setAsset1155(asset1155)
-
-  setHasAsset(true)
-}
 
 const convert721to6551 = async (nft721Id: number) => {
   console.log({ nft721Id })
@@ -254,6 +193,4 @@ const convert721to6551 = async (nft721Id: number) => {
 
   const tbaToken = new Contract(tba, ITBA, signer)
 }
-
-// searchAsset()
 </script>

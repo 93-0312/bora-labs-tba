@@ -28,12 +28,16 @@
         </div>
       </label>
 
+      <div @click="tbaMint">tbaMint</div>
+      <div @click="checkAsset">checkAsset</div>
+      <div>isSigned:{{ isSigned }}</div>
       <!-- Create wallet -->
 
       <button
+        v-show="!isSigned || !hasAsset"
         class="btn btn-sm btn-accent mt-6 md:btn-md md:mt-9"
         type="button"
-        @click="modalStepRef?.showModal()"
+        @click="createWallet()"
       >
         Create Wallet
       </button>
@@ -91,13 +95,48 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import ItemList from '@/components/service/ItemList.vue'
 import ModalLoading from '@/components/ui/ModalLoading.vue'
 import Toast from '@/components/ui/Toast.vue'
+import { useAccountStore } from '@/stores/account.module.ts'
+import { useAssetStore } from '@/stores/asset.module.ts'
+import { setupAccount } from '@/setups/account.composition'
+import { setupAsset } from '@/setups/asset.composition'
+import { storeToRefs } from 'pinia'
+
+const assetStore = useAssetStore()
+const accountStore = useAccountStore()
+
+const { isSigned } = storeToRefs(accountStore)
+
+const { hasAsset, asset721, asset1155, sendAsset } = storeToRefs(assetStore)
+
+const { connectWallet } = setupAccount()
+const { tbaMint, checkAsset } = setupAsset()
 
 const isAbout = ref(false)
 
+const createWallet = async () => {
+  if (isSigned.value) {
+    // tbaMint()
+    modalStepRef.value?.showModal()
+  } else if (!isSigned.value) {
+    await connectWallet()
+    await checkAsset()
+    if (!hasAsset.value) {
+      // tbaMint()
+    }
+  }
+}
+
 // modal
 const modalStepRef = ref<HTMLDialogElement>()
+
+watch(
+  () => isSigned.value,
+  (isSigned: boolean) => {
+    if (isSigned) checkAsset()
+  }
+)
 </script>
