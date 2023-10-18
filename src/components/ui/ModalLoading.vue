@@ -21,15 +21,13 @@
       <!-- 공통 -->
       <p class="w-[90%] mt-6 text-center text-sm md:text-base">{{ props.desc }}</p>
 
-      <div class="flex items-start mt-5">
+      <p class="mt-5 text-xs text-neutral-content/70 text-center leading-relaxed md:text-sm">
         <!-- prettier-ignore -->
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="shrink-0 stroke-neutral-content/70 w-[18px] h-auto mr-1 mt-[1px]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block stroke-neutral-content/70 w-4 h-auto mr-0.5 -mt-0.5 md:w-[18px]">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <p class="text-xs text-neutral-content/70 text-center leading-relaxed md:text-sm">
-          Don't worry! You may close the window without affecting the {{ props.progressName }}.
-        </p>
-      </div>
+        Don't worry! You may close the window without affecting the {{ props.progressName }}.
+      </p>
 
       <button class="btn btn-white btn-wide mt-6 md:mt-8" type="button" @click="modalRef?.close()">
         Confirm
