@@ -36,7 +36,8 @@ export const IERC20 = [
 
 export const IREG = [
   'function createAccount(address implementation,uint256 chainId,address tokenContract,uint256 tokenId,uint256 salt,bytes calldata initData) external returns (address)',
-  'function account(address implementation, uint256 chainId, address tokenContract, uint256 tokenId, uint256 salt) external view returns (address)'
+  'function account(address implementation, uint256 chainId, address tokenContract, uint256 tokenId, uint256 salt) external view returns (address)',
+  'function accountsOf(address tokenContract, uint256 tokenId) external view returns( address[] memory accounts )'
 ]
 
 export const ITBA = [
@@ -48,9 +49,9 @@ export const ITBA = [
 
 // DEV TEST CONTRACT JH
 export const DEPLOYED = {
-  nft: '0x54615c4682cc43e2112f5100e9867B720F7Bd3A8',
-  tkn: '0x6676bef8246b9E80DDc9e39Da31042b13BddD04b',
-  mts: '0xE5Cba175f956e2CA7d4da45C2cBfBd895d8cA2D0',
-  tAcc: '0x6ac1677030873edF4D10526A913670eB145f2482',
-  tReg: '0x8f099A243bF333Da7520fA2CfE5d9b7478389786'
+  nft: '0x9525a1fd87bDe37BD24f7bE188F3Ec7E275e4766',
+  tkn: '0x34A43a4916bd03b24f9549284E2984138f5D19F9',
+  mts: '0x9e7e9eBcACbeCBE503ab5aAcF0e958608494D0B3',
+  tAcc: '0x98133B32bc4E5c9cFB95c4276CB9D694004bc1C6',
+  tReg: '0xEBCc623d01F241F6182eB007D658864C59bd8d54'
 } as const

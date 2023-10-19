@@ -4,6 +4,8 @@ import { defineStore } from 'pinia'
 export const setupAssetStore = () => {
   const asset721 = ref<any>(new Map())
   const asset1155 = ref<any>(new Map())
+  const asset6551 = ref<any>(new Map())
+
   const hasAsset = computed(() => asset721.value.size > 0 || asset1155.value.size > 0)
 
   const sendAsset = ref<any>()
@@ -13,6 +15,9 @@ export const setupAssetStore = () => {
   }
   const setAsset1155 = (data: any) => {
     asset1155.value = data
+  }
+  const setAsset6551 = (data: any) => {
+    asset6551.value = data
   }
 
   const setSendAsset = (data: any) => {
@@ -24,12 +29,13 @@ export const setupAssetStore = () => {
     hasAsset,
     asset721,
     asset1155,
-
+    asset6551,
     sendAsset,
 
     // modifiers
     setAsset721,
     setAsset1155,
+    setAsset6551,
 
     setSendAsset
   }
