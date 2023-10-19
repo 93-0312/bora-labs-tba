@@ -85,8 +85,9 @@
     <ModalLoading
       @modal-ref="(ref) => (modalStepRef = ref.value)"
       :is-step="true"
+      :current-step="tbaMintStep"
       progress-name="Mint"
-      desc="6551 NFT 1개 민팅 진행 중입니다."
+      :desc="tbaMintDesc"
     />
 
     <!-- toast -->
@@ -113,7 +114,7 @@ const { isSigned } = storeToRefs(accountStore)
 const { hasAsset, asset721, asset1155, sendAsset } = storeToRefs(assetStore)
 
 const { connectWallet } = setupAccount()
-const { tbaMint, checkAsset } = setupAsset()
+const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc } = setupAsset()
 
 const isAbout = ref(false)
 
@@ -125,7 +126,9 @@ const createWallet = async () => {
     await connectWallet()
     await checkAsset()
     if (!hasAsset.value) {
-      // tbaMint()
+      modalStepRef.value?.showModal()
+      await tbaMint()
+      modalStepRef.value?.close()
     }
   }
 }

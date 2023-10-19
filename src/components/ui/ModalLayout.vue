@@ -7,7 +7,12 @@
 
       <!-- bottom button -->
       <div class="flex justify-center mt-6 md:mt-8">
-        <button type="button" class="btn btn-white btn-wide" :disabled="false">
+        <button
+          type="button"
+          class="btn btn-white btn-wide"
+          :disabled="false"
+          @click="() => btnClick && btnClick()"
+        >
           {{ props.btnName }}
         </button>
       </div>
@@ -42,7 +47,8 @@ const props = defineProps({
     type: Boolean,
     default: true
   },
-  btnName: String
+  btnName: String,
+  btnClick: Function
 })
 
 const modalRef = ref<HTMLDialogElement>()
@@ -50,7 +56,6 @@ const modalRef = ref<HTMLDialogElement>()
 const emit = defineEmits(['modalRef'])
 
 onMounted(() => {
-  console.log('1')
   emit('modalRef', modalRef)
 })
 </script>
