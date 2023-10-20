@@ -9,17 +9,20 @@
         <li :class="['step', currentStep === 4 && 'step-primary']" />
       </ul>
 
+      <!-- step, 로딩중 -->
+      <span v-if="props.isStep" class="loading loading-dots w-9 mt-3" />
+
       <!-- radial progress, --value값으로 progress 조절 -->
       <div
         v-if="props.isRadial"
-        class="radial-progress text-primary mt-2"
+        class="radial-progress text-primary mt-2 mb-1"
         style="--value: 70; --size: 100px; --thickness: 6px"
       >
         <p class="text-sm font-medium text-center">{{ props.progressName }} in<br />progress</p>
       </div>
 
       <!-- 공통 -->
-      <p class="w-[90%] mt-6 text-center text-sm md:text-base">{{ props.desc }}</p>
+      <p class="w-[90%] mt-5 text-center text-sm md:text-base">{{ props.desc }}</p>
 
       <p class="mt-5 text-xs text-neutral-content/70 text-center leading-relaxed md:text-sm">
         <!-- prettier-ignore -->
