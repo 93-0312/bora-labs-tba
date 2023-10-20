@@ -8,6 +8,7 @@
         'h-auto',
         'aspect-square',
         'object-cover',
+        'rounded-t',
         props.hasCheckbox ? 'opacity-70' : 'opacity-100'
       ]"
     />
