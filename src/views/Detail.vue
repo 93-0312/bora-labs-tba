@@ -171,8 +171,8 @@
       title="Send Token"
       btn-name="Send"
     >
-      <div class="form-control w-full mt-4">
-        <label class="label">
+      <div class="form-control w-full mt-3 md:mt-4">
+        <label class="label py-1.5">
           <span class="label-text md:text-base">How many token are you sending?</span>
         </label>
         <div class="relative">
@@ -185,8 +185,9 @@
               'btn-xs',
               'w-12',
               'absolute',
-              'top-3',
+              'top-2',
               'left-3',
+              'md:top-3',
               { 'bg-base-content text-base-300 border-base-content': isSelected }
             ]"
             @click="isSelected = !isSelected"
@@ -203,13 +204,15 @@
               'w-full',
               'pl-20',
               'text-right',
+              'h-10',
+              'md:h-12',
               { 'input-error': isInputError }
             ]"
             aria-label="token input"
           />
         </div>
         <!-- input error시 노출 -->
-        <label class="label">
+        <label class="label py-1.5">
           <span class="label-text-alt text-neutral-content/70 md:text-sm"
             >Balance: 92.3245 tBORA</span
           >
@@ -219,19 +222,26 @@
         </label>
       </div>
 
-      <div class="form-control w-full mt-10">
-        <label class="label">
+      <div class="form-control w-full mt-3 md:mt-10">
+        <label class="label py-1.5">
           <span class="label-text md:text-base">Who are you sending the NFT to?</span>
         </label>
         <!-- input error시 class에 input-error 추가  -->
         <input
           type="text"
           placeholder="ex. 0x1234..."
-          :class="['input', 'input-bordered', 'w-full', { 'input-error': isInputError }]"
+          :class="[
+            'input',
+            'input-bordered',
+            'w-full',
+            'h-10',
+            'md:h-12',
+            { 'input-error': isInputError }
+          ]"
           maxlength="42"
         />
         <!-- input error시 노출 -->
-        <label v-if="isInputError" class="label pb-1">
+        <label v-if="isInputError" class="label py-1.5">
           <span class="label-text-alt text-error md:text-sm">
             This is not a valid wallet address.
           </span>
