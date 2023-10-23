@@ -3,10 +3,7 @@
     <div class="modal-box flex flex-col items-center p-5 md:p-6">
       <!-- step, 진행된 step에 step-primary 추가 -->
       <ul v-if="props.isStep" class="steps mt-2">
-        <li :class="['step', currentStep >= 1 && 'step-primary']" />
-        <li :class="['step', currentStep >= 2 && 'step-primary']" />
-        <li :class="['step', currentStep >= 3 && 'step-primary']" />
-        <li :class="['step', currentStep >= 4 && 'step-primary']" />
+        <li v-for="i in step" :key="i" :class="['step', currentStep >= i && 'step-primary']" />
       </ul>
 
       <!-- step, 로딩중 -->
@@ -16,7 +13,7 @@
       <div
         v-if="props.isRadial"
         class="radial-progress text-primary mt-2 mb-1"
-        style="--value: 70; --size: 100px; --thickness: 6px"
+        :style="`--value: ${progressTime}; --size: 100px; --thickness: 6px`"
       >
         <p class="text-sm font-medium text-center">{{ props.progressName }} in<br />progress</p>
       </div>
@@ -40,6 +37,8 @@
 </template>
 
 <script lang="ts" setup>
+import { useModalStore } from '@/stores/modal.module'
+import { storeToRefs } from 'pinia'
 import { ref, onMounted } from 'vue'
 
 const props = defineProps({
@@ -52,13 +51,28 @@ const props = defineProps({
     default: false
   },
   desc: String,
+  step: Number,
   currentStep: { type: Number, default: 1 },
   progressName: String
 })
+
+const modalStore = useModalStore()
+const { progressTime } = storeToRefs(modalStore)
 
 const modalRef = ref<HTMLDialogElement>()
 
 const emit = defineEmits(['modalRef'])
 
-onMounted(() => emit('modalRef', modalRef))
+onMounted(() => {
+  emit('modalRef', modalRef)
+  if (props.isRadial) {
+    let progressInterval = setInterval(
+      () =>
+        (progressTime.value =
+          progressTime.value <= 100 ? progressTime.value + 10 : progressTime.value),
+      1000
+    )
+    console.log('loading modal onmounted')
+  }
+})
 </script>

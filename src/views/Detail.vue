@@ -139,7 +139,7 @@
         <div class="overflow-hidden grid grid-cols-6 gap-3 mt-7 md:gap-4">
           <button
             v-if="notIncluded"
-            class="col-span-4 btn btn-secondary md:btn-lg"
+            class="col-span-4 btn btn-accent md:btn-lg"
             type="button"
             @click="modalConvertRef?.showModal(), convert721to6551(101n)"
           >
@@ -173,7 +173,7 @@
     </section>
 
     <AddModal @modal-ref="(ref) => (modalAddRef = ref.value)" :modalAddRef="modalAddRef" />
-    <SendModal @modal-ref="(ref) => (modalSendRef = ref.value)" :modalSendRef="modalSendRef" />
+    <!-- <SendModal /> -->
     <SendTokenModal
       @modal-ref="(ref) => (modalSendTokenRef = ref.value)"
       :modalSendTokenRef="modalSendTokenRef"

@@ -1,5 +1,7 @@
 <template>
   <ModalLayout @modal-ref="(ref) => (modalRef = ref.value)" title="Add NFT" btn-name="Add">
+    <div @click="test">??????</div>
+
     <p class="mb-2.5 text-sm md:text-base">Pitcher #1234에 추가할 NFT를 선택하세요.</p>
     <ul
       class="overflow-auto grid grid-cols-3 gap-2 max-h-72 md:grid-cols-4 md:gap-3 md:max-h-[340px]"
@@ -33,15 +35,37 @@
         />
       </li>
     </ul>
+    {{ test1 }}
   </ModalLayout>
+  <!-- 
+  <ModalLoading
+    @modal-ref="(ref) => (addLoadingModalRef = ref.value)"
+    :is-radial="true"
+    desc="It takes about 5 minutes. Once complete, you can check in Add address."
+    progress-name="Add"
+    :progressTime="0"
+  /> -->
+  <template :v-if="test1"> </template>
 </template>
 
 <script setup lang="ts">
 import ModalLayout from '@/components/ui/ModalLayout.vue'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import ItemCard from './ItemCard.vue'
 import { useAssetStore } from '@/stores/asset.module'
 import { storeToRefs } from 'pinia'
+
+import { useModalStore } from '@/stores/modal.module'
+import ModalLoading from '../ui/ModalLoading.vue'
+
+const modalStore = useModalStore()
+const test1 = computed(() => addLoadingModalRef.value?.open)
+const test = () => {
+  addLoadingModalRef.value?.showModal()
+  console.log(addLoadingModalRef.value?.open)
+}
+
+const { addLoadingModalRef } = storeToRefs(modalStore)
 
 const assetStore = useAssetStore()
 const { asset721, asset1155 } = storeToRefs(assetStore)

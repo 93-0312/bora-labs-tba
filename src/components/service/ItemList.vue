@@ -20,7 +20,7 @@
           <button
             class="min-h-0 h-10 col-span-4 btn btn-primary rounded-none text-xs md:h-12 md:text-base"
             type="button"
-            @click="modalAddRef?.showModal()"
+            @click="addModalRef?.showModal()"
           >
             Add NFT
           </button>
@@ -50,9 +50,9 @@
       >
         <div class="grid grid-cols-6">
           <button
-            class="min-h-0 h-10 col-span-4 btn btn-secondary rounded-none text-xs md:h-12 md:text-base"
+            class="min-h-0 h-10 col-span-4 btn btn-accent rounded-none text-xs md:h-12 md:text-base"
             type="button"
-            @click="modalConvertRef?.showModal(), convert721to6551(asset[0])"
+            @click="radialModalRef?.showModal(), convert721to6551(asset[0])"
           >
             Convert to TBA
           </button>
@@ -92,16 +92,11 @@
   </ul>
 
   <!-- modal: add nft -->
-  <AddModal @modal-ref="(ref) => (modalAddRef = ref.value)" :modalAddRef="modalAddRef" />
-  <SendModal @modal-ref="(ref) => (modalSendRef = ref.value)" :modalSendRef="modalSendRef" />
+  <!-- <SendModal @modal-ref="(ref) => setSendModalRef(ref.value)" :modalSendRef="sendModalRef" /> -->
+  <SendModal />
+  <AddModal @modal-ref="(ref) => setAddModalRef(ref.value)" :modalAddRef="addModalRef" />
 
   <!-- modal: convert to TBA -->
-  <ModalLoading
-    @modal-ref="(ref) => (modalConvertRef = ref.value)"
-    :is-radial="true"
-    desc="It takes about 5 minutes. Once complete, you can check in TBA menu."
-    progress-name="Convert"
-  />
 </template>
 
 <script setup lang="ts">
@@ -115,6 +110,7 @@ import { useAssetStore } from '@/stores/asset.module.ts'
 import { storeToRefs } from 'pinia'
 
 import { useAccountStore } from '@/stores/account.module.ts'
+import { useModalStore } from '@/stores/modal.module.ts'
 import AddModal from './AddModal.vue'
 import SendModal from './SendModal.vue'
 import { setupAsset } from '@/setups/asset.composition'
@@ -123,6 +119,8 @@ const consoleLog = (data) => console.log
 
 const accountStore = useAccountStore()
 const assetStore = useAssetStore()
+const modalStore = useModalStore()
+
 const { convert721to6551 } = setupAsset()
 
 const { isSigned } = storeToRefs(accountStore)
@@ -130,14 +128,13 @@ const { isSigned } = storeToRefs(accountStore)
 const { setSendAsset } = assetStore
 const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore)
 
-const showSendModal = (sendAsset: any) => {
-  modalSendRef.value?.showModal()
-  setSendAsset(sendAsset)
-}
-
 // modal
-const modalAddRef = ref<HTMLDialogElement>()
-const modalSendRef = ref<HTMLDialogElement>()
-const modalConvertRef = ref<HTMLDialogElement>()
-//
+const { sendModalRef, addModalRef, radialModalRef, stepModalRef } = storeToRefs(modalStore)
+const { setAddModalRef, setSendModalRef, setRadialModalRef, setStepModalRef } = modalStore
+
+const showSendModal = (sendAsset: any) => {
+  setSendAsset(sendAsset)
+  sendModalRef.value?.showModal()
+  console.log(sendModalRef.value, 'sendModalRef')
+}
 </script>

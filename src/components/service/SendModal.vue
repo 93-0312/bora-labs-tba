@@ -1,10 +1,16 @@
 <template>
   <ModalLayout
-    @modal-ref="(ref) => (modalRef = ref.value)"
+    @modal-ref="
+      (ref) => {
+        sendModalRef = ref.value
+        test
+      }
+    "
     title="Send NFT"
     btn-name="Send"
     :btn-click="async () => await confirmSend(toAddress, sendAsset)"
   >
+    <div @click="test">??????</div>
     <div class="indicator block w-28 mx-auto md:w-32">
       <ItemCard
         :is-small="true"
@@ -82,6 +88,14 @@
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>
+
+  <!-- <ModalLoading
+    @modal-ref="(ref) => (sendLoadingModalRef = ref.value)"
+    :is-radial="true"
+    desc="It takes about 5 minutes. Once complete, you can check in send address."
+    progress-name="Send"
+    :progressTime="progressTime"
+  /> -->
 </template>
 
 <script setup lang="ts">
@@ -91,8 +105,18 @@ import ItemCard from './ItemCard.vue'
 import { setupAsset } from '@/setups/asset.composition'
 import { storeToRefs } from 'pinia'
 import { useAssetStore } from '@/stores/asset.module'
+import { useModalStore } from '@/stores/modal.module'
+import ModalLoading from '../ui/ModalLoading.vue'
 
-const modalRef = ref<HTMLDialogElement>()
+const modalStore = useModalStore()
+
+const test = () => {
+  console.log(sendModalRef, '???')
+  sendLoadingModalRef.value?.showModal()
+  progressTime.value = 0
+}
+
+const { sendModalRef, sendLoadingModalRef, progressTime } = storeToRefs(modalStore)
 
 const props = defineProps({
   modalSendRef: HTMLDialogElement,
@@ -126,7 +150,7 @@ const isValidAddress = (address: string) => {
 }
 
 onMounted(() => {
-  emit('modalRef', modalRef)
+  console.log('mounted')
 })
 
 onBeforeMount(() => {

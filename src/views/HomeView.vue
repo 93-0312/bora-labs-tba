@@ -30,7 +30,7 @@
 
       <div @click="tbaMint">tbaMint</div>
       <div @click="checkAsset">check721Asset</div>
-      <div>isSigned:{{ isSigned }}</div>
+      <div @click="test">isSigned:{{ isSigned }}</div>
       <!-- Create wallet -->
 
       <button
@@ -82,9 +82,25 @@
     </section>
 
     <!-- modal: minting -->
+    <!-- <ModalLoading
+      @modal-ref="(ref) => (radialModalRef = ref.value)"
+      :is-radial="true"
+      desc="It takes about 5 minutes. Once complete, you can check in TBA menu."
+      progress-name="Convert"
+    /> -->
+
     <ModalLoading
-      @modal-ref="(ref) => (modalStepRef = ref.value)"
+      @modal-ref="(ref) => (sendLoadingModalRef = ref.value)"
+      :is-radial="true"
+      desc="It takes about 5 minutes. Once complete, you can check in send address."
+      progress-name="Send"
+      :progressTime="progressTime"
+    />
+
+    <ModalLoading
+      @modal-ref="(ref) => (stepModalRef = ref.value)"
       :is-step="true"
+      :step="4"
       :current-step="tbaMintStep"
       progress-name="Minting in progress"
       :desc="tbaMintDesc"
@@ -105,6 +121,11 @@ import { useAccountStore } from '@/stores/account.module.ts'
 import ModalLoading from '@/components/ui/ModalLoading.vue'
 import ItemList from '@/components/service/ItemList.vue'
 import Toast from '@/components/ui/Toast.vue'
+import { useModalStore } from '@/stores/modal.module'
+
+const modalStore = useModalStore()
+
+const { sendLoadingModalRef, progressTime } = storeToRefs(modalStore)
 
 const assetStore = useAssetStore()
 const accountStore = useAccountStore()
@@ -134,5 +155,11 @@ const createWallet = async () => {
 }
 
 // modal
+
+const { sendModalRef, addModalRef, radialModalRef, stepModalRef } = storeToRefs(modalStore)
+const { setAddModalRef, setSendModalRef, setRadialModalRef, setStepModalRef } = modalStore
+
 const modalStepRef = ref<HTMLDialogElement>()
+
+const test = () => radialModalRef.value?.showModal()
 </script>
