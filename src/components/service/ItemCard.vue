@@ -1,5 +1,5 @@
 <template>
-  <router-link to="/tba/1">
+  <router-link :to="`/tba/${props.ercType + '/' + props.id}`">
     <img
       :src="props.imgSrc"
       alt="nft"
@@ -14,11 +14,14 @@
     />
   </router-link>
 
+  <div>props.ercType:{{ props.ercType }}</div>
+  <div>props.id:{{ props.id }}</div>
+
   <!-- badge -->
   <template v-if="props.hasBadge">
     <!-- badge: 6551 -->
     <div
-      v-if="props.is6551"
+      v-if="props.ercType === 6551"
       class="absolute left-3 top-3 badge bg-black h-8 rounded-md text-xs shadow-sm md:text-sm"
     >
       <!-- prettier-ignore -->
@@ -44,12 +47,16 @@
     type="checkbox"
     class="checkbox absolute top-1.5 right-1.5 bg-base-300/70"
     aria-label="checkbox"
+    :checked="checkedList"
   />
 
   <!-- information -->
   <div class="border border-neutral-600 border-t-0 rounded-b-lg">
     <!-- address: 6551 -->
-    <p v-if="props.is6551" class="flex items-center h-10 px-2.5 text-sm md:h-12 md:px-4 md:text-lg">
+    <p
+      v-if="props.ercType === 6551"
+      class="flex items-center h-10 px-2.5 text-sm md:h-12 md:px-4 md:text-lg"
+    >
       0x2D12...34caB1
       <button class="p-2 hover:text-neutral-300" type="button" aria-label="copy">
         <!-- prettier-ignore -->
@@ -99,6 +106,10 @@
 </template>
 
 <script lang="ts" setup>
+import { ref } from 'vue'
+
+const checkedList = ref<any[]>([])
+
 const props = defineProps({
   isSmall: {
     type: Boolean,
@@ -112,14 +123,20 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  is6551: {
-    type: Boolean,
-    default: false
+  ercType: {
+    type: Number,
+    default: 721
   },
+
   showNetwork: {
     type: Boolean,
     default: true
   },
+
+  id: {
+    type: Number
+  },
+
   imgSrc: String,
   badgeName: String,
   cardName: String

@@ -8,7 +8,7 @@
       <img
         width="100"
         height="100"
-        src="https://gfile.boraportal.com/cdn-cgi/image/width=540,format=webp/1025000003/4/5264.jpg"
+        :src="detailAsset && detailAsset?.get(assetId)?.metadata['image']"
         class="w-full h-auto rounded-lg"
         alt="nft"
       />
@@ -85,6 +85,7 @@
                   <button
                     class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
                     type="button"
+                    @click="showSendModal(asset)"
                   >
                     Send
                     <!-- prettier-ignore -->
@@ -136,7 +137,12 @@
       <!-- erc-721, 1155 -->
       <template v-else>
         <div class="overflow-hidden grid grid-cols-6 gap-3 mt-7 md:gap-4">
-          <button v-if="notIncluded" class="col-span-4 btn btn-secondary md:btn-lg" type="button">
+          <button
+            v-if="notIncluded"
+            class="col-span-4 btn btn-secondary md:btn-lg"
+            type="button"
+            @click="modalConvertRef?.showModal(), convert721to6551(101n)"
+          >
             Convert to TBA
           </button>
           <button
@@ -166,107 +172,92 @@
       <Accordion isInfo />
     </section>
 
-    <ModalLayout
+    <AddModal @modal-ref="(ref) => (modalAddRef = ref.value)" :modalAddRef="modalAddRef" />
+    <SendModal @modal-ref="(ref) => (modalSendRef = ref.value)" :modalSendRef="modalSendRef" />
+    <SendTokenModal
       @modal-ref="(ref) => (modalSendTokenRef = ref.value)"
-      title="Send Token"
-      btn-name="Send"
-    >
-      <div class="form-control w-full mt-3 md:mt-4">
-        <label class="label py-1.5">
-          <span class="label-text md:text-base">How many token are you sending?</span>
-        </label>
-        <div class="relative">
-          <!-- max 버튼 활성화 시, -->
-          <button
-            type="button"
-            :class="[
-              'btn',
-              'btn-outline',
-              'btn-xs',
-              'w-12',
-              'absolute',
-              'top-2',
-              'left-3',
-              'md:top-3',
-              { 'bg-base-content text-base-300 border-base-content': isSelected }
-            ]"
-            @click="isSelected = !isSelected"
-          >
-            Max
-          </button>
-          <!-- input error시 class에 input-error 추가  -->
-          <input
-            type="text"
-            value="1.0000 tBORA"
-            :class="[
-              'input',
-              'input-bordered',
-              'w-full',
-              'pl-20',
-              'text-right',
-              'h-10',
-              'md:h-12',
-              { 'input-error': isInputError }
-            ]"
-            aria-label="token input"
-          />
-        </div>
-        <!-- input error시 노출 -->
-        <label class="label py-1.5">
-          <span class="label-text-alt text-neutral-content/70 md:text-sm"
-            >Balance: 92.3245 tBORA</span
-          >
-          <span v-if="isInputError" class="label-text-alt text-error md:text-sm">
-            Exceed balance
-          </span>
-        </label>
-      </div>
+      :modalSendTokenRef="modalSendTokenRef"
+    />
 
-      <div class="form-control w-full mt-3 md:mt-10">
-        <label class="label py-1.5">
-          <span class="label-text md:text-base">Who are you sending the NFT to?</span>
-        </label>
-        <!-- input error시 class에 input-error 추가  -->
-        <input
-          type="text"
-          placeholder="ex. 0x1234..."
-          :class="[
-            'input',
-            'input-bordered',
-            'w-full',
-            'h-10',
-            'md:h-12',
-            { 'input-error': isInputError }
-          ]"
-          maxlength="42"
-        />
-        <!-- input error시 노출 -->
-        <label v-if="isInputError" class="label py-1.5">
-          <span class="label-text-alt text-error md:text-sm">
-            This is not a valid wallet address.
-          </span>
-        </label>
-      </div>
-
-      <p class="mt-2 text-xs text-neutral-content/70 md:text-sm">
-        The recipient must be connected to the same chain as the NFT to check.
-      </p>
-    </ModalLayout>
+    <ModalLoading
+      @modal-ref="(ref) => (modalConvertRef = ref.value)"
+      :is-radial="true"
+      desc="It takes about 5 minutes. Once complete, you can check in TBA menu."
+      progress-name="Convert"
+    />
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import Accordion from '@/components/ui/Accordion.vue'
 import ItemCard from '@/components/service/ItemCard.vue'
 import ModalLayout from '@/components/ui/ModalLayout.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { setupAccount } from '@/setups/account.composition'
+import { setupAsset } from '@/setups/asset.composition'
+import { useAssetStore, ercAsset } from '@/stores/asset.module.ts'
+import { useAccountStore } from '@/stores/account.module.ts'
+import { storeToRefs } from 'pinia'
+import AddModal from '@/components/service/AddModal.vue'
+import SendModal from '@/components/service/SendModal.vue'
+import SendTokenModal from '@/components/service/SendTokenModal.vue'
+import ModalLoading from '@/components/ui/ModalLoading.vue'
 
-const is6551 = ref(true)
-const is1155 = ref(false)
+const route = useRoute()
+const router = useRouter()
+const assetStore = useAssetStore()
+const accountStore = useAccountStore()
+
+const { setSendAsset } = assetStore
+const { asset721, asset1155, asset6551 } = storeToRefs(assetStore)
+const { isSigned } = storeToRefs(accountStore)
+
+const { convert721to6551, isOwner } = setupAsset()
+
+const modalAddRef = ref<HTMLDialogElement>()
+const modalSendRef = ref<HTMLDialogElement>()
+const modalConvertRef = ref<HTMLDialogElement>()
+
+const ercType = ref<number>(721)
+const assetId = ref<bigint>()
+
+const is6551 = computed(() => ercType.value === 6551)
+const is1155 = computed(() => ercType.value === 1155)
+// const is721 = computed(() => ercType.value === 721)
+
 const isEmpty = ref(false)
 const notIncluded = ref(true)
 const isInputError = ref(true)
-const isSelected = ref(false)
+
+const detailAsset = computed(() => {
+  return ercType.value === 721
+    ? asset721.value
+    : ercType.value === 6551
+    ? asset6551.value
+    : asset1155.value
+})
+
+const showSendModal = (sendAsset: any) => {
+  modalSendRef.value?.showModal()
+  setSendAsset(sendAsset)
+}
+
+onMounted(async () => {
+  ercType.value = route?.meta.type as number
+  assetId.value = BigInt(route?.params.id as string)
+  isOwner(assetId.value)
+})
+
+const test = (data: any) => console.log({ data })
+
+watch(
+  () => isSigned.value,
+  (isSigned: boolean) => {
+    return !isSigned && router.replace('/')
+  },
+  { immediate: true }
+)
 
 const modalSendTokenRef = ref<HTMLDialogElement>()
 </script>

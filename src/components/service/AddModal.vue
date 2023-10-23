@@ -47,8 +47,8 @@ const assetStore = useAssetStore()
 const { asset721, asset1155 } = storeToRefs(assetStore)
 
 defineProps({
-  // asset721: { type: Map<BigInt, any> },
-  // asset1155: { type: Map<BigInt, any> },
+  // asset721: { type: Map<bigint, any> },
+  // asset1155: { type: Map<bigint, any> },
   isDisabled: { type: Boolean }
 })
 const modalRef = ref<HTMLDialogElement>()

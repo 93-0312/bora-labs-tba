@@ -3,10 +3,10 @@
     <div class="modal-box flex flex-col items-center p-5 md:p-6">
       <!-- step, 진행된 step에 step-primary 추가 -->
       <ul v-if="props.isStep" class="steps mt-2">
-        <li :class="['step', currentStep === 1 && 'step-primary']" />
-        <li :class="['step', currentStep === 2 && 'step-primary']" />
-        <li :class="['step', currentStep === 3 && 'step-primary']" />
-        <li :class="['step', currentStep === 4 && 'step-primary']" />
+        <li :class="['step', currentStep >= 1 && 'step-primary']" />
+        <li :class="['step', currentStep >= 2 && 'step-primary']" />
+        <li :class="['step', currentStep >= 3 && 'step-primary']" />
+        <li :class="['step', currentStep >= 4 && 'step-primary']" />
       </ul>
 
       <!-- step, 로딩중 -->
@@ -52,7 +52,7 @@ const props = defineProps({
     default: false
   },
   desc: String,
-  currentStep: Number,
+  currentStep: { type: Number, default: 1 },
   progressName: String
 })
 

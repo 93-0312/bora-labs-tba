@@ -5,12 +5,13 @@ import { Contract } from 'ethers'
 import { DEPLOYED, IERC1155, IERC20, IERC721, IREG, ITBA } from '@/types/abi'
 import axios from 'axios'
 import { ref } from 'vue'
+import type { Signer } from 'ethers'
 
 export const setupAsset = () => {
   const assetStore = useAssetStore()
   const accountStore = useAccountStore()
 
-  const { setWalletAddress, setIsSigned } = accountStore
+  const { walletAddress } = accountStore
   const { setAsset721, setAsset1155, setAsset6551 } = assetStore
   const tbaMintDescObj = {
     1: 'ERC-721 민트 중 입니다.',
@@ -33,7 +34,7 @@ export const setupAsset = () => {
 
     const reg = new Contract(DEPLOYED.tReg, IREG, signer)
 
-    await reg.createAccount(
+    const createTx = await reg.createAccount(
       DEPLOYED.tAcc,
       Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
       DEPLOYED.nft,
@@ -41,6 +42,8 @@ export const setupAsset = () => {
       0n,
       '0x'
     )
+
+    await waitTransaction(provider, createTx)
 
     const tba = await reg.account(
       DEPLOYED.tAcc,
@@ -111,28 +114,38 @@ export const setupAsset = () => {
     await checkAsset()
   }
 
-  const checkAsset = async () => {
+  const isOwner = async (id: bigint | undefined) => {
     const wallet = new MetamaskService()
     await wallet.init()
     const address = wallet.getAddress()
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
-    // ::CHECKLIST 20 mint onlyOwner
-    const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
     const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
 
+    const ownerAddress = await nft.ownerOf(id)
+    console.log(walletAddress)
+    console.log(ownerAddress)
+
+    return walletAddress === ownerAddress
+  }
+
+  const check721Asset = async (signerArg?: Signer) => {
+    const wallet = new MetamaskService()
+    await wallet.init()
+    const address = wallet.getAddress()
+    const provider = await wallet.getWeb3Provider()
+    const signer = await provider.getSigner()
+
+    const nft = new Contract(DEPLOYED.nft, IERC721, signer)
     const reg = new Contract(DEPLOYED.tReg, IREG, signer)
 
+    // const address = signer.getAddress()
+
     const tokensOf721 = await nft.tokensOf(address)
-    const tokensOf1155 = await mts.tokensOf(address)
 
-    const tknAmount = await tkn.balanceOf(address)
-
-    const asset721 = new Map()
-    const asset1155 = new Map()
-    const asset6551 = new Map()
+    const asset721: Map<bigint, { metadata: any; amount?: bigint }> = new Map()
+    const asset6551: Map<bigint, { metadata: any; amount?: bigint }> = new Map()
 
     const is6551List = await Promise.all(
       tokensOf721.map(async (tokenId: bigint) => {
@@ -141,18 +154,7 @@ export const setupAsset = () => {
       })
     )
 
-    const asset6551List = tokensOf721.filter((tokenId: bigint, index: number) => is6551List[index])
-
     const nftList = tokensOf721.filter((_: any, index: number) => !is6551List[index])
-    const mtsList = tokensOf1155
-
-    const asset6551Data = await Promise.all(
-      asset6551List.map(async (tokenId: any) => {
-        const uri = await nft.tokenURI(tokenId)
-        const metadata = await axios.get(uri)
-        return { tokenId, metadata: metadata.data }
-      })
-    )
 
     const asset721Data = await Promise.all(
       nftList.map(async (tokenId: any) => {
@@ -162,6 +164,42 @@ export const setupAsset = () => {
       })
     )
 
+    asset721Data.forEach((x: any) => {
+      asset721.set(x.tokenId, { metadata: { ...x.metadata, type: 721 } })
+    })
+
+    const asset6551List = tokensOf721.filter((tokenId: bigint, index: number) => is6551List[index])
+
+    const asset6551Data = await Promise.all(
+      asset6551List.map(async (tokenId: any) => {
+        const uri = await nft.tokenURI(tokenId)
+        const metadata = await axios.get(uri)
+        return { tokenId, metadata: metadata.data }
+      })
+    )
+
+    asset6551Data.forEach((x: any) => {
+      asset6551.set(x.tokenId, { metadata: { ...x.metadata, type: 6551 } })
+    })
+
+    setAsset721(asset721)
+    setAsset6551(asset6551)
+  }
+
+  const check1155Asset = async (params?: type) => {
+    const wallet = new MetamaskService()
+    await wallet.init()
+    const address = wallet.getAddress()
+    const provider = await wallet.getWeb3Provider()
+    const signer = await provider.getSigner()
+
+    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+    const tokensOf1155 = await mts.tokensOf(address)
+
+    const asset1155: Map<bigint, { metadata: any; amount?: bigint }> = new Map()
+
+    const mtsList = tokensOf1155
+
     const asset1155Data = await Promise.all(
       mtsList[0].map(async (tokenId: any, i: number) => {
         const uri = await mts.uri(tokenId)
@@ -170,21 +208,31 @@ export const setupAsset = () => {
       })
     )
 
-    asset721Data.forEach((x: any) => {
-      asset721.set(x.tokenId, { metadata: { ...x.metadata, type: 721 } })
-    })
-
-    asset6551Data.forEach((x: any) => {
-      asset6551.set(x.tokenId, { metadata: { ...x.metadata, type: 6551 } })
-    })
-
     asset1155Data.forEach((x: any) => {
       asset1155.set(x.tokenId, { metadata: { ...x.metadata, type: 1155 }, amount: x.amount })
     })
-
-    setAsset721(asset721)
     setAsset1155(asset1155)
-    setAsset6551(asset6551)
+  }
+
+  const checkAsset = async () => {
+    const wallet = new MetamaskService()
+    await wallet.init()
+    const address = wallet.getAddress()
+    const provider = await wallet.getWeb3Provider()
+    const signer = await provider.getSigner()
+
+    // ::CHECKLIST 20 mint onlyOwner
+
+    await Promise.all([check721Asset(), check1155Asset()])
+    const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
+
+    const tknAmount = await tkn.balanceOf(address)
+    const tknSymbol = await tkn.symbol()
+    const tknDecimals = await tkn.decimals()
+
+    console.log({ tknAmount })
+    console.log({ tknSymbol })
+    console.log({ tknDecimals })
   }
 
   const sendNft = async (toAddress: string, asset: any) => {
@@ -224,13 +272,28 @@ export const setupAsset = () => {
     return
   }
 
+  const getAssetData = async (ercType: number, id: bigint) => {
+    // if (hasAsset) return
+    if (ercType === 721) {
+      return
+    } else if (ercType === 1155) {
+      return
+    } else if (ercType === 6551) {
+      return
+    }
+  }
+
   return {
+    toAddress,
+    tbaMintStep,
+    tbaMintDesc,
     convert721to6551,
     tbaMint,
     checkAsset,
     sendNft,
-    toAddress,
-    tbaMintStep,
-    tbaMintDesc
+    getAssetData,
+    check721Asset,
+    check1155Asset,
+    isOwner
   }
 }

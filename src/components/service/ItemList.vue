@@ -5,8 +5,17 @@
 
   <ul v-else class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
     <!-- 6551 -->
-    <li v-for="asset in asset6551" :key="asset" class="overflow-hidden relative rounded-t-lg">
-      <ItemCard is6551 :card-name="asset[1]?.metadata.name" :img-src="asset[1]?.metadata.image">
+    <li
+      v-for="asset in asset6551"
+      :key="Number(asset[0])"
+      class="overflow-hidden relative rounded-t-lg"
+    >
+      <ItemCard
+        :ercType="asset[1]?.metadata.type"
+        :card-name="asset[1]?.metadata.name"
+        :img-src="asset[1]?.metadata.image"
+        :id="Number(asset[0])"
+      >
         <div class="grid grid-cols-6">
           <button
             class="min-h-0 h-10 col-span-4 btn btn-primary rounded-none text-xs md:h-12 md:text-base"
@@ -27,12 +36,17 @@
     </li>
 
     <!-- 721 -->
-    <li v-for="asset in asset721" :key="asset" class="overflow-hidden relative rounded-t-lg">
+    <li
+      v-for="asset in asset721"
+      :key="Number(asset[0])"
+      class="overflow-hidden relative rounded-t-lg"
+    >
       <ItemCard
-        is721
+        :ercType="asset[1]?.metadata.type"
         badge-name="ERC-721"
         :card-name="asset[1]?.metadata.name"
         :img-src="asset[1]?.metadata.image"
+        :id="Number(asset[0])"
       >
         <div class="grid grid-cols-6">
           <button
@@ -54,11 +68,17 @@
     </li>
 
     <!-- 1155 -->
-    <li v-for="asset in asset1155" :key="asset" class="overflow-hidden relative rounded-t-lg">
+    <li
+      v-for="asset in asset1155"
+      :key="Number(asset[0])"
+      class="overflow-hidden relative rounded-t-lg"
+    >
       <ItemCard
+        :ercType="asset[1]?.metadata.type"
         badge-name="ERC-1155"
         :card-name="asset[1]?.metadata.name"
         :img-src="asset[1]?.metadata.image"
+        :id="Number(asset[0])"
       >
         <button
           class="min-h-0 h-10 btn btn-white w-full rounded-none text-xs md:btn-base md:h-12 md:text-base"
@@ -73,7 +93,7 @@
 
   <!-- modal: add nft -->
   <AddModal @modal-ref="(ref) => (modalAddRef = ref.value)" :modalAddRef="modalAddRef" />
-  <SendModal @modal-ref="(ref) => (modalSendRef = ref.value)" />
+  <SendModal @modal-ref="(ref) => (modalSendRef = ref.value)" :modalSendRef="modalSendRef" />
 
   <!-- modal: convert to TBA -->
   <ModalLoading
@@ -97,14 +117,18 @@ import { storeToRefs } from 'pinia'
 import { useAccountStore } from '@/stores/account.module.ts'
 import AddModal from './AddModal.vue'
 import SendModal from './SendModal.vue'
+import { setupAsset } from '@/setups/asset.composition'
+
+const consoleLog = (data) => console.log
 
 const accountStore = useAccountStore()
 const assetStore = useAssetStore()
+const { convert721to6551 } = setupAsset()
 
 const { isSigned } = storeToRefs(accountStore)
 
 const { setSendAsset } = assetStore
-const { hasAsset, asset721, asset1155, asset6551, sendAsset } = storeToRefs(assetStore)
+const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore)
 
 const showSendModal = (sendAsset: any) => {
   modalSendRef.value?.showModal()
@@ -116,35 +140,4 @@ const modalAddRef = ref<HTMLDialogElement>()
 const modalSendRef = ref<HTMLDialogElement>()
 const modalConvertRef = ref<HTMLDialogElement>()
 //
-
-const convert721to6551 = async (nft721Id: bigint) => {
-  console.log({ nft721Id })
-  // return
-  const wallet = new MetamaskService()
-  await wallet.init()
-  const provider = await wallet.getWeb3Provider()
-  const signer = await provider.getSigner()
-
-  const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-
-  await reg.createAccount(
-    DEPLOYED.tAcc,
-    Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-    DEPLOYED.nft,
-    Number(nft721Id),
-    0n,
-    '0x'
-  )
-
-  const tba = await reg.account(
-    DEPLOYED.tAcc,
-    Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-    DEPLOYED.nft,
-    Number(nft721Id),
-    0n
-  )
-  console.log({ tba })
-
-  const tbaToken = new Contract(tba, ITBA, signer)
-}
 </script>
