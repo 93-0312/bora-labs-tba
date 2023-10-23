@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import ModalLayout from '@/components/ui/ModalLayout.vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeMount, onMounted, ref } from 'vue'
 import ItemCard from './ItemCard.vue'
 import { setupAsset } from '@/setups/asset.composition'
 import { storeToRefs } from 'pinia'
@@ -57,13 +57,15 @@ const props = defineProps({
 const emit = defineEmits(['modalRef'])
 
 const { sendNft, toAddress } = setupAsset()
+// const { sendNft } = setupAsset()
 const assetStore = useAssetStore()
 
 const { sendAsset } = storeToRefs(assetStore)
 
-const confirmSend = async (toAddress: string, sendAsset: any) => {
-  await sendNft(toAddress, sendAsset)
+const confirmSend = async (sendToAddress: string, sendAsset: any) => {
+  await sendNft(sendToAddress, sendAsset)
   props.modalSendRef?.close()
+  toAddress.value = ''
 }
 
 const isInputError = computed(() => {
@@ -79,7 +81,10 @@ const isValidAddress = (address: string) => {
 }
 
 onMounted(() => {
-  toAddress.value = ''
   emit('modalRef', modalRef)
+})
+
+onBeforeMount(() => {
+  toAddress.value = ''
 })
 </script>

@@ -29,7 +29,7 @@
       </label>
 
       <div @click="tbaMint">tbaMint</div>
-      <div @click="checkAsset">checkAsset</div>
+      <div @click="checkAsset">check721Asset</div>
       <div>isSigned:{{ isSigned }}</div>
       <!-- Create wallet -->
 
@@ -86,7 +86,7 @@
       @modal-ref="(ref) => (modalStepRef = ref.value)"
       :is-step="true"
       :current-step="tbaMintStep"
-      progress-name="Mint"
+      progress-name="Minting in progress"
       :desc="tbaMintDesc"
     />
 
@@ -96,25 +96,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import ItemList from '@/components/service/ItemList.vue'
-import ModalLoading from '@/components/ui/ModalLoading.vue'
-import Toast from '@/components/ui/Toast.vue'
-import { useAccountStore } from '@/stores/account.module.ts'
-import { useAssetStore } from '@/stores/asset.module.ts'
+import { onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { setupAccount } from '@/setups/account.composition'
 import { setupAsset } from '@/setups/asset.composition'
-import { storeToRefs } from 'pinia'
+import { useAssetStore } from '@/stores/asset.module.ts'
+import { useAccountStore } from '@/stores/account.module.ts'
+import ModalLoading from '@/components/ui/ModalLoading.vue'
+import ItemList from '@/components/service/ItemList.vue'
+import Toast from '@/components/ui/Toast.vue'
 
 const assetStore = useAssetStore()
 const accountStore = useAccountStore()
 
 const { isSigned } = storeToRefs(accountStore)
 
-const { hasAsset, asset721, asset1155, sendAsset } = storeToRefs(assetStore)
+const { hasAsset } = storeToRefs(assetStore)
 
 const { connectWallet } = setupAccount()
-const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc } = setupAsset()
+const { tbaMint, checkAsset, check721Asset, tbaMintStep, tbaMintDesc } = setupAsset()
 
 const isAbout = ref(false)
 
@@ -135,11 +135,4 @@ const createWallet = async () => {
 
 // modal
 const modalStepRef = ref<HTMLDialogElement>()
-
-watch(
-  () => isSigned.value,
-  (isSigned: boolean) => {
-    if (isSigned) checkAsset()
-  }
-)
 </script>

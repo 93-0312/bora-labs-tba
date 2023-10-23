@@ -12,9 +12,28 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/tba/:id',
-      name: 'detail',
-      component: TbaDetail
+      path: '/tba/721/:id',
+      name: 'detail721',
+      component: TbaDetail,
+      meta: {
+        type: 721
+      }
+    },
+    {
+      path: '/tba/1155/:id',
+      name: 'detail1155',
+      component: TbaDetail,
+      meta: {
+        type: 1155
+      }
+    },
+    {
+      path: '/tba/6551/:id',
+      name: 'detail6551',
+      component: TbaDetail,
+      meta: {
+        type: 6551
+      }
     },
     {
       path: '/:pathMach(.*)',

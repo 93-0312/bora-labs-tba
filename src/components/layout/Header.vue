@@ -24,4 +24,27 @@
 
 <script setup lang="ts">
 import SignBtn from '@/components/service/SignBtn.vue'
+import { setupAsset } from '@/setups/asset.composition'
+import { useAccountStore } from '@/stores/account.module'
+import { storeToRefs } from 'pinia'
+import { onMounted, watch } from 'vue'
+
+const accountStore = useAccountStore()
+
+const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc } = setupAsset()
+const { isSigned } = storeToRefs(accountStore)
+
+watch(
+  () => isSigned.value,
+  async (isSigned: boolean) => {
+    if (isSigned) await checkAsset()
+    else if (!isSigned) {
+    }
+  }
+)
+
+onMounted(() => {
+  // setWalletAddress(wallet.getAddress())
+  checkAsset()
+})
 </script>

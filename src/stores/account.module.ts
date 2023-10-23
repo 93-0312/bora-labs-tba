@@ -26,5 +26,5 @@ export const setupAccountStore = () => {
 
 export const useAccountStore = defineStore('account', setupAccountStore, {
   // @ts-ignore
-  persist: { storage: sessionStorage, paths: [''] }
+  persist: { storage: sessionStorage, paths: ['isSigned', 'walletAddress'] }
 })
