@@ -213,7 +213,7 @@ const { setSendAsset } = assetStore
 const { asset721, asset1155, asset6551 } = storeToRefs(assetStore)
 const { isSigned } = storeToRefs(accountStore)
 
-const { convert721to6551, isOwner } = setupAsset()
+const { convert721to6551, checkOwner } = setupAsset()
 
 const modalAddRef = ref<HTMLDialogElement>()
 const modalSendRef = ref<HTMLDialogElement>()
@@ -246,7 +246,10 @@ const showSendModal = (sendAsset: any) => {
 onMounted(async () => {
   ercType.value = route?.meta.type as number
   assetId.value = BigInt(route?.params.id as string)
-  isOwner(assetId.value)
+
+  const isOwner = await checkOwner(assetId.value, ercType.value)
+
+  !isOwner && router.replace('/')
 })
 
 const test = (data: any) => console.log({ data })

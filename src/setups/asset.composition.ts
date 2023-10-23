@@ -114,20 +114,28 @@ export const setupAsset = () => {
     await checkAsset()
   }
 
-  const isOwner = async (id: bigint | undefined) => {
+  const checkOwner = async (id: bigint | undefined, ercType: number) => {
     const wallet = new MetamaskService()
     await wallet.init()
     const address = wallet.getAddress()
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
-    const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+    try {
+      if (ercType === 721 || ercType === 6551) {
+        const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+        const ownerAddress = await nft.ownerOf(id)
+        return walletAddress === ownerAddress
+      } else if (ercType === 1155) {
+        const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+        const tokensOf1155 = await mts.tokensOf(address)
 
-    const ownerAddress = await nft.ownerOf(id)
-    console.log(walletAddress)
-    console.log(ownerAddress)
-
-    return walletAddress === ownerAddress
+        return tokensOf1155[0].includes(id)
+      }
+    } catch (e) {
+      console.log(e)
+      return false
+    }
   }
 
   const check721Asset = async (signerArg?: Signer) => {
@@ -272,17 +280,6 @@ export const setupAsset = () => {
     return
   }
 
-  const getAssetData = async (ercType: number, id: bigint) => {
-    // if (hasAsset) return
-    if (ercType === 721) {
-      return
-    } else if (ercType === 1155) {
-      return
-    } else if (ercType === 6551) {
-      return
-    }
-  }
-
   return {
     toAddress,
     tbaMintStep,
@@ -291,9 +288,8 @@ export const setupAsset = () => {
     tbaMint,
     checkAsset,
     sendNft,
-    getAssetData,
     check721Asset,
     check1155Asset,
-    isOwner
+    checkOwner
   }
 }
