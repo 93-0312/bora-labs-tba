@@ -28,6 +28,7 @@ export const setupAsset = () => {
   }
 
   const toAddress = ref<string>('')
+  const toAmounts = ref<string>('')
   const tbaMintStep = ref<number>(1)
   const tbaMintDesc = ref<string>(tbaMintDescObj[1])
 
@@ -300,12 +301,9 @@ export const setupAsset = () => {
     }
 
     if (assetType === 1155) {
-      // 1155 send 시 가지고 있는 전량을 send
-
       const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
 
-      const tx = await mts.safeTransferFrom(address, toAddress, asset[0], asset[1].amount, '0x')
-      console.log({ upperModalRef })
+      const tx = await mts.safeTransferFrom(address, toAddress, asset[0], toAmounts.value, '0x')
       upperModalRef.value.close()
       sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
 
@@ -336,6 +334,7 @@ export const setupAsset = () => {
 
   return {
     toAddress,
+    toAmounts,
     tbaMintStep,
     tbaMintDesc,
     convert721to6551,

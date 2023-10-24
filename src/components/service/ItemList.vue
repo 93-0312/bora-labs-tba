@@ -53,7 +53,7 @@
           <button
             class="min-h-0 h-10 col-span-4 btn btn-accent rounded-none text-xs md:h-12 md:text-base"
             type="button"
-            @click="convert721(asset[0])"
+            @click="convert721to6551(asset[0])"
           >
             Convert to TBA
           </button>
@@ -93,20 +93,12 @@
   </ul>
 
   <!-- modal: add nft -->
-  <!-- <SendModal @modal-ref="(ref) => setSendModalRef(ref.value)" :modalSendRef="sendModalRef" /> -->
   <SendModal />
   <AddModal @modal-ref="(ref) => setAddModalRef(ref.value)" :modalAddRef="addModalRef" />
-
-  <!-- modal: convert to TBA -->
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import ItemCard from '@/components/service/ItemCard.vue'
-import ModalLoading from '../ui/ModalLoading.vue'
-import MetamaskService from '@/services/metamask.service'
-import { DEPLOYED, IREG, ITBA } from '@/types/abi'
-import { Contract } from 'ethers'
 import { useAssetStore } from '@/stores/asset.module.ts'
 import { storeToRefs } from 'pinia'
 
@@ -115,8 +107,6 @@ import { useModalStore } from '@/stores/modal.module.ts'
 import AddModal from './AddModal.vue'
 import SendModal from './SendModal.vue'
 import { setupAsset } from '@/setups/asset.composition'
-
-const consoleLog = (data) => console.log
 
 const accountStore = useAccountStore()
 const assetStore = useAssetStore()
@@ -130,16 +120,11 @@ const { setSendAsset } = assetStore
 const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore)
 
 // modal
-const { sendModalRef, addModalRef, radialModalRef, stepModalRef } = storeToRefs(modalStore)
-const { setAddModalRef, setSendModalRef, setRadialModalRef, setStepModalRef } = modalStore
+const { sendModalRef, addModalRef } = storeToRefs(modalStore)
+const { setAddModalRef } = modalStore
 
 const showSendModal = (sendAsset: any) => {
   setSendAsset(sendAsset)
   sendModalRef.value?.showModal()
-  console.log(sendModalRef.value, 'sendModalRef')
-}
-
-const convert721 = (asset: any) => {
-  convert721to6551(asset)
 }
 </script>

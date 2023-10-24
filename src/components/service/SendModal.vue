@@ -8,6 +8,7 @@
     title="Send NFT"
     btn-name="Send"
     :btn-click="async () => await confirmSend(toAddress, sendAsset, props.modalSendRef)"
+    :btnDisable="isSendBtnDisable"
   >
     <div class="indicator block w-28 mx-auto md:w-32">
       <ItemCard
@@ -17,17 +18,21 @@
         :card-name="sendAsset?.[1]?.metadata.name"
       />
 
+      {{ !isAmountError && !isInputError }}
+      {{ isAmountError }}
+      {{ isInputError }}
+
       <!-- 카드 갯수 -->
-      <span class="indicator-item badge badge-primary px-1 text-xs font-bold">
+      <span v-show="is1155" class="indicator-item badge badge-primary px-1 text-xs font-bold">
         <!-- prettier-ignore -->
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
           <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="#32261b"/>
         </svg>
-        5
+        {{ amountsOf1155 }}
       </span>
     </div>
 
-    <div class="form-control w-full mt-3 md:mt-4">
+    <div v-show="is1155" class="form-control w-full mt-3 md:mt-4">
       <label class="label py-1.5">
         <span class="label-text md:text-base">How many NFTs are you sending?</span>
       </label>
@@ -41,15 +46,18 @@
             'w-full',
             'h-10',
             'md:h-12',
-            { 'input-error': isInputError }
+            { 'input-error': isAmountError }
           ]"
           aria-label="token input"
+          v-model="toAmounts"
         />
       </div>
       <!-- input error시 노출 -->
       <label class="label py-1.5">
-        <span class="label-text-alt text-neutral-content/70 md:text-sm">Balance: 5</span>
-        <span v-if="isInputError" class="label-text-alt text-error md:text-sm">
+        <span class="label-text-alt text-neutral-content/70 md:text-sm"
+          >Balance: {{ amountsOf1155 }}</span
+        >
+        <span v-if="isAmountError" class="label-text-alt text-error md:text-sm">
           Exceed balance
         </span>
       </label>
@@ -86,14 +94,6 @@
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>
-
-  <!-- <ModalLoading
-    @modal-ref="(ref) => (sendLoadingModalRef = ref.value)"
-    :is-radial="true"
-    desc="It takes about 5 minutes. Once complete, you can check in send address."
-    progress-name="Send"
-    :progressTime="progressTime"
-  /> -->
 </template>
 
 <script setup lang="ts">
@@ -123,7 +123,7 @@ const props = defineProps({
 
 const emit = defineEmits(['modalRef'])
 
-const { sendNft, toAddress } = setupAsset()
+const { sendNft, toAddress, toAmounts } = setupAsset()
 const assetStore = useAssetStore()
 
 const { sendAsset } = storeToRefs(assetStore)
@@ -133,8 +133,20 @@ const confirmSend = async (sendToAddress: string, sendAsset: any, upperModal: an
   toAddress.value = ''
 }
 
+const is1155 = computed(() => {
+  return sendAsset.value?.[1].metadata.type === 1155
+})
+
+const amountsOf1155 = computed(() => {
+  return sendAsset.value?.[1].amount
+})
+
 const isInputError = computed(() => {
-  return !isValidAddress(toAddress.value)
+  return toAddress.value !== '' && !isValidAddress(toAddress.value)
+})
+
+const isAmountError = computed(() => {
+  return toAmounts.value > amountsOf1155.value
 })
 
 const isValidAddress = (address: string) => {
@@ -144,6 +156,12 @@ const isValidAddress = (address: string) => {
 
   return false
 }
+
+const isSendBtnDisable = computed(() => {
+  return (
+    isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
+  )
+})
 
 onMounted(() => {
   console.log('mounted')

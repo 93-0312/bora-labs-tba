@@ -10,7 +10,7 @@
         <button
           type="button"
           class="btn btn-white btn-wide"
-          :disabled="false"
+          :disabled="btnDisable"
           @click="() => btnClick && btnClick()"
         >
           {{ props.btnName }}
@@ -48,7 +48,8 @@ const props = defineProps({
     default: true
   },
   btnName: String,
-  btnClick: Function
+  btnClick: Function,
+  btnDisable: Boolean
 })
 
 const modalRef = ref<HTMLDialogElement>()

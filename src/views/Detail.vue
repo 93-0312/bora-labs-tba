@@ -138,7 +138,7 @@
       <template v-else>
         <div class="overflow-hidden grid grid-cols-6 gap-3 mt-7 md:gap-4">
           <button
-            v-if="notIncluded"
+            v-if="notIncluded && is721"
             class="col-span-4 btn btn-accent md:btn-lg"
             type="button"
             @click="modalConvertRef?.showModal(), convert721to6551(101n)"
@@ -146,7 +146,12 @@
             Convert to TBA
           </button>
           <button
-            :class="['btn', 'btn-white', 'md:btn-lg', notIncluded ? 'col-span-2' : 'col-span-6']"
+            :class="[
+              'btn',
+              'btn-white',
+              'md:btn-lg',
+              notIncluded && is721 ? 'col-span-2' : 'col-span-6'
+            ]"
             type="button"
           >
             Send
@@ -192,11 +197,9 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import Accordion from '@/components/ui/Accordion.vue'
 import ItemCard from '@/components/service/ItemCard.vue'
-import ModalLayout from '@/components/ui/ModalLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { setupAccount } from '@/setups/account.composition'
 import { setupAsset } from '@/setups/asset.composition'
-import { useAssetStore, ercAsset } from '@/stores/asset.module.ts'
+import { useAssetStore } from '@/stores/asset.module.ts'
 import { useAccountStore } from '@/stores/account.module.ts'
 import { storeToRefs } from 'pinia'
 import AddModal from '@/components/service/AddModal.vue'
@@ -224,11 +227,10 @@ const assetId = ref<bigint>()
 
 const is6551 = computed(() => ercType.value === 6551)
 const is1155 = computed(() => ercType.value === 1155)
-// const is721 = computed(() => ercType.value === 721)
+const is721 = computed(() => ercType.value === 721)
 
 const isEmpty = ref(false)
 const notIncluded = ref(true)
-const isInputError = ref(true)
 
 const detailAsset = computed(() => {
   return ercType.value === 721
@@ -251,8 +253,6 @@ onMounted(async () => {
 
   !isOwner && router.replace('/')
 })
-
-const test = (data: any) => console.log({ data })
 
 watch(
   () => isSigned.value,
