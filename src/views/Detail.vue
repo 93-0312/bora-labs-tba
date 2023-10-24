@@ -13,6 +13,9 @@
         alt="nft"
       />
 
+      detailAsset:{{ detailAsset }} assetId:{{ assetId }}
+      <div>asset721:{{ asset721 }}</div>
+
       <!-- badge: 6551 -->
       <div
         v-if="is6551"
@@ -75,17 +78,46 @@
 
           <template v-else>
             <ul class="grid grid-cols-3 gap-x-2.5 gap-y-4 md:grid-cols-4 md:gap-x-3">
-              <li v-for="i in 7" :key="i" class="overflow-hidden rounded">
+              <li v-for="asset in tbaAsset721" :key="asset" class="overflow-hidden rounded">
+                <div>{{ Number(asset[0]) }}</div>
                 <ItemCard
                   :is-small="true"
                   :has-badge="false"
                   :show-network="false"
-                  img-src="https://gfile.boraportal.com/cdn-cgi/image/width=300,format=webp/1022000005/3/10393.gif"
+                  :card-name="asset[1]?.metadata.name"
+                  :img-src="asset[1].metadata.image"
+                  :id="Number(asset[0])"
                 >
                   <button
                     class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
                     type="button"
-                    @click="showSendModal(asset)"
+                    @click="test(asset6551.get(assetId)), showSendModal(asset6551.get(assetId))"
+                  >
+                    Send
+                    <!-- prettier-ignore -->
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 -ml-1">
+                      <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </ItemCard>
+              </li>
+              <li
+                v-for="asset in tbaAsset1155"
+                :key="Number(asset[0])"
+                class="overflow-hidden rounded"
+              >
+                <ItemCard
+                  :is-small="true"
+                  :has-badge="false"
+                  :show-network="false"
+                  :card-name="asset[1]?.metadata.name"
+                  :img-src="asset[1]?.metadata.image"
+                  :id="Number(asset[0])"
+                >
+                  <button
+                    class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
+                    type="button"
+                    @click="test(asset6551.get(assetId)), showSendModal(asset6551.get(assetId))"
                   >
                     Send
                     <!-- prettier-ignore -->
@@ -178,7 +210,7 @@
     </section>
 
     <AddModal @modal-ref="(ref) => (modalAddRef = ref.value)" :modalAddRef="modalAddRef" />
-    <!-- <SendModal /> -->
+    <SendModal />
     <SendTokenModal
       @modal-ref="(ref) => (modalSendTokenRef = ref.value)"
       :modalSendTokenRef="modalSendTokenRef"
@@ -206,20 +238,27 @@ import AddModal from '@/components/service/AddModal.vue'
 import SendModal from '@/components/service/SendModal.vue'
 import SendTokenModal from '@/components/service/SendTokenModal.vue'
 import ModalLoading from '@/components/ui/ModalLoading.vue'
+import { useModalStore } from '@/stores/modal.module'
+import MetamaskService from '@/services/metamask.service'
+import { DEPLOYED, IERC1155, IERC721, IREG } from '@/types/abi'
+import { Contract } from 'ethers'
 
 const route = useRoute()
 const router = useRouter()
+
 const assetStore = useAssetStore()
 const accountStore = useAccountStore()
+const modalStore = useModalStore()
 
 const { setSendAsset } = assetStore
+
 const { asset721, asset1155, asset6551 } = storeToRefs(assetStore)
 const { isSigned } = storeToRefs(accountStore)
 
 const { convert721to6551, checkOwner } = setupAsset()
 
-const modalAddRef = ref<HTMLDialogElement>()
-const modalSendRef = ref<HTMLDialogElement>()
+const { sendModalRef, addModalRef } = storeToRefs(modalStore)
+
 const modalConvertRef = ref<HTMLDialogElement>()
 
 const ercType = ref<number>(721)
@@ -241,7 +280,7 @@ const detailAsset = computed(() => {
 })
 
 const showSendModal = (sendAsset: any) => {
-  modalSendRef.value?.showModal()
+  sendModalRef.value?.showModal()
   setSendAsset(sendAsset)
 }
 
@@ -251,8 +290,14 @@ onMounted(async () => {
 
   const isOwner = await checkOwner(assetId.value, ercType.value)
 
-  !isOwner && router.replace('/')
+  // !isOwner && router.replace('/')
 })
+
+const { check721Asset, check1155Asset } = setupAsset()
+
+const tbaAsset721 = ref<any>()
+const tbaAsset1155 = ref<any>()
+const tbaAsset6551 = ref<any>()
 
 watch(
   () => isSigned.value,
@@ -262,5 +307,40 @@ watch(
   { immediate: true }
 )
 
+watch(
+  () => is6551.value,
+  async (is6551: boolean) => {
+    if (is6551) {
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
+
+      const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+
+      const walletAddress = await reg.account(
+        DEPLOYED.tAcc,
+        Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
+        DEPLOYED.nft,
+        assetId.value,
+        0n
+      )
+
+      const result = await Promise.all([
+        check721Asset(walletAddress),
+        check1155Asset(walletAddress)
+      ])
+
+      const asset721 = result[0]['asset721']
+      const asset1155 = result[1]
+
+      tbaAsset721.value = asset721
+      tbaAsset1155.value = asset1155
+    }
+  }
+)
+
 const modalSendTokenRef = ref<HTMLDialogElement>()
+
+const test = (data: any) => console.log({ data })
 </script>

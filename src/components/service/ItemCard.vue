@@ -1,5 +1,6 @@
 <template>
-  <router-link :to="`/tba/${props.ercType + '/' + props.id}`">
+  <a :href="`/tba/${props.ercType + '/' + props.id}`">
+    <!-- <router-link :to="`/tba/${props.ercType + '/' + props.id}`"> -->
     <img
       :src="props.imgSrc"
       alt="nft"
@@ -12,7 +13,8 @@
         props.hasCheckbox ? 'opacity-70' : 'opacity-100'
       ]"
     />
-  </router-link>
+    <!-- </router-link> -->
+  </a>
 
   <!-- badge -->
   <template v-if="props.hasBadge">

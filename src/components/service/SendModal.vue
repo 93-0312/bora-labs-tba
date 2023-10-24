@@ -158,9 +158,9 @@ const isValidAddress = (address: string) => {
 }
 
 const isSendBtnDisable = computed(() => {
-  return (
-    isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
-  )
+  return is1155.value
+    ? isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
+    : isInputError.value || toAddress.value === ''
 })
 
 onMounted(() => {

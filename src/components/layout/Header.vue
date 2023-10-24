@@ -40,11 +40,7 @@ watch(
     if (isSigned) await checkAsset()
     else if (!isSigned) {
     }
-  }
+  },
+  { immediate: true }
 )
-
-onMounted(() => {
-  // setWalletAddress(wallet.getAddress())
-  checkAsset()
-})
 </script>

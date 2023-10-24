@@ -135,7 +135,7 @@ const { isSigned } = storeToRefs(accountStore)
 const { hasAsset } = storeToRefs(assetStore)
 
 const { connectWallet } = setupAccount()
-const { tbaMint, checkAsset, check721Asset, tbaMintStep, tbaMintDesc } = setupAsset()
+const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc } = setupAsset()
 
 const isAbout = ref(false)
 
