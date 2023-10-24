@@ -15,6 +15,7 @@
         :card-name="asset[1]?.metadata.name"
         :img-src="asset[1]?.metadata.image"
         :id="Number(asset[0])"
+        :walletAddress="asset[1]?.metadata.walletAddress"
       >
         <div class="grid grid-cols-6">
           <button
@@ -52,7 +53,7 @@
           <button
             class="min-h-0 h-10 col-span-4 btn btn-accent rounded-none text-xs md:h-12 md:text-base"
             type="button"
-            @click="radialModalRef?.showModal(), convert721to6551(asset[0])"
+            @click="convert721(asset[0])"
           >
             Convert to TBA
           </button>
@@ -136,5 +137,9 @@ const showSendModal = (sendAsset: any) => {
   setSendAsset(sendAsset)
   sendModalRef.value?.showModal()
   console.log(sendModalRef.value, 'sendModalRef')
+}
+
+const convert721 = (asset: any) => {
+  convert721to6551(asset)
 }
 </script>

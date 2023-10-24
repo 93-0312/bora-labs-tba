@@ -78,19 +78,25 @@
     </section>
 
     <!-- modal: minting -->
-    <!-- <ModalLoading
+    <ModalLoading
       @modal-ref="(ref) => (radialModalRef = ref.value)"
       :is-radial="true"
       desc="It takes about 5 minutes. Once complete, you can check in TBA menu."
       progress-name="Convert"
-    /> -->
+    />
 
     <ModalLoading
       @modal-ref="(ref) => (sendLoadingModalRef = ref.value)"
       :is-radial="true"
       desc="It takes about 5 minutes. Once complete, you can check in send address."
       progress-name="Send"
-      :progressTime="progressTime"
+    />
+
+    <ModalLoading
+      @modal-ref="(ref) => (addLoadingModalRef = ref.value)"
+      :is-radial="true"
+      desc="It takes about 5 minutes. Once complete, you can check in send address."
+      progress-name="Add"
     />
 
     <ModalLoading
@@ -120,8 +126,6 @@ import Toast from '@/components/ui/Toast.vue'
 import { useModalStore } from '@/stores/modal.module'
 
 const modalStore = useModalStore()
-
-const { sendLoadingModalRef, progressTime } = storeToRefs(modalStore)
 
 const assetStore = useAssetStore()
 const accountStore = useAccountStore()
@@ -153,10 +157,7 @@ const createWallet = async () => {
 
 // modal
 
-const { sendModalRef, addModalRef, radialModalRef, stepModalRef } = storeToRefs(modalStore)
-const { setAddModalRef, setSendModalRef, setRadialModalRef, setStepModalRef } = modalStore
+const { radialModalRef, sendLoadingModalRef, addLoadingModalRef } = storeToRefs(modalStore)
 
 const modalStepRef = ref<HTMLDialogElement>()
-
-const test = () => radialModalRef.value?.showModal()
 </script>

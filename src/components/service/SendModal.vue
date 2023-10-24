@@ -3,14 +3,12 @@
     @modal-ref="
       (ref) => {
         sendModalRef = ref.value
-        test
       }
     "
     title="Send NFT"
     btn-name="Send"
-    :btn-click="async () => await confirmSend(toAddress, sendAsset)"
+    :btn-click="async () => await confirmSend(toAddress, sendAsset, props.modalSendRef)"
   >
-    <div @click="test">??????</div>
     <div class="indicator block w-28 mx-auto md:w-32">
       <ItemCard
         :is-small="true"
@@ -126,14 +124,12 @@ const props = defineProps({
 const emit = defineEmits(['modalRef'])
 
 const { sendNft, toAddress } = setupAsset()
-// const { sendNft } = setupAsset()
 const assetStore = useAssetStore()
 
 const { sendAsset } = storeToRefs(assetStore)
 
-const confirmSend = async (sendToAddress: string, sendAsset: any) => {
-  await sendNft(sendToAddress, sendAsset)
-  props.modalSendRef?.close()
+const confirmSend = async (sendToAddress: string, sendAsset: any, upperModal: any) => {
+  await sendNft(sendToAddress, sendAsset, sendModalRef)
   toAddress.value = ''
 }
 

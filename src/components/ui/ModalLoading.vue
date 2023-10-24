@@ -66,12 +66,6 @@ const emit = defineEmits(['modalRef'])
 onMounted(() => {
   emit('modalRef', modalRef)
   if (props.isRadial) {
-    let progressInterval = setInterval(
-      () =>
-        (progressTime.value =
-          progressTime.value <= 100 ? progressTime.value + 10 : progressTime.value),
-      1000
-    )
     console.log('loading modal onmounted')
   }
 })
