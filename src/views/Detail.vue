@@ -8,13 +8,14 @@
       <img
         width="100"
         height="100"
-        :src="detailAsset && detailAsset?.get(assetId)?.metadata['image']"
+        :src="detailAsset && detailAsset?.get(tokenId)?.metadata['image']"
         class="w-full h-auto rounded-lg"
         alt="nft"
       />
 
-      detailAsset:{{ detailAsset }} assetId:{{ assetId }}
       <div>asset721:{{ asset721 }}</div>
+      <div>detailAsset:{{ detailAsset }}</div>
+      <div>detail721Asset:{{ detail721Asset }}</div>
 
       <!-- badge: 6551 -->
       <div
@@ -91,7 +92,7 @@
                   <button
                     class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
                     type="button"
-                    @click="test(asset6551.get(assetId)), showSendModal(asset6551.get(assetId))"
+                    @click="test(asset6551.get(tokenId)), showSendModal(asset6551.get(tokenId))"
                   >
                     Send
                     <!-- prettier-ignore -->
@@ -117,7 +118,7 @@
                   <button
                     class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
                     type="button"
-                    @click="test(asset6551.get(assetId)), showSendModal(asset6551.get(assetId))"
+                    @click="test(asset6551.get(tokenId)), showSendModal(asset6551.get(tokenId))"
                   >
                     Send
                     <!-- prettier-ignore -->
@@ -242,6 +243,7 @@ import { useModalStore } from '@/stores/modal.module'
 import MetamaskService from '@/services/metamask.service'
 import { DEPLOYED, IERC1155, IERC721, IREG } from '@/types/abi'
 import { Contract } from 'ethers'
+import axios from 'axios'
 
 const route = useRoute()
 const router = useRouter()
@@ -262,7 +264,7 @@ const { sendModalRef, addModalRef } = storeToRefs(modalStore)
 const modalConvertRef = ref<HTMLDialogElement>()
 
 const ercType = ref<number>(721)
-const assetId = ref<bigint>()
+const tokenId = ref<bigint>(0n)
 
 const is6551 = computed(() => ercType.value === 6551)
 const is1155 = computed(() => ercType.value === 1155)
@@ -273,7 +275,7 @@ const notIncluded = ref(true)
 
 const detailAsset = computed(() => {
   return ercType.value === 721
-    ? asset721.value
+    ? detail721Asset.value
     : ercType.value === 6551
     ? asset6551.value
     : asset1155.value
@@ -286,9 +288,9 @@ const showSendModal = (sendAsset: any) => {
 
 onMounted(async () => {
   ercType.value = route?.meta.type as number
-  assetId.value = BigInt(route?.params.id as string)
+  tokenId.value = BigInt(route?.params.id as string)
 
-  const isOwner = await checkOwner(assetId.value, ercType.value)
+  const isOwner = await checkOwner(tokenId.value, ercType.value)
 
   // !isOwner && router.replace('/')
 })
@@ -299,6 +301,8 @@ const tbaAsset721 = ref<any>()
 const tbaAsset1155 = ref<any>()
 const tbaAsset6551 = ref<any>()
 
+const detail721Asset = ref<any>(new Map())
+
 watch(
   () => isSigned.value,
   (isSigned: boolean) => {
@@ -308,9 +312,10 @@ watch(
 )
 
 watch(
-  () => is6551.value,
-  async (is6551: boolean) => {
-    if (is6551) {
+  () => ercType.value,
+  async (ercType: number) => {
+    console.log({ ercType })
+    if (ercType === 6551) {
       const wallet = new MetamaskService()
       await wallet.init()
       const provider = await wallet.getWeb3Provider()
@@ -322,7 +327,7 @@ watch(
         DEPLOYED.tAcc,
         Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
         DEPLOYED.nft,
-        assetId.value,
+        tokenId.value,
         0n
       )
 
@@ -336,8 +341,27 @@ watch(
 
       tbaAsset721.value = asset721
       tbaAsset1155.value = asset1155
+    } else if (ercType === 721) {
+      console.log('721')
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
+
+      const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+
+      const uri = await nft.tokenURI(BigInt(tokenId.value))
+      const metadata = await axios.get(uri)
+
+      detail721Asset.value.set(tokenId.value, { metadata: metadata.data })
+
+      console.log(metadata)
+
+      console.log('detail721Asset', detail721Asset.value)
+      console.log('ownerOf', await nft.ownerOf(tokenId.value))
     }
-  }
+  },
+  { immediate: true }
 )
 
 const modalSendTokenRef = ref<HTMLDialogElement>()

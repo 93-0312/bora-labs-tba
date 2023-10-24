@@ -12,6 +12,8 @@ export const setupModalStore = () => {
   const stepModalRef = ref<HTMLDialogElement>()
 
   const progressTime = ref<number>(0)
+  const showToast = ref<boolean>(false)
+  const toastMsg = ref<string>('')
 
   const setAddModalRef = (data: HTMLDialogElement) => {
     addModalRef.value = data
@@ -28,6 +30,14 @@ export const setupModalStore = () => {
     stepModalRef.value = data
   }
 
+  const setShowToast = (data: boolean) => {
+    showToast.value = data
+  }
+
+  const setToastMsg = (data: string) => {
+    toastMsg.value = data
+  }
+
   return {
     // references
     addModalRef,
@@ -37,12 +47,16 @@ export const setupModalStore = () => {
     sendLoadingModalRef,
     addLoadingModalRef,
     progressTime,
+    showToast,
+    toastMsg,
 
     // modifiers
     setSendModalRef,
     setAddModalRef,
     setRadialModalRef,
-    setStepModalRef
+    setStepModalRef,
+    setShowToast,
+    setToastMsg
   }
 }
 

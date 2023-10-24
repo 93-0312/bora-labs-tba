@@ -10,7 +10,9 @@ export const setupAssetStore = () => {
 
   const toAddress = ref<string>('')
 
-  const hasAsset = computed(() => asset721.value.size > 0 || asset1155.value.size > 0)
+  const hasAsset = computed(
+    () => asset721.value.size > 0 || asset1155.value.size > 0 || asset6551.value.size > 0
+  )
 
   const sendAsset = ref<any>()
   const selectedAsset = ref<Map<bigint, any>>(new Map())

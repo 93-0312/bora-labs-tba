@@ -107,9 +107,9 @@
       progress-name="Minting in progress"
       :desc="tbaMintDesc"
     />
-
+    <div @click="test">showToast:{{ showToast }}</div>
     <!-- toast -->
-    <Toast :showToast="false" msg="Mint Completed!" />
+    <Toast @close="setShowToast(false)" :showToast="showToast" :msg="toastMsg" />
   </main>
 </template>
 
@@ -136,6 +136,8 @@ const { hasAsset } = storeToRefs(assetStore)
 
 const { connectWallet } = setupAccount()
 const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc } = setupAsset()
+const { showToast, toastMsg } = storeToRefs(modalStore)
+const { setShowToast } = modalStore
 
 const isAbout = ref(false)
 
@@ -153,6 +155,12 @@ const createWallet = async () => {
       modalStepRef.value?.close()
     }
   }
+}
+
+const test = async () => {
+  modalStepRef.value?.showModal()
+  await tbaMint()
+  modalStepRef.value?.close()
 }
 
 // modal

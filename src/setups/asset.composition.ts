@@ -18,6 +18,8 @@ export const setupAsset = () => {
 
   const { sendLoadingModalRef, radialModalRef, progressTime } = storeToRefs(modalStore)
 
+  const { setShowToast, setToastMsg } = modalStore
+
   const tbaMintDescObj = {
     1: 'ERC-721 민트 중 입니다.',
     2: 'TBA 생성 중 입니다.',
@@ -33,7 +35,7 @@ export const setupAsset = () => {
   const tbaMint = async () => {
     const wallet = new MetamaskService()
     await wallet.init()
-    const address = wallet.getAddress()
+    const address = await wallet.getAddress()
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
@@ -50,10 +52,13 @@ export const setupAsset = () => {
       tbaMintStep.value = 2
       tbaMintDesc.value = tbaMintDescObj[2]
 
+      console.log({ address })
+
       const tokensOf721 = await nft.tokensOf(address)
-      await convert721to6551(tokensOf721[0])
+      console.log({ tokensOf721 })
+      await convert721to6551(tokensOf721[0], true)
     } catch (e) {
-      console.log(e)
+      console.log(2, e)
       return
     }
 
@@ -65,7 +70,7 @@ export const setupAsset = () => {
       const txResponse = await provider.getTransaction(tx.hash)
       txResponse && (await txResponse.wait())
     } catch (e) {
-      console.log(e)
+      console.log(3, e)
     }
 
     // 1155mint
@@ -257,6 +262,9 @@ export const setupAsset = () => {
       clearInterval(progressInterval)
       sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
 
+      setShowToast(true)
+      setToastMsg('Send Completed!')
+
       await checkAsset()
     }
 
@@ -281,18 +289,22 @@ export const setupAsset = () => {
       clearInterval(progressInterval)
       sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
 
+      setShowToast(true)
+      setToastMsg('Send Completed!')
+
       await checkAsset()
     }
   }
 
-  const convert721to6551 = async (nft721Id: bigint) => {
+  const convert721to6551 = async (nft721Id: bigint, initMint?: boolean) => {
     const wallet = new MetamaskService()
     await wallet.init()
+    const address = await wallet.getAddress()
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
     const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-
+    console.log({ nft721Id })
     const createTx = await reg.createAccount(
       DEPLOYED.tAcc,
       Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
@@ -301,23 +313,30 @@ export const setupAsset = () => {
       0n,
       '0x'
     )
-    radialModalRef.value && radialModalRef?.value.showModal()
+    console.log(33333333)
 
-    progressTime.value = 0
-    const progressInterval = setInterval(
-      () =>
-        (progressTime.value =
-          progressTime.value <= 100 ? progressTime.value + 10 : progressTime.value),
-      1000
-    )
+    if (!initMint) {
+      radialModalRef.value && radialModalRef?.value.showModal()
+
+      progressTime.value = 0
+      const progressInterval = setInterval(
+        () =>
+          (progressTime.value =
+            progressTime.value <= 100 ? progressTime.value + 10 : progressTime.value),
+        1000
+      )
+
+      await waitTransaction(provider, createTx)
+      progressTime.value = 100
+      clearInterval(progressInterval)
+
+      radialModalRef.value && radialModalRef?.value.close()
+    }
 
     await waitTransaction(provider, createTx)
-    progressTime.value = 100
-    clearInterval(progressInterval)
+    console.log(4444444)
 
-    radialModalRef.value && radialModalRef?.value.close()
-
-    await check721Asset()
+    await check721Asset(address)
   }
 
   const waitTransaction = async (provider: any, tx: any) => {

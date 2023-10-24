@@ -23,12 +23,14 @@ const props = defineProps({
 
 const isToast = ref(false)
 
+const emit = defineEmits(['close'])
+
 watch(
   () => props.showToast,
   () => {
     if (props.showToast) {
       isToast.value = true
-      setTimeout(() => (isToast.value = false), 3000)
+      setTimeout(() => ((isToast.value = false), emit('close')), 3000)
     } else {
       isToast.value = false
     }
