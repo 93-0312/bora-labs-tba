@@ -27,10 +27,6 @@
           </svg>
         </div>
       </label>
-
-      <div @click="tbaMint">tbaMint</div>
-      <div @click="checkAsset">check721Asset</div>
-      <div @click="test">isSigned:{{ isSigned }}</div>
       <!-- Create wallet -->
 
       <button
@@ -98,7 +94,7 @@
     />
 
     <ModalLoading
-      @modal-ref="(ref) => (stepModalRef = ref.value)"
+      @modal-ref="(ref) => (modalStepRef = ref.value)"
       :is-step="true"
       :step="4"
       :current-step="tbaMintStep"
@@ -141,8 +137,9 @@ const isAbout = ref(false)
 
 const createWallet = async () => {
   if (isSigned.value) {
-    // tbaMint()
     modalStepRef.value?.showModal()
+    await tbaMint()
+    modalStepRef.value?.close()
   } else if (!isSigned.value) {
     await connectWallet()
     await checkAsset()
