@@ -1,5 +1,7 @@
 <template>
+  <template v-if="!detailAsset.size"></template>
   <main
+    v-else
     class="grid gap-9 w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:px-7 md:pb-20 md:grid-cols-2 md:grid-rows-[auto_1fr] md:pt-8"
   >
     <section
@@ -12,10 +14,6 @@
         class="w-full h-auto rounded-lg"
         alt="nft"
       />
-
-      <div>asset721:{{ asset721 }}</div>
-      <div>detailAsset:{{ detailAsset }}</div>
-      <div>detail721Asset:{{ detail721Asset }}</div>
 
       <!-- badge: 6551 -->
       <div
@@ -56,15 +54,22 @@
     </section>
 
     <section>
-      <h2 class="text-3xl font-bold md:text-4xl">TBA Floral Neo #615</h2>
+      <h2 class="text-3xl font-bold md:text-4xl">
+        {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
+      </h2>
 
       <!-- erc-6551 -->
       <template v-if="is6551">
         <p
           class="inline-flex items-center mt-3 py-2 pl-4 bg-base-200 rounded-lg text-sm text-neutral-200 md:mt-4 md:text-lg"
         >
-          0x2D12...34caB1
-          <button class="px-3 hover:text-neutral-300" type="button" aria-label="copy">
+          {{ detailAsset && truncate(detailAsset?.get(tokenId)?.metadata['walletAddress'] || '') }}
+          <button
+            @click="copy(detailAsset && detailAsset?.get(tokenId)?.metadata['walletAddress'])"
+            class="px-3 hover:text-neutral-300"
+            type="button"
+            aria-label="copy"
+          >
             <!-- prettier-ignore -->
             <svg width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
               <path d="M4.79175 17.7502C4.37508 17.7502 4.02091 17.6043 3.72925 17.3127C3.43758 17.021 3.29175 16.6668 3.29175 16.2502V5.66683H4.54175V16.2502C4.54175 16.3196 4.56591 16.3785 4.61425 16.4268C4.66314 16.4757 4.7223 16.5002 4.79175 16.5002H12.8751V17.7502H4.79175ZM7.70841 14.8335C7.29175 14.8335 6.93758 14.6877 6.64591 14.396C6.35425 14.1043 6.20841 13.7502 6.20841 13.3335V3.85433C6.20841 3.42377 6.35425 3.06266 6.64591 2.771C6.93758 2.47933 7.29175 2.3335 7.70841 2.3335H14.6876C15.1181 2.3335 15.4792 2.47933 15.7709 2.771C16.0626 3.06266 16.2084 3.42377 16.2084 3.85433V13.3335C16.2084 13.7502 16.0626 14.1043 15.7709 14.396C15.4792 14.6877 15.1181 14.8335 14.6876 14.8335H7.70841ZM7.70841 13.5835H14.6876C14.757 13.5835 14.8195 13.5591 14.8751 13.5102C14.9306 13.4618 14.9584 13.4029 14.9584 13.3335V3.85433C14.9584 3.78488 14.9306 3.72239 14.8751 3.66683C14.8195 3.61127 14.757 3.5835 14.6876 3.5835H7.70841C7.63897 3.5835 7.58008 3.61127 7.53175 3.66683C7.48286 3.72239 7.45841 3.78488 7.45841 3.85433V13.3335C7.45841 13.4029 7.48286 13.4618 7.53175 13.5102C7.58008 13.5591 7.63897 13.5835 7.70841 13.5835Z" fill="currentColor" />
@@ -73,14 +78,13 @@
         </p>
 
         <Accordion title="NFT (5)">
-          <p v-if="isEmpty" class="flex flex-col empty empty-sm py-2 text-sm text-center">
+          <p v-if="tbaAssetisEmpty" class="flex flex-col empty empty-sm py-2 text-sm text-center">
             There is no NFT.
           </p>
 
           <template v-else>
             <ul class="grid grid-cols-3 gap-x-2.5 gap-y-4 md:grid-cols-4 md:gap-x-3">
               <li v-for="asset in tbaAsset721" :key="asset" class="overflow-hidden rounded">
-                <div>{{ Number(asset[0]) }}</div>
                 <ItemCard
                   :is-small="true"
                   :has-badge="false"
@@ -191,16 +195,21 @@
           </button>
         </div>
 
-        <Accordion v-if="is1155" title="Item (5)">
+        <Accordion v-if="is1155" title="Item (1)">
           <ul class="text-sm md:text-base">
             <li class="flex items-center">
               <img
-                src="https://gfile.boraportal.com/cdn-cgi/image/width=540,format=webp/1024000001/2/100109992.png"
+                :src="detailAsset && detailAsset?.get(tokenId)?.metadata['image']"
                 class="flex-none w-12 h-12 mr-3 rounded-md"
                 alt=""
               />
-              <p class="text-neutral-300">item name</p>
-              <p class="flex-none w-16 ml-auto text-right"><span class="text-xs mr-1">✕</span>5</p>
+              <p class="text-neutral-300">
+                {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
+              </p>
+              <p class="flex-none w-16 ml-auto text-right">
+                <span class="text-xs mr-1">✕</span>
+                {{ detailAsset && detailAsset?.get(tokenId)?.metadata['amounts'] }}
+              </p>
             </li>
           </ul>
         </Accordion>
@@ -244,6 +253,7 @@ import MetamaskService from '@/services/metamask.service'
 import { DEPLOYED, IERC1155, IERC721, IREG } from '@/types/abi'
 import { Contract } from 'ethers'
 import axios from 'axios'
+import { copy, truncate } from '@/constant/utils'
 
 const route = useRoute()
 const router = useRouter()
@@ -254,7 +264,7 @@ const modalStore = useModalStore()
 
 const { setSendAsset } = assetStore
 
-const { asset721, asset1155, asset6551 } = storeToRefs(assetStore)
+const { asset6551 } = storeToRefs(assetStore)
 const { isSigned } = storeToRefs(accountStore)
 
 const { convert721to6551, checkOwner } = setupAsset()
@@ -263,14 +273,13 @@ const { sendModalRef, addModalRef } = storeToRefs(modalStore)
 
 const modalConvertRef = ref<HTMLDialogElement>()
 
-const ercType = ref<number>(721)
+const ercType = ref<number>(0)
 const tokenId = ref<bigint>(0n)
 
 const is6551 = computed(() => ercType.value === 6551)
 const is1155 = computed(() => ercType.value === 1155)
 const is721 = computed(() => ercType.value === 721)
 
-const isEmpty = ref(false)
 const notIncluded = ref(true)
 
 const detailAsset = computed(() => {
@@ -278,8 +287,14 @@ const detailAsset = computed(() => {
     ? detail721Asset.value
     : ercType.value === 6551
     ? asset6551.value
-    : asset1155.value
+    : detail1155Asset.value
 })
+
+const tbaAssetisEmpty = computed(
+  () =>
+    (tbaAsset721.value && tbaAsset721.value.size) === 0 ||
+    (tbaAsset1155.value && tbaAsset1155.value.size === 0)
+)
 
 const showSendModal = (sendAsset: any) => {
   sendModalRef.value?.showModal()
@@ -287,9 +302,11 @@ const showSendModal = (sendAsset: any) => {
 }
 
 onMounted(async () => {
+  console.log(detailAsset.value, 'detailAsset')
   ercType.value = route?.meta.type as number
   tokenId.value = BigInt(route?.params.id as string)
 
+  // CHECK OWNER LOGIC
   const isOwner = await checkOwner(tokenId.value, ercType.value)
 
   // !isOwner && router.replace('/')
@@ -299,9 +316,10 @@ const { check721Asset, check1155Asset } = setupAsset()
 
 const tbaAsset721 = ref<any>()
 const tbaAsset1155 = ref<any>()
-const tbaAsset6551 = ref<any>()
+// const tbaAsset6551 = ref<any>()
 
 const detail721Asset = ref<any>(new Map())
+const detail1155Asset = ref<any>(new Map())
 
 watch(
   () => isSigned.value,
@@ -314,7 +332,6 @@ watch(
 watch(
   () => ercType.value,
   async (ercType: number) => {
-    console.log({ ercType })
     if (ercType === 6551) {
       const wallet = new MetamaskService()
       await wallet.init()
@@ -323,7 +340,7 @@ watch(
 
       const reg = new Contract(DEPLOYED.tReg, IREG, signer)
 
-      const walletAddress = await reg.account(
+      const tbaWalletAddress = await reg.account(
         DEPLOYED.tAcc,
         Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
         DEPLOYED.nft,
@@ -332,8 +349,8 @@ watch(
       )
 
       const result = await Promise.all([
-        check721Asset(walletAddress),
-        check1155Asset(walletAddress)
+        check721Asset(tbaWalletAddress),
+        check1155Asset(tbaWalletAddress)
       ])
 
       const asset721 = result[0]['asset721']
@@ -341,8 +358,9 @@ watch(
 
       tbaAsset721.value = asset721
       tbaAsset1155.value = asset1155
+
+      console.log(asset6551.value)
     } else if (ercType === 721) {
-      console.log('721')
       const wallet = new MetamaskService()
       await wallet.init()
       const provider = await wallet.getWeb3Provider()
@@ -355,10 +373,24 @@ watch(
 
       detail721Asset.value.set(tokenId.value, { metadata: metadata.data })
 
-      console.log(metadata)
-
       console.log('detail721Asset', detail721Asset.value)
       console.log('ownerOf', await nft.ownerOf(tokenId.value))
+    } else if (ercType === 1155) {
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
+
+      const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+
+      console.log({ mts })
+
+      const uri = await mts.uri(BigInt(tokenId.value))
+      const metadata = await axios.get(uri)
+      const amounts = await mts.balanceOf(signer.getAddress(), tokenId.value)
+
+      detail1155Asset.value.set(tokenId.value, { metadata: { ...metadata.data, amounts } })
+      console.log(detail1155Asset.value)
     }
   },
   { immediate: true }

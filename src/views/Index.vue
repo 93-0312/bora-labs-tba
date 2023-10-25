@@ -2,11 +2,17 @@
   <main class="w-full max-w-[1200px] mx-auto px-5 pt-8 pb-16 md:px-7 md:pb-20">
     <section class="overflow-hidden relative">
       <h1 class="text-3xl font-bold md:text-4xl">WHAT IS TBA?</h1>
-      <p class="py-4 text-sm md:text-lg">ERC-6551은 NFT를 지갑처럼 사용할 수 있는 기능입니다.</p>
+      <p class="py-4 text-sm md:text-lg">
+        TBA, or a token-bound account, allows you to use NFTs like wallets.
+      </p>
       <ul class="text-xs text-neutral-400 md:text-base">
-        <li>ERC-6551이 적용된 NFT는 지갑처럼 여러개의 토큰과 NFT를 넣을 수 있습니다.</li>
         <li>
-          ERC-6551 NFT를 게임 계정으로 이용하면, 지갑 이동이나 새로운 계정을 생성할 때 유용합니다.
+          NFTs integrated with an ERC-6551 token can hold multiple tokens and NFTs, similar to
+          wallets.
+        </li>
+        <li>
+          Using ERC-6551 NFTs for game accounts is useful when transferring wallets or creating new
+          accounts.
         </li>
       </ul>
 
@@ -59,18 +65,18 @@
           <dl v-if="isAbout" class="pt-5 px-4 text-sm text-neutral-400 md:text-base md:pt-6">
             <dt class="mb-1 text-base font-medium text-white md:text-lg">ERC-6551</dt>
             <dd>
-              지갑처럼 Token과 NFT를 보관할 수 있습니다.<br />보라랩스에서 Minting 시, 6551 NFT에
-              bGas와 Token 2가지를 발급해줍니다.
+              Tokens and NFTs can be stored in an ERC-6551 wallet.<br />When minting at BORA LABS,
+              you can receive two ERC-721 tokens.
             </dd>
             <dt class="mt-5 mb-1 text-base font-medium text-white md:text-lg">ERC-721</dt>
             <dd>
-              6551 NFT로 변환 가능한 NFT입니다.<br />보라 테스트넷에서 721 NFT를 6551 NFT로 변환할
-              수 있으며, 다른 지갑 주소로 전송도 가능합니다.
+              This NFT can be converted with ERC-6551.
+              <br />When minting at BORA LABS, you can receive two ERC-721 tokens.
             </dd>
             <dt class="mt-5 mb-1 text-base font-medium text-white md:text-lg">ERC-1155</dt>
             <dd>
-              6551 NFT로 변환이 불가한 NFT입니다.<br />1155 NFT를 다른 지갑 주소 혹은 6551로 전송할
-              수 있습니다.
+              This NFT can not be converted with ERC-6551.
+              <br />You can send ERC-1155 to other wallet address or ERC-6551.
             </dd>
           </dl>
         </transition>
@@ -107,8 +113,8 @@
       progress-name="Minting in progress"
       :desc="tbaMintDesc"
     />
-    <div @click="test">showToast:{{ showToast }}</div>
     <!-- toast -->
+    <!-- <div @click="test">showToast:{{ showToast }}</div> -->
     <Toast @close="setShowToast(false)" :showToast="showToast" :msg="toastMsg" />
   </main>
 </template>
@@ -135,11 +141,14 @@ const { isSigned } = storeToRefs(accountStore)
 const { hasAsset } = storeToRefs(assetStore)
 
 const { connectWallet } = setupAccount()
-const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc } = setupAsset()
+const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc, check721Asset } = setupAsset()
 const { showToast, toastMsg } = storeToRefs(modalStore)
 const { setShowToast } = modalStore
 
+const { radialModalRef, sendLoadingModalRef, addLoadingModalRef } = storeToRefs(modalStore)
+
 const isAbout = ref(false)
+const modalStepRef = ref<HTMLDialogElement>()
 
 const createWallet = async () => {
   if (isSigned.value) {
@@ -157,15 +166,11 @@ const createWallet = async () => {
   }
 }
 
-const test = async () => {
-  modalStepRef.value?.showModal()
-  await tbaMint()
-  modalStepRef.value?.close()
-}
+// const test = async () => {
+//   modalStepRef.value?.showModal()
+//   await tbaMint()
+//   modalStepRef.value?.close()
+// }
 
 // modal
-
-const { radialModalRef, sendLoadingModalRef, addLoadingModalRef } = storeToRefs(modalStore)
-
-const modalStepRef = ref<HTMLDialogElement>()
 </script>

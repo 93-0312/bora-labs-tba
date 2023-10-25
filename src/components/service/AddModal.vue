@@ -2,7 +2,7 @@
   <ModalLayout @modal-ref="(ref) => (modalRef = ref.value)" title="Add NFT" btn-name="Add">
     <div @click="test">??????</div>
 
-    <p class="mb-2.5 text-sm md:text-base">Pitcher #1234에 추가할 NFT를 선택하세요.</p>
+    <p class="mb-2.5 text-sm md:text-base">Select the NFT to add to Pitcher #1234.</p>
     <ul
       class="overflow-auto grid grid-cols-3 gap-2 max-h-72 md:grid-cols-4 md:gap-3 md:max-h-[340px]"
     >
@@ -62,7 +62,6 @@ const modalStore = useModalStore()
 const test1 = computed(() => addLoadingModalRef.value?.open)
 const test = () => {
   addLoadingModalRef.value?.showModal()
-  console.log(addLoadingModalRef.value?.open)
 }
 
 const { addLoadingModalRef } = storeToRefs(modalStore)

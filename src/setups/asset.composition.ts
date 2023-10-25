@@ -21,10 +21,10 @@ export const setupAsset = () => {
   const { setShowToast, setToastMsg } = modalStore
 
   const tbaMintDescObj = {
-    1: 'ERC-721 민트 중 입니다.',
-    2: 'TBA 생성 중 입니다.',
-    3: 'ERC-20 민트 중 입니다.',
-    4: 'ERC-1155 민트 중 입니다.'
+    1: 'ERC-721 is currently being minted.',
+    2: 'TBA is currently being minted.',
+    3: 'ERC-20 is currently being minted.',
+    4: 'ERC-1155 is currently being minted.'
   }
 
   const toAddress = ref<string>('')
@@ -52,13 +52,10 @@ export const setupAsset = () => {
       tbaMintStep.value = 2
       tbaMintDesc.value = tbaMintDescObj[2]
 
-      console.log({ address })
-
       const tokensOf721 = await nft.tokensOf(address)
-      console.log({ tokensOf721 })
       await convert721to6551(tokensOf721[0], true)
     } catch (e) {
-      console.log(2, e)
+      console.log(e)
       return
     }
 
@@ -70,7 +67,7 @@ export const setupAsset = () => {
       const txResponse = await provider.getTransaction(tx.hash)
       txResponse && (await txResponse.wait())
     } catch (e) {
-      console.log(3, e)
+      console.log(e)
     }
 
     // 1155mint
@@ -139,7 +136,7 @@ export const setupAsset = () => {
     )
 
     const nftList = tokensOf721.filter((_: any, index: number) => !is6551List[index])
-
+    console.log({ nftList })
     const asset721Data = await Promise.all(
       nftList.map(async (tokenId: any) => {
         const uri = await nft.tokenURI(tokenId)
@@ -243,7 +240,6 @@ export const setupAsset = () => {
       const nft = new Contract(DEPLOYED.nft, IERC721, signer)
 
       const tx = await nft.transferFrom(address, toAddress, asset[0])
-      console.log({ upperModalRef })
       upperModalRef.value.close()
 
       sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
@@ -304,7 +300,6 @@ export const setupAsset = () => {
     const signer = await provider.getSigner()
 
     const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-    console.log({ nft721Id })
     const createTx = await reg.createAccount(
       DEPLOYED.tAcc,
       Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
@@ -313,7 +308,6 @@ export const setupAsset = () => {
       0n,
       '0x'
     )
-    console.log(33333333)
 
     if (!initMint) {
       radialModalRef.value && radialModalRef?.value.showModal()
@@ -329,14 +323,21 @@ export const setupAsset = () => {
       await waitTransaction(provider, createTx)
       progressTime.value = 100
       clearInterval(progressInterval)
-
       radialModalRef.value && radialModalRef?.value.close()
-    }
 
+      setShowToast(true)
+      setToastMsg('Convert Completed!')
+      console.log({ address })
+      await check721Asset(address)
+      return
+    }
     await waitTransaction(provider, createTx)
-    console.log(4444444)
+
+    setShowToast(true)
+    setToastMsg('Convert Completed!')
 
     await check721Asset(address)
+    return
   }
 
   const waitTransaction = async (provider: any, tx: any) => {
