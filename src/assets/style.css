@@ -25,9 +25,9 @@ main {
 
 .empty::before {
   display: block;
-  width: 206px;
-  height: 134px;
-  margin: 0 auto 20px;
+  width: 175px;
+  height: 187px;
+  margin: 0 auto 50px;
   background: url(./ic-empty.svg);
   background-size: cover;
   content: '';
@@ -35,7 +35,7 @@ main {
 
 .empty.empty-sm::before {
   width: 130px;
-  height: 85px;
+  height: 139px;
 }
 
 .arrow {

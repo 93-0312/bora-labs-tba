@@ -1,12 +1,9 @@
 <template>
   <template v-if="!detailAsset.size"></template>
   <main
-    v-else
-    class="grid gap-9 w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:px-7 md:pb-20 md:grid-cols-2 md:grid-rows-[auto_1fr] md:pt-8"
+    class="grid gap-10 w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:px-7 md:pb-20 md:grid-cols-[4fr_5fr] md:pt-8"
   >
-    <section
-      class="relative w-full max-w-lg mx-auto h-auto text-center md:max-w-[556px] md:row-start-1 md:row-span-2"
-    >
+    <section class="relative w-full max-w-lg mx-auto h-auto text-center md:max-w-lg">
       <img
         width="100"
         height="100"
@@ -18,7 +15,7 @@
       <!-- badge: 6551 -->
       <div
         v-if="is6551"
-        class="absolute left-3 top-3 badge bg-black h-8 rounded-md text-xs shadow-sm md:text-sm"
+        class="absolute left-4 top-4 badge h-8 bg-neutral-content/60 backdrop-blur-md rounded-md border-none text-xs md:text-sm"
       >
         <!-- prettier-ignore -->
         <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1">
@@ -32,36 +29,38 @@
       <!-- badge: 721, 1155 -->
       <p
         v-else
-        class="absolute left-3 top-3 badge bg-neutral-600 border-neutral-600 h-8 rounded-md text-xs shadow-sm md:text-sm"
+        class="absolute left-4 top-4 badge h-8 bg-neutral-content/60 backdrop-blur-md rounded-md border-none text-xs md:text-sm"
       >
         {{ is1155 ? 'ERC-1155' : 'ERC-721' }}
       </p>
-
-      <a
-        href="#"
-        target="_blank"
-        class="btn btn-circle btn-outline w-[40px] h-[40px] min-h-0 mt-4 md:btn-md"
-        aria-label="go to borascope"
-      >
-        <!-- prettier-ignore -->
-        <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
-          <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
     </section>
 
     <section>
-      <h2 class="text-3xl font-bold md:text-4xl">
-        {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
-      </h2>
+      <div class="flex items-center justify-between">
+        <h2 class="max-w-md truncate text-3xl font-bold md:text-4xl">
+          {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
+        </h2>
+
+        <a
+          href="#"
+          target="_blank"
+          class="flex items-center justify-center w-11 h-11 rounded-full transition hover:bg-neutral-content"
+          aria-label="go to borascope"
+        >
+          <!-- prettier-ignore -->
+          <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
+            <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
 
       <!-- erc-6551 -->
       <template v-if="is6551">
         <p
-          class="inline-flex items-center mt-3 py-2 pl-4 bg-base-200 rounded-lg text-sm text-neutral-200 md:mt-4 md:text-lg"
+          class="inline-flex items-center mt-3 py-2 pl-4 bg-neutral-content rounded-lg text-sm md:mt-4 md:text-lg"
         >
           {{ detailAsset && truncate(detailAsset?.get(tokenId)?.metadata['walletAddress'] || '') }}
           <button
@@ -135,7 +134,7 @@
             </ul>
 
             <button
-              class="btn btn-primary btn-sm block mt-3 ml-auto md:btn-md md:mt-4"
+              class="btn btn-primary btn-sm block mt-3 ml-auto rounded-lg md:btn-md md:mt-4"
               type="button"
             >
               + Add NFT
@@ -157,7 +156,7 @@
             <p class="ml-auto text-sm md:text-base">12345.0000</p>
 
             <button
-              class="btn btn-white btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
+              class="btn btn-neutral btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
               type="button"
               @click="modalSendTokenRef?.showModal()"
               aria-label="send"
@@ -176,7 +175,7 @@
         <div class="overflow-hidden grid grid-cols-6 gap-3 mt-7 md:gap-4">
           <button
             v-if="notIncluded && is721"
-            class="col-span-4 btn btn-accent md:btn-lg"
+            class="col-span-4 btn btn-accent rounded-lg md:btn-lg"
             type="button"
             @click="modalConvertRef?.showModal(), convert721to6551(101n)"
           >
@@ -185,8 +184,9 @@
           <button
             :class="[
               'btn',
-              'btn-white',
+              'btn-neutral',
               'md:btn-lg',
+              'rounded-lg',
               notIncluded && is721 ? 'col-span-2' : 'col-span-6'
             ]"
             type="button"
@@ -203,9 +203,7 @@
                 class="flex-none w-12 h-12 mr-3 rounded-md"
                 alt=""
               />
-              <p class="text-neutral-300">
-                {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
-              </p>
+              <p>{{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}</p>
               <p class="flex-none w-16 ml-auto text-right">
                 <span class="text-xs mr-1">✕</span>
                 {{ detailAsset && detailAsset?.get(tokenId)?.metadata['amounts'] }}

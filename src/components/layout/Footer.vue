@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="grid mt-auto mx-5 py-6 px-1 border-t border-neutral-600 text-center md:grid-cols-2 md:mx-0 md:px-7 md:py-8 md:text-left"
+    class="grid mt-auto mx-5 py-6 px-1 text-center md:grid-cols-2 md:mx-0 md:px-7 md:py-8 md:text-left"
   >
     <a href="#" class="flex items-center justify-center text-xl md:justify-normal md:text-2xl">
       <!-- prettier-ignore -->

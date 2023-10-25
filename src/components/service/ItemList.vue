@@ -1,15 +1,14 @@
 <template>
-  <section v-if="!hasAsset || !isSigned" class="flex flex-col empty text-center mt-12">
-    <span>There is no NFT</span>
+  <section
+    v-if="!hasAsset || !isSigned"
+    class="flex flex-col empty text-center font-medium my-10 md:my-24"
+  >
+    <span>There is no NFT.</span>
   </section>
 
-  <ul v-else class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
+  <ul v-else class="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-7">
     <!-- 6551 -->
-    <li
-      v-for="asset in asset6551"
-      :key="Number(asset[0])"
-      class="overflow-hidden relative rounded-t-lg"
-    >
+    <li v-for="asset in asset6551" :key="Number(asset[0])">
       <ItemCard
         :ercType="asset[1]?.metadata.type"
         :card-name="asset[1]?.metadata.name"
@@ -17,16 +16,16 @@
         :id="Number(asset[0])"
         :walletAddress="asset[1]?.metadata.walletAddress"
       >
-        <div class="grid grid-cols-6">
+        <div class="grid grid-cols-6 gap-1 pt-4 pb-2 md:gap-2 md:pt-5 md:pb-3">
           <button
-            class="min-h-0 h-10 col-span-4 btn btn-primary rounded-none text-xs md:h-12 md:text-base"
+            class="min-h-0 h-9 col-span-4 btn btn-primary rounded-lg text-[11px] md:h-12 md:text-base"
             type="button"
             @click="addModalRef?.showModal()"
           >
             Add NFT
           </button>
           <button
-            class="min-h-0 h-10 col-span-2 btn btn-white rounded-none text-xs md:h-12 md:text-base"
+            class="min-h-0 h-9 col-span-2 btn btn-neutral rounded-lg text-[11px] md:h-12 md:text-base"
             type="button"
             @click="showSendModal(asset)"
           >
@@ -37,11 +36,7 @@
     </li>
 
     <!-- 721 -->
-    <li
-      v-for="asset in asset721"
-      :key="Number(asset[0])"
-      class="overflow-hidden relative rounded-t-lg"
-    >
+    <li v-for="asset in asset721" :key="Number(asset[0])">
       <ItemCard
         :ercType="asset[1]?.metadata.type"
         badge-name="ERC-721"
@@ -49,16 +44,16 @@
         :img-src="asset[1]?.metadata.image"
         :id="Number(asset[0])"
       >
-        <div class="grid grid-cols-6">
+        <div class="grid grid-cols-6 gap-1 pt-4 pb-2 md:gap-2 md:pt-5 md:pb-3">
           <button
-            class="min-h-0 h-10 col-span-4 btn btn-accent rounded-none text-xs md:h-12 md:text-base"
+            class="min-h-0 h-9 col-span-4 btn btn-accent rounded-lg text-[11px] leading-tight md:h-12 md:text-base"
             type="button"
             @click="convert721to6551(asset[0])"
           >
             Convert to TBA
           </button>
           <button
-            class="min-h-0 h-10 col-span-2 btn btn-white rounded-none text-xs md:h-12 md:text-base"
+            class="min-h-0 h-9 col-span-2 btn btn-neutral rounded-lg text-[11px] md:h-12 md:text-base"
             type="button"
             @click="showSendModal(asset)"
           >
@@ -69,11 +64,7 @@
     </li>
 
     <!-- 1155 -->
-    <li
-      v-for="asset in asset1155"
-      :key="Number(asset[0])"
-      class="overflow-hidden relative rounded-t-lg"
-    >
+    <li v-for="asset in asset1155" :key="Number(asset[0])">
       <ItemCard
         :ercType="asset[1]?.metadata.type"
         badge-name="ERC-1155"
@@ -81,13 +72,15 @@
         :img-src="asset[1]?.metadata.image"
         :id="Number(asset[0])"
       >
-        <button
-          class="min-h-0 h-10 btn btn-white w-full rounded-none text-xs md:btn-base md:h-12 md:text-base"
-          type="button"
-          @click="showSendModal(asset)"
-        >
-          Send
-        </button>
+        <div class="pt-4 pb-2 md:pt-5 md:pb-3">
+          <button
+            class="min-h-0 h-9 btn btn-neutral w-full rounded-lg text-[11px] md:btn-base md:h-12 md:text-base"
+            type="button"
+            @click="showSendModal(asset)"
+          >
+            Send
+          </button>
+        </div>
       </ItemCard>
     </li>
   </ul>

@@ -248,8 +248,8 @@ export const setupAsset = () => {
       const progressInterval = setInterval(
         () =>
           (progressTime.value =
-            progressTime.value <= 100 ? progressTime.value + 7 : progressTime.value),
-        1000
+            progressTime.value <= 100 ? progressTime.value + 0.07 : progressTime.value),
+        10
       )
 
       await waitTransaction(provider, tx)
@@ -275,8 +275,8 @@ export const setupAsset = () => {
       const progressInterval = setInterval(
         () =>
           (progressTime.value =
-            progressTime.value <= 100 ? progressTime.value + 7 : progressTime.value),
-        1000
+            progressTime.value <= 100 ? progressTime.value + 0.07 : progressTime.value),
+        10
       )
 
       await waitTransaction(provider, tx)
@@ -316,8 +316,8 @@ export const setupAsset = () => {
       const progressInterval = setInterval(
         () =>
           (progressTime.value =
-            progressTime.value <= 100 ? progressTime.value + 10 : progressTime.value),
-        1000
+            progressTime.value <= 100 ? progressTime.value + 0.07 : progressTime.value),
+        10
       )
 
       await waitTransaction(provider, createTx)
