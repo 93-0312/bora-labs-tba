@@ -1,18 +1,19 @@
 import MetamaskService from '@/services/metamask.service'
-import { computed, ref } from 'vue'
 import { useAccountStore } from '@/stores/account.module.ts'
+import { useAssetStore } from '@/stores/asset.module'
 
 export const setupAccount = () => {
+  const assetStore = useAssetStore()
   const accountStore = useAccountStore()
   const { setWalletAddress, setIsSigned } = accountStore
 
+  const { resetAsset } = assetStore
   const connectWallet = async () => {
     try {
       const wallet = new MetamaskService()
       await wallet.init()
 
       await wallet.switchNetworkChain(Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID))
-      // await wallet.signMessage('Connect wallet to Borachain TBA labs')
 
       const cntWallet = await wallet.getAddress()
       setWalletAddress(cntWallet)
@@ -25,6 +26,7 @@ export const setupAccount = () => {
   const disconnectWallet = () => {
     setWalletAddress('')
     confirm('Disconnect Wallet?')
+    resetAsset()
     setIsSigned(false)
   }
 

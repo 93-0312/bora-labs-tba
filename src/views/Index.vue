@@ -102,10 +102,7 @@ import { setupAsset } from '@/setups/asset.composition'
 import { useAssetStore } from '@/stores/asset.module.ts'
 import { useAccountStore } from '@/stores/account.module.ts'
 import ItemList from '@/components/service/ItemList.vue'
-import Toast from '@/components/ui/Toast.vue'
-import { useModalStore } from '@/stores/modal.module'
 import bgImg from '@/assets/bg-6551.webp'
-import icBora from '@/assets/ic-bora.webp'
 import icToken from '@/assets/ic-token.webp'
 
 const assetStore = useAssetStore()

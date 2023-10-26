@@ -7,6 +7,7 @@ export const setupAssetStore = () => {
   const asset721 = ref<ercAsset>(new Map())
   const asset1155 = ref<ercAsset>(new Map())
   const asset6551 = ref<any>(new Map())
+  const asset20 = ref<any>(new Map())
 
   const detail1155Asset = ref<any>(new Map())
   const detail721Asset = ref<any>(new Map())
@@ -35,6 +36,9 @@ export const setupAssetStore = () => {
   const setAsset6551 = (data: ercAsset) => {
     asset6551.value = data
   }
+  const setAsset20 = (data: any) => {
+    asset20.value = data
+  }
 
   const setSendAsset = (data: any) => {
     sendAsset.value = data
@@ -48,9 +52,16 @@ export const setupAssetStore = () => {
     toAddress.value = data
   }
 
+  const resetAsset = () => {
+    setAsset721(new Map())
+    setAsset1155(new Map())
+    setAsset6551(new Map())
+  }
+
   return {
     // references
     hasAsset,
+    asset20,
     asset721,
     asset1155,
     asset6551,
@@ -67,15 +78,14 @@ export const setupAssetStore = () => {
     setAsset721,
     setAsset1155,
     setAsset6551,
+    setAsset20,
     setSendAsset,
     setSelectedAsset,
     setToAddress,
+    resetAsset,
 
     setTbaMintStep
   }
 }
 
-export const useAssetStore = defineStore('asset', setupAssetStore, {
-  // @ts-ignore
-  // persist: { storage: sessionStorage, paths: ['asset721', 'asset1155', 'asset6551'] }
-})
+export const useAssetStore = defineStore('asset', setupAssetStore, {})

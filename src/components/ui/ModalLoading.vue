@@ -65,8 +65,5 @@ const emit = defineEmits(['modalRef'])
 
 onMounted(() => {
   emit('modalRef', modalRef)
-  if (props.isRadial) {
-    console.log('loading modal onmounted')
-  }
 })
 </script>

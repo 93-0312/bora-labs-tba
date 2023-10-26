@@ -94,7 +94,7 @@
 
 <script setup lang="ts">
 import ModalLayout from '@/components/ui/ModalLayout.vue'
-import { computed, onBeforeMount, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import ItemCard from './ItemCard.vue'
 import { setupAsset } from '@/setups/asset.composition'
 import { storeToRefs } from 'pinia'
@@ -106,16 +106,15 @@ const modalStore = useModalStore()
 const { sendModalRef } = storeToRefs(modalStore)
 
 const props = defineProps({
-  modalSendRef: HTMLDialogElement,
   isDisabled: { type: Boolean }
 })
 
 const emit = defineEmits(['modalRef'])
 
-const { sendNft, toAddress, toAmounts } = setupAsset()
+const { sendNft, toAmounts } = setupAsset()
 const assetStore = useAssetStore()
 
-const { sendAsset } = storeToRefs(assetStore)
+const { sendAsset, toAddress } = storeToRefs(assetStore)
 
 const confirmSend = async (sendToAddress: string, sendAsset: any) => {
   await sendNft(sendToAddress, sendAsset, sendModalRef)
@@ -150,13 +149,5 @@ const isSendBtnDisable = computed(() => {
   return is1155.value
     ? isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
     : isInputError.value || toAddress.value === '' || amountsOf1155.value === 0
-})
-
-onMounted(() => {
-  console.log('mounted')
-})
-
-onBeforeMount(() => {
-  toAddress.value = ''
 })
 </script>

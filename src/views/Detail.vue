@@ -1,6 +1,7 @@
 <template>
   <template v-if="!detailAsset.size"></template>
   <main
+    v-else
     class="grid gap-10 w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:px-7 md:pb-20 md:grid-cols-[4fr_5fr] md:pt-8"
   >
     <section class="relative w-full max-w-lg mx-auto h-auto text-center md:max-w-lg">
@@ -42,7 +43,8 @@
         </h2>
 
         <a
-          href="#"
+          v-if="is6551"
+          :href="`${scopeUrl}address/${tbaWalletAddress}`"
           target="_blank"
           class="flex items-center justify-center w-11 h-11 rounded-full transition hover:bg-neutral-content"
           aria-label="go to borascope"
@@ -143,17 +145,21 @@
         </Accordion>
 
         <Accordion title="Token (2)">
-          <div v-for="i in 3" :key="i" class="flex justify-between items-center mb-5 last:mb-0">
+          <div
+            v-for="asset in tbaAsset20"
+            :key="asset"
+            class="flex justify-between items-center mb-5 last:mb-0"
+          >
             <div class="flex items-center mr-4 font-medium text-md">
               <img
                 src="https://static.boraportal.com/logo/coins/mainnet/token-ic-bid.svg"
-                alt="BID"
+                :alt="asset.tknSymbol"
                 class="w-8 h-8 mr-2"
               />
-              <span>BID</span>
+              <span @click="console.log(asset)">{{ asset.tknSymbol }}</span>
             </div>
 
-            <p class="ml-auto text-sm md:text-base">12345.0000</p>
+            <p class="ml-auto text-sm md:text-base">{{ asset.formatEtherAmount }}</p>
 
             <button
               class="btn btn-neutral btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
@@ -177,7 +183,9 @@
             v-if="notIncluded && is721"
             class="col-span-4 btn btn-accent rounded-lg md:btn-lg"
             type="button"
-            @click="modalConvertRef?.showModal(), convert721to6551(101n)"
+            @click="
+              async () => [await convert721to6551(tokenId), router.push(`/tba/6551/${tokenId}`)]
+            "
           >
             Convert to TBA
           </button>
@@ -241,7 +249,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, onUpdated, ref, watch } from 'vue'
 import Accordion from '@/components/ui/Accordion.vue'
 import ItemCard from '@/components/service/ItemCard.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -255,10 +263,11 @@ import SendTokenModal from '@/components/service/SendTokenModal.vue'
 import ModalLoading from '@/components/ui/ModalLoading.vue'
 import { useModalStore } from '@/stores/modal.module'
 import MetamaskService from '@/services/metamask.service'
-import { DEPLOYED, IERC1155, IERC721, IREG } from '@/types/abi'
-import { Contract } from 'ethers'
+import { DEPLOYED, IERC1155, IERC20, IERC721, IREG } from '@/types/abi'
+import { Contract, ethers } from 'ethers'
 import axios from 'axios'
 import { copy, truncate } from '@/constant/utils'
+import { setupModal } from '@/setups/modal.composition'
 
 const route = useRoute()
 const router = useRouter()
@@ -269,23 +278,44 @@ const modalStore = useModalStore()
 
 const { setSendAsset } = assetStore
 
-const { asset6551, detail1155Asset, detail721Asset } = storeToRefs(assetStore)
+const { asset6551, detail1155Asset, detail721Asset, toAddress } = storeToRefs(assetStore)
 const { isSigned } = storeToRefs(accountStore)
 
 const { convert721to6551, checkOwner } = setupAsset()
-
-const { sendModalRef, addModalRef } = storeToRefs(modalStore)
 
 const modalConvertRef = ref<HTMLDialogElement>()
 
 const ercType = ref<number>(0)
 const tokenId = ref<bigint>(0n)
+const notIncluded = ref(true)
+
+const tbaWalletAddress = ref<string>('')
+const tbaAsset20 = ref<any>()
+const tbaAsset721 = ref<any>()
+const tbaAsset1155 = ref<any>()
+
+const assetOwner = ref<string>('')
+const nftContractAddress = DEPLOYED.nft
+
+const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL
+
+const { showSendModal } = setupModal()
 
 const is6551 = computed(() => ercType.value === 6551)
 const is1155 = computed(() => ercType.value === 1155)
 const is721 = computed(() => ercType.value === 721)
 
-const notIncluded = ref(true)
+// const isConverted = async () => {
+//   const wallet = new MetamaskService()
+//   await wallet.init()
+
+//   const provider = await wallet.getWeb3Provider()
+//   const signer = await provider.getSigner()
+//   const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+//   const is6551 = await reg.accountsOf(DEPLOYED.nft, tokenId.value)
+
+//   return is6551.length !== 0
+// }
 
 const detailAsset = computed(() => {
   return ercType.value === 721
@@ -302,10 +332,7 @@ const tbaAssetisEmpty = computed(
     tbaAsset1155.value.size === 0
 )
 
-const showSendModal = async (sendAsset: any) => {
-  sendModalRef.value?.showModal()
-  setSendAsset(sendAsset)
-}
+const { check721Asset, check1155Asset } = setupAsset()
 
 onMounted(async () => {
   ercType.value = route?.meta.type as number
@@ -316,17 +343,7 @@ onMounted(async () => {
   !isOwner && router.replace('/')
 })
 
-const { check721Asset, check1155Asset, checkDetailAsset } = setupAsset()
-
-const tbaAsset721 = ref<any>()
-const tbaAsset1155 = ref<any>()
-
-const assetOwner = ref<string>('')
-const nftContractAddress = DEPLOYED.nft
-// const tbaAsset6551 = ref<any>()
-
-// const detail721Asset = ref<any>(new Map())
-// const detail1155Asset = ref<any>(new Map())
+onUpdated(() => (ercType.value = route?.meta.type as number))
 
 watch(
   () => isSigned.value,
@@ -346,11 +363,12 @@ watch(
       const signer = await provider.getSigner()
 
       const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-
       const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+      const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
 
       assetOwner.value = await nft.ownerOf(tokenId.value)
-      const tbaWalletAddress = await reg.account(
+      // const tbaWalletAddress = await reg.account(
+      tbaWalletAddress.value = await reg.account(
         DEPLOYED.tAcc,
         Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
         DEPLOYED.nft,
@@ -358,19 +376,22 @@ watch(
         0n
       )
 
+      const tknAmountWei = await tkn.balanceOf(tbaWalletAddress.value)
+      const tknSymbol = await tkn.symbol()
+      const tknDecimals = await tkn.decimals()
+      const formatEtherAmount = ethers.formatEther(tknAmountWei)
+
       const result = await Promise.all([
-        check721Asset(tbaWalletAddress),
-        check1155Asset(tbaWalletAddress)
+        check721Asset(tbaWalletAddress.value),
+        check1155Asset(tbaWalletAddress.value)
       ])
 
       const asset721 = result[0]['asset721']
       const asset1155 = result[1]
 
+      tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
       tbaAsset721.value = asset721
       tbaAsset1155.value = asset1155
-
-      console.log({ tbaAsset721 })
-      console.log({ tbaAsset1155 })
     } else if (ercType === 721) {
       const wallet = new MetamaskService()
       await wallet.init()
@@ -383,9 +404,6 @@ watch(
       const metadata = await axios.get(uri)
 
       detail721Asset.value.set(tokenId.value, { metadata: { ...metadata.data, type: 721 } })
-
-      console.log('detail721Asset', detail721Asset.value)
-      console.log('ownerOf', await nft.ownerOf(tokenId.value))
     } else if (ercType === 1155) {
       const wallet = new MetamaskService()
       await wallet.init()
@@ -393,8 +411,6 @@ watch(
       const signer = await provider.getSigner()
 
       const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
-
-      console.log({ mts })
 
       const uri = await mts.uri(BigInt(tokenId.value))
       const metadata = await axios.get(uri)
@@ -404,7 +420,6 @@ watch(
         metadata: { ...metadata.data, type: 1155 },
         amount
       })
-      console.log(detail1155Asset.value)
     }
   },
   { immediate: true }

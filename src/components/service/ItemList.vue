@@ -100,24 +100,21 @@ import { useModalStore } from '@/stores/modal.module.ts'
 import AddModal from './AddModal.vue'
 import SendModal from './SendModal.vue'
 import { setupAsset } from '@/setups/asset.composition'
+import { onMounted } from 'vue'
+import { setupModal } from '@/setups/modal.composition'
 
 const accountStore = useAccountStore()
 const assetStore = useAssetStore()
 const modalStore = useModalStore()
 
-const { convert721to6551 } = setupAsset()
-
+const { convert721to6551, checkAsset } = setupAsset()
 const { isSigned } = storeToRefs(accountStore)
-
-const { setSendAsset } = assetStore
 const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore)
 
 // modal
-const { sendModalRef, addModalRef } = storeToRefs(modalStore)
+const { addModalRef } = storeToRefs(modalStore)
 const { setAddModalRef } = modalStore
+const { showSendModal } = setupModal()
 
-const showSendModal = (sendAsset: any) => {
-  setSendAsset(sendAsset)
-  sendModalRef.value?.showModal()
-}
+onMounted(async () => await checkAsset())
 </script>
