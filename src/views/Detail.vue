@@ -42,26 +42,10 @@
           {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
         </h2>
 
-        <<<<<<< HEAD
-        <a
-          v-if="is6551"
-          :href="`${scopeUrl}address/${tbaWalletAddress}`"
-          target="_blank"
-          class="flex items-center justify-center w-11 h-11 rounded-full transition hover:bg-neutral-content"
-          aria-label="go to borascope"
-        >
-          <!-- prettier-ignore -->
-          <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
-            <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-        =======
         <div class="tooltip tooltip-neutral tooltip-left" data-tip="Go to Bora Scope">
           <a
-            href="#"
+            v-if="is6551"
+            :href="`${scopeUrl}address/${tbaWalletAddress}`"
             target="_blank"
             class="flex items-center justify-center w-11 h-11 rounded-full bg-neutral-content"
             aria-label="go to borascope"
@@ -75,7 +59,6 @@
             </svg>
           </a>
         </div>
-        >>>>>>> feature/update-theme
       </div>
 
       <!-- erc-6551 -->
