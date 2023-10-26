@@ -25,17 +25,17 @@ main {
 
 .empty::before {
   display: block;
-  width: 175px;
-  height: 187px;
-  margin: 0 auto 50px;
-  background: url(./ic-empty.svg);
+  width: 344px;
+  height: 234px;
+  margin: 0 auto 10px;
+  background: url(./img-empty.webp);
   background-size: cover;
   content: '';
 }
 
 .empty.empty-sm::before {
-  width: 130px;
-  height: 139px;
+  width: 220px;
+  height: 150px;
 }
 
 .arrow {

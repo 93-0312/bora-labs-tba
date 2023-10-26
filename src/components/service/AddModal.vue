@@ -4,13 +4,9 @@
 
     <p class="mb-2.5 text-sm md:text-base">Select the NFT to add to Pitcher #1234.</p>
     <ul
-      class="overflow-auto grid grid-cols-3 gap-2 max-h-72 md:grid-cols-4 md:gap-3 md:max-h-[340px]"
+      class="overflow-auto grid grid-cols-3 gap-2 max-h-72 py-1 md:grid-cols-4 md:gap-3 md:max-h-[340px]"
     >
-      <li
-        v-for="asset in asset721"
-        :key="Number(asset[0])"
-        class="overflow-hidden relative rounded"
-      >
+      <li v-for="asset in asset721" :key="Number(asset[0])">
         <ItemCard
           is721
           :is-small="true"
@@ -21,11 +17,7 @@
         />
       </li>
 
-      <li
-        v-for="asset in asset1155"
-        :key="Number(asset[0])"
-        class="overflow-hidden relative rounded"
-      >
+      <li v-for="asset in asset1155" :key="Number(asset[0])">
         <ItemCard
           :is-small="true"
           :has-badge="false"

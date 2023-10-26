@@ -1,7 +1,7 @@
 <template>
   <template v-if="!detailAsset.size"></template>
   <main
-    class="grid gap-10 w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:px-7 md:pb-20 md:grid-cols-[4fr_5fr] md:pt-8"
+    class="grid gap-6 w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:gap-10 md:px-7 md:pb-20 md:grid-cols-[4fr_5fr] md:pt-8"
   >
     <section class="relative w-full max-w-lg mx-auto h-auto text-center md:max-w-lg">
       <img
@@ -37,35 +37,37 @@
 
     <section>
       <div class="flex items-center justify-between">
-        <h2 class="max-w-md truncate text-3xl font-bold md:text-4xl">
+        <h2 class="text-3xl font-bold md:text-4xl">
           {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
         </h2>
 
-        <a
-          href="#"
-          target="_blank"
-          class="flex items-center justify-center w-11 h-11 rounded-full transition hover:bg-neutral-content"
-          aria-label="go to borascope"
-        >
-          <!-- prettier-ignore -->
-          <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
-            <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
+        <div class="tooltip tooltip-neutral tooltip-left" data-tip="Go to Bora Scope">
+          <a
+            href="#"
+            target="_blank"
+            class="flex items-center justify-center w-11 h-11 rounded-full bg-neutral-content"
+            aria-label="go to borascope"
+          >
+            <!-- prettier-ignore -->
+            <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
+              <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
       </div>
 
       <!-- erc-6551 -->
       <template v-if="is6551">
         <p
-          class="inline-flex items-center mt-3 py-2 pl-4 bg-neutral-content rounded-lg text-sm md:mt-4 md:text-lg"
+          class="inline-flex items-center h-11 mt-3 pl-4 bg-neutral-content rounded-lg text-sm md:mt-4 md:text-lg"
         >
           {{ detailAsset && truncate(detailAsset?.get(tokenId)?.metadata['walletAddress'] || '') }}
           <button
             @click="copy(detailAsset && detailAsset?.get(tokenId)?.metadata['walletAddress'])"
-            class="px-3 hover:text-neutral-300"
+            class="px-3 h-11 ml-1 rounded-r-lg hover:bg-secondary/20"
             type="button"
             aria-label="copy"
           >
@@ -82,8 +84,8 @@
           </p>
 
           <template v-else>
-            <ul class="grid grid-cols-3 gap-x-2.5 gap-y-4 md:grid-cols-4 md:gap-x-3">
-              <li v-for="asset in tbaAsset721" :key="asset" class="overflow-hidden rounded">
+            <ul class="grid grid-cols-2 gap-4 md:grid-cols-3">
+              <li v-for="asset in tbaAsset721" :key="asset" class="relative">
                 <ItemCard
                   :is-small="true"
                   :has-badge="false"
@@ -93,23 +95,30 @@
                   :id="Number(asset[0])"
                 >
                   <button
-                    class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
+                    class="btn btn-sm btn-neutral border-none w-[calc(100%_+_24px)] p-1 -mx-3 mt-1.5 rounded-none text-xs md:text-xs"
                     type="button"
                     @click="test(asset6551.get(tokenId)), showSendModal(asset6551.get(tokenId))"
                   >
                     Send
                     <!-- prettier-ignore -->
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 -ml-1">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
                       <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
                 </ItemCard>
+
+                <!-- 카드 갯수 -->
+                <span
+                  class="absolute -top-2 -right-2 badge badge-accent px-1 rounded-md text-xs font-bold text-base-100"
+                >
+                  <!-- prettier-ignore -->
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
+                    <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="white"/>
+                  </svg>
+                  3
+                </span>
               </li>
-              <li
-                v-for="asset in tbaAsset1155"
-                :key="Number(asset[0])"
-                class="overflow-hidden rounded"
-              >
+              <li v-for="asset in tbaAsset1155" :key="Number(asset[0])" class="relative">
                 <ItemCard
                   :is-small="true"
                   :has-badge="false"
@@ -119,22 +128,33 @@
                   :id="Number(asset[0])"
                 >
                   <button
-                    class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
+                    class="btn btn-sm btn-neutral border-none w-[calc(100%_+_24px)] p-1 -mx-3 mt-1.5 rounded-none text-xs md:text-xs"
                     type="button"
                     @click="test(asset6551.get(tokenId)), showSendModal(asset6551.get(tokenId))"
                   >
                     Send
                     <!-- prettier-ignore -->
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 -ml-1">
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
                       <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
                 </ItemCard>
+
+                <!-- 카드 갯수 -->
+                <span
+                  class="absolute -top-2 -right-2 badge badge-accent px-1 rounded-md text-xs font-bold text-base-100"
+                >
+                  <!-- prettier-ignore -->
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
+                    <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="white"/>
+                  </svg>
+                  3
+                </span>
               </li>
             </ul>
 
             <button
-              class="btn btn-primary btn-sm block mt-3 ml-auto rounded-lg md:btn-md md:mt-4"
+              class="btn btn-primary btn-sm block mt-3 ml-auto rounded-lg text-xs md:btn-md md:mt-4 md:text-md"
               type="button"
             >
               + Add NFT
@@ -200,11 +220,11 @@
             <li class="flex items-center">
               <img
                 :src="detailAsset && detailAsset?.get(tokenId)?.metadata['image']"
-                class="flex-none w-12 h-12 mr-3 rounded-md"
-                alt=""
+                class="flex-none w-14 h-14 mr-3 rounded-md md:mr-4"
+                alt="nft"
               />
-              <p>{{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}</p>
-              <p class="flex-none w-16 ml-auto text-right">
+              <p class="text-md">{{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}</p>
+              <p class="flex-none w-16 ml-auto text-right font-medium">
                 <span class="text-xs mr-1">✕</span>
                 {{ detailAsset && detailAsset?.get(tokenId)?.metadata['amounts'] }}
               </p>
