@@ -95,7 +95,7 @@
                   <button
                     class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
                     type="button"
-                    @click="test(asset6551.get(tokenId)), showSendModal(asset6551.get(tokenId))"
+                    @click="showSendModal(asset)"
                   >
                     Send
                     <!-- prettier-ignore -->
@@ -121,7 +121,7 @@
                   <button
                     class="btn btn-white btn-sm w-full p-1 rounded-t-none text-xs md:text-sm"
                     type="button"
-                    @click="test(asset6551.get(tokenId)), showSendModal(asset6551.get(tokenId))"
+                    @click="showSendModal(asset)"
                   >
                     Send
                     <!-- prettier-ignore -->
@@ -190,6 +190,8 @@
               notIncluded && is721 ? 'col-span-2' : 'col-span-6'
             ]"
             type="button"
+            :disabled="detailAsset?.get(tokenId)?.['amount'] === 0n"
+            @click="showSendModal([tokenId, detailAsset.get(tokenId)])"
           >
             Send
           </button>
@@ -206,7 +208,7 @@
               <p>{{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}</p>
               <p class="flex-none w-16 ml-auto text-right">
                 <span class="text-xs mr-1">✕</span>
-                {{ detailAsset && detailAsset?.get(tokenId)?.metadata['amounts'] }}
+                {{ detailAsset && detailAsset?.get(tokenId)?.['amount'] }}
               </p>
             </li>
           </ul>
@@ -214,7 +216,12 @@
       </template>
 
       <!-- 공통: info -->
-      <Accordion isInfo />
+      <Accordion
+        :owner="assetOwner"
+        :-contract-address="nftContractAddress"
+        :-token-id="Number(tokenId)"
+        isInfo
+      />
     </section>
 
     <AddModal @modal-ref="(ref) => (modalAddRef = ref.value)" :modalAddRef="modalAddRef" />
@@ -262,7 +269,7 @@ const modalStore = useModalStore()
 
 const { setSendAsset } = assetStore
 
-const { asset6551 } = storeToRefs(assetStore)
+const { asset6551, detail1155Asset, detail721Asset } = storeToRefs(assetStore)
 const { isSigned } = storeToRefs(accountStore)
 
 const { convert721to6551, checkOwner } = setupAsset()
@@ -290,34 +297,36 @@ const detailAsset = computed(() => {
 
 const tbaAssetisEmpty = computed(
   () =>
-    (tbaAsset721.value && tbaAsset721.value.size) === 0 ||
-    (tbaAsset1155.value && tbaAsset1155.value.size === 0)
+    (tbaAsset721.value && tbaAsset721.value.size) === 0 &&
+    tbaAsset1155.value &&
+    tbaAsset1155.value.size === 0
 )
 
-const showSendModal = (sendAsset: any) => {
+const showSendModal = async (sendAsset: any) => {
   sendModalRef.value?.showModal()
   setSendAsset(sendAsset)
 }
 
 onMounted(async () => {
-  console.log(detailAsset.value, 'detailAsset')
   ercType.value = route?.meta.type as number
   tokenId.value = BigInt(route?.params.id as string)
 
   // CHECK OWNER LOGIC
   const isOwner = await checkOwner(tokenId.value, ercType.value)
-
-  // !isOwner && router.replace('/')
+  !isOwner && router.replace('/')
 })
 
-const { check721Asset, check1155Asset } = setupAsset()
+const { check721Asset, check1155Asset, checkDetailAsset } = setupAsset()
 
 const tbaAsset721 = ref<any>()
 const tbaAsset1155 = ref<any>()
+
+const assetOwner = ref<string>('')
+const nftContractAddress = DEPLOYED.nft
 // const tbaAsset6551 = ref<any>()
 
-const detail721Asset = ref<any>(new Map())
-const detail1155Asset = ref<any>(new Map())
+// const detail721Asset = ref<any>(new Map())
+// const detail1155Asset = ref<any>(new Map())
 
 watch(
   () => isSigned.value,
@@ -338,6 +347,9 @@ watch(
 
       const reg = new Contract(DEPLOYED.tReg, IREG, signer)
 
+      const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+
+      assetOwner.value = await nft.ownerOf(tokenId.value)
       const tbaWalletAddress = await reg.account(
         DEPLOYED.tAcc,
         Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
@@ -357,7 +369,8 @@ watch(
       tbaAsset721.value = asset721
       tbaAsset1155.value = asset1155
 
-      console.log(asset6551.value)
+      console.log({ tbaAsset721 })
+      console.log({ tbaAsset1155 })
     } else if (ercType === 721) {
       const wallet = new MetamaskService()
       await wallet.init()
@@ -365,11 +378,11 @@ watch(
       const signer = await provider.getSigner()
 
       const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-
+      assetOwner.value = await nft.ownerOf(tokenId.value)
       const uri = await nft.tokenURI(BigInt(tokenId.value))
       const metadata = await axios.get(uri)
 
-      detail721Asset.value.set(tokenId.value, { metadata: metadata.data })
+      detail721Asset.value.set(tokenId.value, { metadata: { ...metadata.data, type: 721 } })
 
       console.log('detail721Asset', detail721Asset.value)
       console.log('ownerOf', await nft.ownerOf(tokenId.value))
@@ -385,9 +398,12 @@ watch(
 
       const uri = await mts.uri(BigInt(tokenId.value))
       const metadata = await axios.get(uri)
-      const amounts = await mts.balanceOf(signer.getAddress(), tokenId.value)
+      const amount = await mts.balanceOf(signer.getAddress(), tokenId.value)
 
-      detail1155Asset.value.set(tokenId.value, { metadata: { ...metadata.data, amounts } })
+      detail1155Asset.value.set(tokenId.value, {
+        metadata: { ...metadata.data, type: 1155 },
+        amount
+      })
       console.log(detail1155Asset.value)
     }
   },
@@ -395,6 +411,4 @@ watch(
 )
 
 const modalSendTokenRef = ref<HTMLDialogElement>()
-
-const test = (data: any) => console.log({ data })
 </script>

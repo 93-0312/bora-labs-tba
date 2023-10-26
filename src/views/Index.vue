@@ -92,51 +92,15 @@
         </transition>
       </div>
     </section>
-
-    <!-- modal: minting -->
-    <ModalLoading
-      @modal-ref="(ref) => (radialModalRef = ref.value)"
-      :is-radial="true"
-      desc="It takes about 5 minutes. Once complete, you can check in TBA menu."
-      progress-name="Convert"
-    />
-
-    <ModalLoading
-      @modal-ref="(ref) => (sendLoadingModalRef = ref.value)"
-      :is-radial="true"
-      desc="It takes about 5 minutes. Once complete, you can check in send address."
-      progress-name="Send"
-    />
-
-    <ModalLoading
-      @modal-ref="(ref) => (addLoadingModalRef = ref.value)"
-      :is-radial="true"
-      desc="It takes about 5 minutes. Once complete, you can check in send address."
-      progress-name="Add"
-    />
-
-    <ModalLoading
-      @modal-ref="(ref) => (modalStepRef = ref.value)"
-      :is-step="true"
-      :step="4"
-      :current-step="tbaMintStep"
-      progress-name="Minting in progress"
-      :desc="tbaMintDesc"
-    />
-    <!-- toast -->
-    <!-- <div @click="test">showToast:{{ showToast }}</div> -->
-    <Toast @close="setShowToast(false)" :showToast="showToast" :msg="toastMsg" />
   </main>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { setupAccount } from '@/setups/account.composition'
 import { setupAsset } from '@/setups/asset.composition'
 import { useAssetStore } from '@/stores/asset.module.ts'
 import { useAccountStore } from '@/stores/account.module.ts'
-import ModalLoading from '@/components/ui/ModalLoading.vue'
 import ItemList from '@/components/service/ItemList.vue'
 import Toast from '@/components/ui/Toast.vue'
 import { useModalStore } from '@/stores/modal.module'
@@ -144,48 +108,15 @@ import bgImg from '@/assets/bg-6551.webp'
 import icBora from '@/assets/ic-bora.webp'
 import icToken from '@/assets/ic-token.webp'
 
-const modalStore = useModalStore()
-
 const assetStore = useAssetStore()
 const accountStore = useAccountStore()
 
+const { hasAsset } = storeToRefs(assetStore)
 const { isSigned } = storeToRefs(accountStore)
 
-const { hasAsset } = storeToRefs(assetStore)
-
-const { connectWallet } = setupAccount()
-const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc, check721Asset } = setupAsset()
-const { showToast, toastMsg } = storeToRefs(modalStore)
-const { setShowToast } = modalStore
-
-const { radialModalRef, sendLoadingModalRef, addLoadingModalRef } = storeToRefs(modalStore)
+const { createWallet } = setupAsset()
 
 const isAbout = ref(false)
-const modalStepRef = ref<HTMLDialogElement>()
-
-const createWallet = async () => {
-  if (isSigned.value) {
-    modalStepRef.value?.showModal()
-    await tbaMint()
-    modalStepRef.value?.close()
-  } else if (!isSigned.value) {
-    await connectWallet()
-    await checkAsset()
-    if (!hasAsset.value) {
-      modalStepRef.value?.showModal()
-      await tbaMint()
-      modalStepRef.value?.close()
-    }
-  }
-}
-
-// const test = async () => {
-//   modalStepRef.value?.showModal()
-//   await tbaMint()
-//   modalStepRef.value?.close()
-// }
-
-// modal
 
 const enter = (el: HTMLDivElement) => {
   el.style.height = el.scrollHeight + 'px'

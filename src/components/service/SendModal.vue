@@ -7,7 +7,7 @@
     "
     title="Send NFT"
     btn-name="Send"
-    :btn-click="async () => await confirmSend(toAddress, sendAsset, props.modalSendRef)"
+    :btn-click="async () => await confirmSend(toAddress, sendAsset)"
     :btnDisable="isSendBtnDisable"
   >
     <div class="indicator block w-28 mx-auto md:w-32">
@@ -17,10 +17,6 @@
         :img-src="sendAsset?.[1].metadata.image"
         :card-name="sendAsset?.[1]?.metadata.name"
       />
-
-      {{ !isAmountError && !isInputError }}
-      {{ isAmountError }}
-      {{ isInputError }}
 
       <!-- 카드 갯수 -->
       <span v-show="is1155" class="indicator-item badge badge-primary px-1 text-xs font-bold">
@@ -104,17 +100,10 @@ import { setupAsset } from '@/setups/asset.composition'
 import { storeToRefs } from 'pinia'
 import { useAssetStore } from '@/stores/asset.module'
 import { useModalStore } from '@/stores/modal.module'
-import ModalLoading from '../ui/ModalLoading.vue'
 
 const modalStore = useModalStore()
 
-const test = () => {
-  console.log(sendModalRef, '???')
-  sendLoadingModalRef.value?.showModal()
-  progressTime.value = 0
-}
-
-const { sendModalRef, sendLoadingModalRef, progressTime } = storeToRefs(modalStore)
+const { sendModalRef } = storeToRefs(modalStore)
 
 const props = defineProps({
   modalSendRef: HTMLDialogElement,
@@ -128,7 +117,7 @@ const assetStore = useAssetStore()
 
 const { sendAsset } = storeToRefs(assetStore)
 
-const confirmSend = async (sendToAddress: string, sendAsset: any, upperModal: any) => {
+const confirmSend = async (sendToAddress: string, sendAsset: any) => {
   await sendNft(sendToAddress, sendAsset, sendModalRef)
   toAddress.value = ''
 }
@@ -160,7 +149,7 @@ const isValidAddress = (address: string) => {
 const isSendBtnDisable = computed(() => {
   return is1155.value
     ? isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
-    : isInputError.value || toAddress.value === ''
+    : isInputError.value || toAddress.value === '' || amountsOf1155.value === 0
 })
 
 onMounted(() => {

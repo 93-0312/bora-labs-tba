@@ -60,7 +60,4 @@ export const setupModalStore = () => {
   }
 }
 
-export const useModalStore = defineStore('modal', setupModalStore, {
-  // @ts-ignore
-  // persist: { storage: sessionStorage, paths: ['isSigned', 'walletAddress'] }
-})
+export const useModalStore = defineStore('modal', setupModalStore)

@@ -6,7 +6,9 @@
       'rounded-lg',
       'md:my-6',
       'transition',
-      showContents ? 'bg-neutral-content border-secondary/10' : 'border-secondary/50 hover:border-secondary'
+      showContents
+        ? 'bg-neutral-content border-secondary/10'
+        : 'border-secondary/50 hover:border-secondary'
     ]"
   >
     <button
@@ -28,6 +30,17 @@
           <dd class="col-span-3 my-3 text-right">Bora Testnet</dd>
           <dt class="col-span-1 text-neutral/60 font-medium">Token ID</dt>
           <dd class="col-span-3 text-right">1234</dd>
+
+          <!--  -->
+          <dt class="col-span-1 my-2 text-neutral-400">Owner</dt>
+          <dd class="col-span-3 my-2 text-right break-all">연결된 지갑주소</dd>
+          <dt class="col-span-1 my-2 text-neutral-400">Chain</dt>
+          <dd class="col-span-3 my-2 text-right">Bora Testnet</dd>
+          <dt class="col-span-1 my-2 text-neutral-400">ContractAddress</dt>
+          <dd class="col-span-3 my-2 text-right">{{ $props.ContractAddress }}</dd>
+          <dt class="col-span-1 my-2 text-neutral-400">Token ID</dt>
+          <dd class="col-span-3 my-2 text-right">{{ TokenId }}</dd>
+          <!--  -->
         </dl>
 
         <div v-else class="p-3 md:p-4">
@@ -46,7 +59,11 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  title: String
+  title: String,
+  owner: String,
+  Chain: String,
+  ContractAddress: String,
+  TokenId: Number
 })
 
 const showContents = ref(false)

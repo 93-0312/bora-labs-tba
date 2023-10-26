@@ -12,7 +12,8 @@ export const setupAccount = () => {
       await wallet.init()
 
       await wallet.switchNetworkChain(Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID))
-      await wallet.signMessage('Connect wallet to Borachain TBA labs')
+      // await wallet.signMessage('Connect wallet to Borachain TBA labs')
+
       const cntWallet = await wallet.getAddress()
       setWalletAddress(cntWallet)
       setIsSigned(true)

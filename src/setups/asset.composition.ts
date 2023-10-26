@@ -7,30 +7,40 @@ import axios from 'axios'
 import { ref } from 'vue'
 import { useModalStore } from '@/stores/modal.module'
 import { storeToRefs } from 'pinia'
+import { setupAccount } from '@/setups/account.composition'
 
 export const setupAsset = () => {
   const assetStore = useAssetStore()
   const accountStore = useAccountStore()
   const modalStore = useModalStore()
-
-  const { walletAddress } = accountStore
+  const { isSigned } = storeToRefs(accountStore)
   const { setAsset721, setAsset1155, setAsset6551 } = assetStore
+  const { hasAsset, detail1155Asset, tbaMintStep } = storeToRefs(assetStore)
 
-  const { sendLoadingModalRef, radialModalRef, progressTime } = storeToRefs(modalStore)
+  const { sendLoadingModalRef, radialModalRef, progressTime, stepModalRef } =
+    storeToRefs(modalStore)
 
   const { setShowToast, setToastMsg } = modalStore
-
-  const tbaMintDescObj = {
-    1: 'ERC-721 is currently being minted.',
-    2: 'TBA is currently being minted.',
-    3: 'ERC-20 is currently being minted.',
-    4: 'ERC-1155 is currently being minted.'
-  }
+  const { connectWallet } = setupAccount()
 
   const toAddress = ref<string>('')
   const toAmounts = ref<string>('')
-  const tbaMintStep = ref<number>(1)
-  const tbaMintDesc = ref<string>(tbaMintDescObj[1])
+
+  const createWallet = async () => {
+    if (isSigned.value) {
+      stepModalRef.value?.showModal()
+      await tbaMint()
+      stepModalRef.value?.close()
+    } else if (!isSigned.value) {
+      await connectWallet()
+      await checkAsset()
+      if (!hasAsset.value) {
+        stepModalRef.value?.showModal()
+        await tbaMint()
+        stepModalRef.value?.close()
+      }
+    }
+  }
 
   const tbaMint = async () => {
     const wallet = new MetamaskService()
@@ -50,7 +60,6 @@ export const setupAsset = () => {
       const txResponse = await provider.getTransaction(tx.hash)
       txResponse && (await txResponse.wait())
       tbaMintStep.value = 2
-      tbaMintDesc.value = tbaMintDescObj[2]
 
       const tokensOf721 = await nft.tokensOf(address)
       await convert721to6551(tokensOf721[0], true)
@@ -62,7 +71,6 @@ export const setupAsset = () => {
     // 20mint
     try {
       tbaMintStep.value = 3
-      tbaMintDesc.value = tbaMintDescObj[3]
       const tx = await tkn.mint(address, 10000000000000000000000n)
       const txResponse = await provider.getTransaction(tx.hash)
       txResponse && (await txResponse.wait())
@@ -73,7 +81,6 @@ export const setupAsset = () => {
     // 1155mint
     try {
       tbaMintStep.value = 4
-      tbaMintDesc.value = tbaMintDescObj[4]
       const tx = await mts.tbaMint(address, 5, '0x')
       const txResponse = await provider.getTransaction(tx.hash)
       txResponse && (await txResponse.wait())
@@ -88,7 +95,7 @@ export const setupAsset = () => {
   const checkOwner = async (id: bigint | undefined, ercType: number) => {
     const wallet = new MetamaskService()
     await wallet.init()
-    const address = wallet.getAddress()
+    const address = await wallet.getAddress()
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
@@ -96,7 +103,8 @@ export const setupAsset = () => {
       if (ercType === 721 || ercType === 6551) {
         const nft = new Contract(DEPLOYED.nft, IERC721, signer)
         const ownerAddress = await nft.ownerOf(id)
-        return walletAddress === ownerAddress
+
+        return address === ownerAddress
       } else if (ercType === 1155) {
         const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
         const tokensOf1155 = await mts.tokensOf(address)
@@ -258,10 +266,10 @@ export const setupAsset = () => {
       clearInterval(progressInterval)
       sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
 
-      setShowToast(true)
-      setToastMsg('Send Completed!')
+      const uri = await nft.tokenURI(BigInt(asset[0]))
+      const metadata = await axios.get(uri)
 
-      await checkAsset()
+      detail721Asset.value.set(asset[0], { metadata: { ...metadata.data, type: 721 } })
     }
 
     if (assetType === 1155) {
@@ -285,11 +293,19 @@ export const setupAsset = () => {
       clearInterval(progressInterval)
       sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
 
-      setShowToast(true)
-      setToastMsg('Send Completed!')
+      const uri = await mts.uri(BigInt(asset[0]))
+      const metadata = await axios.get(uri)
+      const amount = await mts.balanceOf(signer.getAddress(), asset[0])
 
-      await checkAsset()
+      detail1155Asset.value.set(asset[0], {
+        metadata: { ...metadata.data, type: 1155 },
+        amount
+      })
     }
+    await checkAsset()
+
+    setShowToast(true)
+    setToastMsg('Send Completed!')
   }
 
   const convert721to6551 = async (nft721Id: bigint, initMint?: boolean) => {
@@ -347,17 +363,99 @@ export const setupAsset = () => {
     return
   }
 
+  const tbaAsset721 = ref<any>()
+  const tbaAsset1155 = ref<any>()
+
+  const detail721Asset = ref<any>(new Map())
+  // const detail1155Asset = ref<any>(new Map())
+
+  const checkDetailAsset = async (ercType: number, tokenId: bigint) => {
+    console.log(ercType, '!@#')
+    if (ercType === 6551) {
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
+
+      const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+
+      const tbaWalletAddress = await reg.account(
+        DEPLOYED.tAcc,
+        Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
+        DEPLOYED.nft,
+        // tokenId.value,
+        tokenId,
+        0n
+      )
+
+      const result = await Promise.all([
+        check721Asset(tbaWalletAddress),
+        check1155Asset(tbaWalletAddress)
+      ])
+
+      const asset721 = result[0]['asset721']
+      const asset1155 = result[1]
+
+      tbaAsset721.value = asset721
+      tbaAsset1155.value = asset1155
+    } else if (ercType === 721) {
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
+
+      const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+
+      const uri = await nft.tokenURI(BigInt(tokenId))
+      // const uri = await nft.tokenURI(BigInt(tokenId.value))
+      const metadata = await axios.get(uri)
+
+      detail721Asset.value.set(tokenId, { metadata: { ...metadata.data, type: 721 } })
+      // detail721Asset.value.set(tokenId.value, { metadata: { ...metadata.data, type: 721 } })
+
+      console.log('detail721Asset', detail721Asset.value)
+      // console.log('ownerOf', await nft.ownerOf(tokenId.value))
+      console.log('ownerOf', await nft.ownerOf(tokenId))
+    } else if (ercType === 1155) {
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
+
+      const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+
+      console.log({ mts })
+
+      const uri = await mts.uri(BigInt(tokenId))
+      // const uri = await mts.uri(BigInt(tokenId.value))
+      const metadata = await axios.get(uri)
+
+      // const amount = await mts.balanceOf(signer.getAddress(), tokenId.value)
+      const amount = await mts.balanceOf(signer.getAddress(), tokenId)
+      // detail1155Asset.value.set(tokenId.value, {
+      detail1155Asset.value.set(tokenId, {
+        metadata: { ...metadata.data, type: 1155 },
+        amount
+      })
+      console.log(detail1155Asset.value, '!@#!@#!@')
+    }
+  }
+
   return {
     toAddress,
     toAmounts,
     tbaMintStep,
-    tbaMintDesc,
+    createWallet,
     convert721to6551,
     tbaMint,
     checkAsset,
     sendNft,
     check721Asset,
     check1155Asset,
-    checkOwner
+    checkOwner,
+    checkDetailAsset,
+
+    detail1155Asset,
+    detail721Asset
   }
 }
