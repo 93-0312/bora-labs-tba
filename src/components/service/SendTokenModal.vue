@@ -16,6 +16,7 @@
             'absolute',
             'top-3',
             'left-3',
+            'rounded-lg',
             { 'bg-base-content text-base-300 border-base-content': isSelected }
           ]"
           @click="isSelected = !isSelected"
@@ -39,7 +40,7 @@
       </div>
       <!-- input error시 노출 -->
       <label class="label">
-        <span class="label-text-alt text-neutral-content/70 md:text-sm"
+        <span class="label-text-alt text-secondary-focus md:text-sm"
           >Balance: 92.3245 tBORA</span
         >
         <span v-if="isInputError" class="label-text-alt text-error md:text-sm">
@@ -67,7 +68,7 @@
       </label>
     </div>
 
-    <p class="mt-2 text-xs text-neutral-content/70 md:text-sm">
+    <p class="mt-2 text-xs text-secondary-focus md:text-sm">
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>

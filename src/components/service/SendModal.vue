@@ -19,10 +19,10 @@
       />
 
       <!-- 카드 갯수 -->
-      <span v-show="is1155" class="indicator-item badge badge-primary px-1 text-xs font-bold">
+      <span v-show="is1155" class="indicator-item badge badge-accent px-1 rounded-md text-xs font-bold text-base-100">
         <!-- prettier-ignore -->
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
-          <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="#32261b"/>
+          <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="white"/>
         </svg>
         {{ amountsOf1155 }}
       </span>
@@ -50,7 +50,7 @@
       </div>
       <!-- input error시 노출 -->
       <label class="label py-1.5">
-        <span class="label-text-alt text-neutral-content/70 md:text-sm"
+        <span class="label-text-alt text-secondary-focus md:text-sm"
           >Balance: {{ amountsOf1155 }}</span
         >
         <span v-if="isAmountError" class="label-text-alt text-error md:text-sm">
@@ -86,7 +86,7 @@
       </label>
     </div>
 
-    <p class="mt-2 text-xs text-neutral-content/70 md:mt-4 md:text-sm">
+    <p class="mt-2 text-xs text-secondary-focus md:mt-4 md:text-sm">
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>

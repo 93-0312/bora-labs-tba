@@ -18,14 +18,14 @@
       >
         <div class="grid grid-cols-6 gap-1 pt-4 pb-2 md:gap-2 md:pt-5 md:pb-3">
           <button
-            class="min-h-0 h-9 col-span-4 btn btn-primary rounded-lg text-[11px] md:h-12 md:text-base"
+            class="min-h-0 h-9 col-span-4 btn btn-primary btn-outline rounded-lg text-[11px] md:h-12 md:text-base"
             type="button"
             @click="addModalRef?.showModal()"
           >
             Add NFT
           </button>
           <button
-            class="min-h-0 h-9 col-span-2 btn btn-neutral rounded-lg text-[11px] md:h-12 md:text-base"
+            class="min-h-0 h-9 col-span-2 btn btn-neutral btn-outline rounded-lg text-[11px] md:h-12 md:text-base"
             type="button"
             @click="showSendModal(asset)"
           >
@@ -46,14 +46,14 @@
       >
         <div class="grid grid-cols-6 gap-1 pt-4 pb-2 md:gap-2 md:pt-5 md:pb-3">
           <button
-            class="min-h-0 h-9 col-span-4 btn btn-accent rounded-lg text-[11px] leading-tight md:h-12 md:text-base"
+            class="min-h-0 h-9 col-span-4 btn btn-accent btn-outline rounded-lg text-[11px] leading-tight md:h-12 md:text-base"
             type="button"
             @click="convert721to6551(asset[0])"
           >
             Convert to TBA
           </button>
           <button
-            class="min-h-0 h-9 col-span-2 btn btn-neutral rounded-lg text-[11px] md:h-12 md:text-base"
+            class="min-h-0 h-9 col-span-2 btn btn-neutral btn-outline rounded-lg text-[11px] md:h-12 md:text-base"
             type="button"
             @click="showSendModal(asset)"
           >
@@ -74,7 +74,7 @@
       >
         <div class="pt-4 pb-2 md:pt-5 md:pb-3">
           <button
-            class="min-h-0 h-9 btn btn-neutral w-full rounded-lg text-[11px] md:btn-base md:h-12 md:text-base"
+            class="min-h-0 h-9 btn btn-neutral btn-outline w-full rounded-lg text-[11px] md:btn-base md:h-12 md:text-base"
             type="button"
             @click="showSendModal(asset)"
           >

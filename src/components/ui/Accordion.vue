@@ -21,29 +21,22 @@
     </button>
     <transition name="show-down">
       <div v-if="showContents" class="border-t border-secondary/10">
-        <dl v-if="props.isInfo" class="p-3 grid grid-cols-4 text-sm md:text-base md:p-4">
-          <dt class="col-span-1 text-neutral/60 font-medium">Owner</dt>
-          <dd class="col-span-3 text-right break-all">
-            0xcee2cd22d59cfa9ebfb178f9578181411111480a
+        <dl v-if="props.isInfo" class="p-4 grid grid-cols-7 text-sm md:text-base md:p-5">
+          <dt class="col-span-2 my-2 text-secondary-focus font-medium">Owner</dt>
+          <dd class="col-span-5 my-2 text-right break-all">
+            0xEB53f06D54BEADf63A53C642D22bf4531a389e3F
           </dd>
-          <dt class="col-span-1 my-3 text-neutral/60 font-medium">Chain</dt>
-          <dd class="col-span-3 my-3 text-right">Bora Testnet</dd>
-          <dt class="col-span-1 text-neutral/60 font-medium">Token ID</dt>
-          <dd class="col-span-3 text-right">1234</dd>
-
-          <!--  -->
-          <dt class="col-span-1 my-2 text-neutral-400">Owner</dt>
-          <dd class="col-span-3 my-2 text-right break-all">연결된 지갑주소</dd>
-          <dt class="col-span-1 my-2 text-neutral-400">Chain</dt>
-          <dd class="col-span-3 my-2 text-right">Bora Testnet</dd>
-          <dt class="col-span-1 my-2 text-neutral-400">ContractAddress</dt>
-          <dd class="col-span-3 my-2 text-right">{{ $props.ContractAddress }}</dd>
-          <dt class="col-span-1 my-2 text-neutral-400">Token ID</dt>
-          <dd class="col-span-3 my-2 text-right">{{ TokenId }}</dd>
-          <!--  -->
+          <dt class="col-span-2 my-2 text-secondary-focus font-medium">Chain</dt>
+          <dd class="col-span-5 my-2 text-right break-all">Bora Testnet</dd>
+          <dt class="col-span-2 my-2 text-secondary-focus font-medium">Token ID</dt>
+          <dd class="col-span-5 my-2 text-right break-all">1234</dd>
+          <dt class="col-span-2 my-2 text-secondary-focus font-medium">Contract ID</dt>
+          <dd class="col-span-5 my-2 text-right break-all">
+            0xEB53f06D54BEADf63A53C642D22bf4531a389e3F
+          </dd>
         </dl>
 
-        <div v-else class="p-3 md:p-4">
+        <div v-else class="p-4 md:p-5">
           <slot />
         </div>
       </div>
