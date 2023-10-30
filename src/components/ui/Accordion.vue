@@ -1,11 +1,7 @@
 <template>
   <div
     :class="[
-      'my-4',
-      'border',
-      'rounded-lg',
-      'md:my-6',
-      'transition',
+      'my-4 border rounded-lg transition md:my-6',
       showContents
         ? 'bg-neutral-content border-secondary/10'
         : 'border-secondary/50 hover:border-secondary'

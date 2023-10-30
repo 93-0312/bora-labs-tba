@@ -15,14 +15,7 @@
         <button
           type="button"
           :class="[
-            'btn',
-            'btn-outline',
-            'btn-xs',
-            'w-12',
-            'absolute',
-            'top-3',
-            'left-3',
-            'rounded-lg',
+            'btn btn-outline btn-xs absolute w-12 top-2 left-2 rounded-lg md:top-3 md:left-3',
             { 'bg-base-content text-base-300 border-base-content': isSelected }
           ]"
           @click="isSelected = !isSelected"
@@ -33,16 +26,13 @@
         <input
           type="text"
           :class="[
-            'input',
-            'input-bordered',
-            'w-full',
-            'pl-20',
-            'text-right',
+            'input input-bordered w-full h-10 pl-16 pr-16 text-right md:h-12 md:pl-20',
             { 'input-error': isAmountError }
           ]"
           aria-label="token input"
           v-model="toAmounts"
         />
+        <span class="absolute top-2 right-2 md:top-3 md:right-3">tBORA</span>
       </div>
       <!-- input error시 노출 -->
       <label class="label">
@@ -63,7 +53,7 @@
       <input
         type="text"
         placeholder="ex. 0x1234..."
-        :class="['input', 'input-bordered', 'w-full', { 'input-error': isInputError }]"
+        :class="['input input-bordered w-full h-10 md:h-12', { 'input-error': isInputError }]"
         maxlength="42"
         v-model="toAddress"
       />
