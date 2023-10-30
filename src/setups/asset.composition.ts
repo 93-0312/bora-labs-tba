@@ -2,7 +2,7 @@ import MetamaskService from '@/services/metamask.service'
 import { useAccountStore } from '@/stores/account.module.ts'
 import { useAssetStore } from '@/stores/asset.module.ts'
 import { Contract, ethers } from 'ethers'
-import { DEPLOYED, IERC1155, IERC20, IERC721, IREG } from '@/types/abi'
+import { DEPLOYED, IERC1155, IERC20, IERC721, IREG, ITBA } from '@/types/abi'
 import axios from 'axios'
 import { ref } from 'vue'
 import { useModalStore } from '@/stores/modal.module'
@@ -15,7 +15,17 @@ export const setupAsset = () => {
   const modalStore = useModalStore()
   const { isSigned } = storeToRefs(accountStore)
   const { setAsset721, setAsset1155, setAsset6551, setAsset20, addAsset } = assetStore
-  const { hasAsset, detail1155Asset, tbaMintStep, toAddress, toAmounts } = storeToRefs(assetStore)
+  const {
+    hasAsset,
+    detail1155Asset,
+    tbaMintStep,
+    toAddress,
+    toAmounts,
+    from6551,
+    tbaAsset1155,
+    tbaAsset20,
+    tbaAsset721
+  } = storeToRefs(assetStore)
 
   const { sendLoadingModalRef, radialModalRef, progressTime, stepModalRef } =
     storeToRefs(modalStore)
@@ -72,7 +82,7 @@ export const setupAsset = () => {
         0n
       )
 
-      const txErc20 = await tkn.mint(walletAddress, 1000000000000000000n)
+      const txErc20 = await tkn.mint(walletAddress, 100000000000000000000n)
       const txErc20Response = await provider.getTransaction(txErc20.hash)
       txErc20Response && (await txErc20Response.wait())
     } catch (e) {
@@ -284,8 +294,6 @@ export const setupAsset = () => {
     }
 
     if (assetType === 1155) {
-      console.log(asset, 'asset')
-      console.log(toAmounts.value, 'toAmounts.value')
       const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
 
       const tx = await mts.safeTransferFrom(
@@ -322,6 +330,125 @@ export const setupAsset = () => {
         amount
       })
     }
+    await checkAsset()
+
+    setShowToast(true)
+    setToastMsg('Send Completed!')
+  }
+
+  const sendNftFrom6551 = async (asset: any, upperModalRef: any) => {
+    const assetType = asset[1].metadata.type
+
+    const wallet = new MetamaskService()
+    await wallet.init()
+    const provider = await wallet.getWeb3Provider()
+    const signer = await provider.getSigner()
+
+    const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+    const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+    const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
+
+    const tbaWalletAddress = await reg.account(
+      DEPLOYED.tAcc,
+      Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
+      DEPLOYED.nft,
+      from6551.value?.tokenId,
+      0n
+    )
+
+    if (assetType === 721 || assetType === 6551) {
+      const encodedFn = nft.interface.encodeFunctionData('transferFrom', [
+        tbaWalletAddress,
+        toAddress.value,
+        asset[0]
+      ])
+
+      const proxy6551 = new Contract(tbaWalletAddress, ITBA, signer)
+
+      const tx = await proxy6551.execute(DEPLOYED.nft, 0n, encodedFn, 0n)
+
+      upperModalRef.value.close()
+
+      sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
+
+      progressTime.value = 0
+      const progressInterval = setInterval(
+        () =>
+          (progressTime.value =
+            progressTime.value <= 100 ? progressTime.value + 0.05 : progressTime.value),
+        10
+      )
+
+      await waitTransaction(provider, tx)
+
+      progressTime.value = 100
+      clearInterval(progressInterval)
+      sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
+
+      const uri = await nft.tokenURI(BigInt(asset[0]))
+      const metadata = await axios.get(uri)
+
+      detail721Asset.value.set(asset[0], { metadata: { ...metadata.data, type: 721 } })
+    }
+
+    if (assetType === 1155) {
+      const encodedFn = mts.interface.encodeFunctionData('safeTransferFrom', [
+        tbaWalletAddress,
+        toAddress.value,
+        asset[0],
+        BigInt(toAmounts.value),
+        '0x'
+      ])
+
+      const proxy6551 = new Contract(tbaWalletAddress, ITBA, signer)
+
+      const tx = await proxy6551.execute(DEPLOYED.mts, 0n, encodedFn, 0n)
+
+      upperModalRef.value.close()
+      sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
+
+      progressTime.value = 0
+      const progressInterval = setInterval(
+        () =>
+          (progressTime.value =
+            progressTime.value <= 100 ? progressTime.value + 0.05 : progressTime.value),
+        10
+      )
+
+      await waitTransaction(provider, tx)
+
+      progressTime.value = 100
+      clearInterval(progressInterval)
+      sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
+
+      const uri = await mts.uri(BigInt(asset[0]))
+      const metadata = await axios.get(uri)
+      const amount = await mts.balanceOf(signer.getAddress(), asset[0])
+
+      detail1155Asset.value.set(asset[0], {
+        metadata: { ...metadata.data, type: 1155 },
+        amount
+      })
+    }
+
+    const tknAmountWei = await tkn.balanceOf(tbaWalletAddress)
+    const tknSymbol = await tkn.symbol()
+    const tknDecimals = await tkn.decimals()
+    const formatEtherAmount = ethers.formatEther(tknAmountWei)
+
+    const result = await Promise.all([
+      check721Asset(tbaWalletAddress),
+      check1155Asset(tbaWalletAddress)
+    ])
+
+    const asset721 = result[0]['asset721']
+    const asset1155 = result[1]
+
+    tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
+    tbaAsset721.value = asset721
+    tbaAsset1155.value = asset1155
+
     await checkAsset()
 
     setShowToast(true)
@@ -416,7 +543,7 @@ export const setupAsset = () => {
     }
     await waitTransaction(provider, createTx)
 
-    setShowToast(true)
+    !initMint && setShowToast(true)
     setToastMsg('Convert Completed!')
 
     const result = await check721Asset(address)
@@ -433,9 +560,6 @@ export const setupAsset = () => {
 
     return
   }
-
-  const tbaAsset721 = ref<any>()
-  const tbaAsset1155 = ref<any>()
 
   const detail721Asset = ref<any>(new Map())
   // const detail1155Asset = ref<any>(new Map())
@@ -498,6 +622,7 @@ export const setupAsset = () => {
     checkAsset,
     sendNft,
     addNft,
+    sendNftFrom6551,
     send20Token,
     check721Asset,
     check1155Asset,

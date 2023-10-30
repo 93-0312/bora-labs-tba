@@ -94,19 +94,17 @@ const modalStore = useModalStore()
 
 const { sendModalRef } = storeToRefs(modalStore)
 
-const props = defineProps({
-  isDisabled: { type: Boolean }
-})
-
 const emit = defineEmits(['modalRef'])
 
-const { sendNft } = setupAsset()
+const { sendNft, sendNftFrom6551 } = setupAsset()
 const assetStore = useAssetStore()
 
-const { sendAsset, toAddress, toAmounts } = storeToRefs(assetStore)
+const { sendAsset, toAddress, toAmounts, from6551 } = storeToRefs(assetStore)
 
 const confirmSend = async (sendToAddress: string, sendAsset: any) => {
-  await sendNft(sendToAddress, sendAsset, sendModalRef)
+  console.log(from6551.value.from6551)
+  if (!from6551.value.from6551) await sendNft(sendToAddress, sendAsset, sendModalRef)
+  else await sendNftFrom6551(sendAsset, sendModalRef)
   toAddress.value = ''
 }
 

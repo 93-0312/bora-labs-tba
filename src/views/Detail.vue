@@ -92,26 +92,26 @@
           </button>
         </p>
 
-        <Accordion title="NFT (5)">
+        <Accordion :title="`NFT (${tbaAssetSize})`">
           <p v-if="tbaAssetisEmpty" class="flex flex-col empty empty-sm py-2 text-sm text-center">
             There is no NFT.
           </p>
 
           <template v-else>
             <ul class="grid grid-cols-2 gap-4 md:grid-cols-3">
-              <li v-for="asset in tbaAsset721" :key="asset" class="relative">
+              <li v-for="asset in tbaAsset1155" :key="Number(asset[0])" class="relative">
                 <ItemCard
                   :is-small="true"
                   :has-badge="false"
                   :show-network="false"
                   :card-name="asset[1]?.metadata.name"
-                  :img-src="asset[1].metadata.image"
+                  :img-src="asset[1]?.metadata.image"
                   :id="Number(asset[0])"
                 >
                   <button
                     class="btn btn-sm btn-neutral border-none w-[calc(100%_+_24px)] p-1 -mx-3 mt-1.5 rounded-none text-xs md:text-xs"
                     type="button"
-                    @click="showSendModal(asset)"
+                    @click="showSendModal(asset, tokenId)"
                   >
                     Send
                     <!-- prettier-ignore -->
@@ -132,19 +132,19 @@
                   {{ asset[1].amount }}
                 </span>
               </li>
-              <li v-for="asset in tbaAsset1155" :key="Number(asset[0])" class="relative">
+              <li v-for="asset in tbaAsset721" :key="asset" class="relative">
                 <ItemCard
                   :is-small="true"
                   :has-badge="false"
                   :show-network="false"
                   :card-name="asset[1]?.metadata.name"
-                  :img-src="asset[1]?.metadata.image"
+                  :img-src="asset[1].metadata.image"
                   :id="Number(asset[0])"
                 >
                   <button
                     class="btn btn-sm btn-neutral border-none w-[calc(100%_+_24px)] p-1 -mx-3 mt-1.5 rounded-none text-xs md:text-xs"
                     type="button"
-                    @click="showSendModal(asset)"
+                    @click="showSendModal(asset, tokenId)"
                   >
                     Send
                     <!-- prettier-ignore -->
@@ -153,17 +153,6 @@
                     </svg>
                   </button>
                 </ItemCard>
-
-                <!-- 카드 갯수 -->
-                <span
-                  class="absolute -top-2 -right-2 badge badge-accent px-1 rounded-md text-xs font-bold text-base-100"
-                >
-                  <!-- prettier-ignore -->
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
-                    <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="white"/>
-                  </svg>
-                  {{ asset[1].amount }}
-                </span>
               </li>
             </ul>
 
@@ -301,18 +290,19 @@ import axios from 'axios'
 import { copy, truncate } from '@/constant/utils'
 import { setupModal } from '@/setups/modal.composition'
 
-const toAmounts = ref<number>(0)
+// env로 이동
+const nftContractAddress = DEPLOYED.nft
+const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL
+//
 
 const route = useRoute()
 const router = useRouter()
 
 const assetStore = useAssetStore()
 const accountStore = useAccountStore()
-const modalStore = useModalStore()
 
-const { setSendAsset } = assetStore
-
-const { asset6551, detail1155Asset, detail721Asset, toAddress } = storeToRefs(assetStore)
+const { asset6551, detail1155Asset, detail721Asset, tbaAsset20, tbaAsset721, tbaAsset1155 } =
+  storeToRefs(assetStore)
 const { isSigned } = storeToRefs(accountStore)
 
 const { convert721to6551, checkOwner } = setupAsset()
@@ -324,32 +314,14 @@ const tokenId = ref<bigint>(0n)
 const notIncluded = ref(true)
 
 const tbaWalletAddress = ref<string>('')
-const tbaAsset20 = ref<any>()
-const tbaAsset721 = ref<any>()
-const tbaAsset1155 = ref<any>()
 
 const assetOwner = ref<string>('')
-const nftContractAddress = DEPLOYED.nft
-
-const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL
 
 const { showSendModal, showTokenSendModal } = setupModal()
 
 const is6551 = computed(() => ercType.value === 6551)
 const is1155 = computed(() => ercType.value === 1155)
 const is721 = computed(() => ercType.value === 721)
-
-// const isConverted = async () => {
-//   const wallet = new MetamaskService()
-//   await wallet.init()
-
-//   const provider = await wallet.getWeb3Provider()
-//   const signer = await provider.getSigner()
-//   const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-//   const is6551 = await reg.accountsOf(DEPLOYED.nft, tokenId.value)
-
-//   return is6551.length !== 0
-// }
 
 const detailAsset = computed(() => {
   return ercType.value === 721
@@ -366,6 +338,7 @@ const tbaAssetisEmpty = computed(
     tbaAsset1155.value.size === 0
 )
 
+const tbaAssetSize = computed(() => tbaAsset1155.value.size + tbaAsset721.value.size)
 const { check721Asset, check1155Asset } = setupAsset()
 
 onMounted(async () => {
@@ -401,7 +374,6 @@ watch(
       const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
 
       assetOwner.value = await nft.ownerOf(tokenId.value)
-      // const tbaWalletAddress = await reg.account(
       tbaWalletAddress.value = await reg.account(
         DEPLOYED.tAcc,
         Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),

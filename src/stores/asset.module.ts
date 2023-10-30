@@ -9,6 +9,10 @@ export const setupAssetStore = () => {
   const asset6551 = ref<any>(new Map())
   const asset20 = ref<any>(new Map())
 
+  const tbaAsset20 = ref<any>()
+  const tbaAsset721 = ref<any>()
+  const tbaAsset1155 = ref<any>()
+
   const detail1155Asset = ref<any>(new Map())
   const detail721Asset = ref<any>(new Map())
 
@@ -26,8 +30,14 @@ export const setupAssetStore = () => {
   const sendErc20Asset = ref<any>()
   const selectedAsset = ref<Map<bigint, any>>(new Map())
 
+  const from6551 = ref<any>(false)
+
   const setTbaMintStep = (data: 1 | 2 | 3 | 4) => {
     tbaMintStep.value = data
+  }
+
+  const setFrom6551 = (data: any) => {
+    from6551.value = data
   }
 
   const setAsset721 = (data: ercAsset) => {
@@ -79,6 +89,11 @@ export const setupAssetStore = () => {
     asset721,
     asset1155,
     asset6551,
+
+    tbaAsset20,
+    tbaAsset721,
+    tbaAsset1155,
+
     detail1155Asset,
     detail721Asset,
 
@@ -89,9 +104,12 @@ export const setupAssetStore = () => {
     toAddress,
     toAmounts,
 
+    from6551,
+
     tbaMintStep,
 
     // modifiers
+    setFrom6551,
     setAsset721,
     setAsset1155,
     setAsset6551,
