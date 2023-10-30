@@ -26,9 +26,7 @@
           props.hasCheckbox ? 'opacity-80' : 'opacity-100'
         ]"
       />
-      <!-- </router-link> -->
     </a>
-
     <!-- badge -->
     <template v-if="props.hasBadge">
       <!-- badge: 6551 -->
@@ -59,7 +57,8 @@
       type="checkbox"
       class="checkbox checkbox-neutral absolute top-3 right-3 rounded-lg bg-base-200/80"
       aria-label="checkbox"
-      :checked="checkedList"
+      :checked="addAsset.has(props.asset?.[0])"
+      @click="selectAddAsset"
     />
 
     <!-- information -->
@@ -125,11 +124,24 @@
 
 <script lang="ts" setup>
 import { copy, truncate } from '@/constant/utils'
+import { useAssetStore } from '@/stores/asset.module'
+import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 
-const checkedList = ref<any[]>([])
+const assetStore = useAssetStore()
+const { addAsset } = storeToRefs(assetStore)
+
+const selectAddAsset = () => {
+  addAsset.value.set(props.asset[0], props.asset[1])
+
+  console.log(addAsset.value, ': addAsset')
+  // const addAssetKeyArr: bigint[] = []
+  // addAsset.value.forEach((value: any, key: bigint) => addAssetKeyArr.push(key))
+  // console.log(addAssetKeyArr, 'addAssetKeyArr')
+}
 
 const props = defineProps({
+  asset: { type: null },
   isSmall: {
     type: Boolean,
     default: false
@@ -142,6 +154,7 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  checked: { type: Boolean },
   ercType: {
     type: Number,
     default: 721
@@ -162,6 +175,10 @@ const props = defineProps({
   walletAddress: {
     type: String,
     default: ''
+  },
+  linkDisable: {
+    type: Boolean,
+    default: false
   }
 })
 </script>

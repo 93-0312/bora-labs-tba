@@ -20,7 +20,10 @@
           <button
             class="min-h-0 h-9 col-span-4 btn btn-primary btn-outline rounded-lg text-[11px] md:h-12 md:text-base"
             type="button"
-            @click="addModalRef?.showModal()"
+            @click="
+              showAddModal(asset[1]?.metadata.walletAddress),
+                setToAddress(asset[1]?.metadata.walletAddress)
+            "
           >
             Add NFT
           </button>
@@ -87,7 +90,7 @@
 
   <!-- modal: add nft -->
   <SendModal />
-  <AddModal @modal-ref="(ref) => setAddModalRef(ref.value)" :modalAddRef="addModalRef" />
+  <AddModal />
 </template>
 
 <script setup lang="ts">
@@ -96,7 +99,6 @@ import { useAssetStore } from '@/stores/asset.module.ts'
 import { storeToRefs } from 'pinia'
 
 import { useAccountStore } from '@/stores/account.module.ts'
-import { useModalStore } from '@/stores/modal.module.ts'
 import AddModal from './AddModal.vue'
 import SendModal from './SendModal.vue'
 import { setupAsset } from '@/setups/asset.composition'
@@ -105,16 +107,13 @@ import { setupModal } from '@/setups/modal.composition'
 
 const accountStore = useAccountStore()
 const assetStore = useAssetStore()
-const modalStore = useModalStore()
 
 const { convert721to6551, checkAsset } = setupAsset()
 const { isSigned } = storeToRefs(accountStore)
 const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore)
-
+const { setToAddress } = assetStore
 // modal
-const { addModalRef } = storeToRefs(modalStore)
-const { setAddModalRef } = modalStore
-const { showSendModal } = setupModal()
+const { showSendModal, showAddModal } = setupModal()
 
 onMounted(async () => await checkAsset())
 </script>

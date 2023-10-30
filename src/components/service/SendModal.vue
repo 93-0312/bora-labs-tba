@@ -111,10 +111,10 @@ const props = defineProps({
 
 const emit = defineEmits(['modalRef'])
 
-const { sendNft, toAmounts } = setupAsset()
+const { sendNft } = setupAsset()
 const assetStore = useAssetStore()
 
-const { sendAsset, toAddress } = storeToRefs(assetStore)
+const { sendAsset, toAddress, toAmounts } = storeToRefs(assetStore)
 
 const confirmSend = async (sendToAddress: string, sendAsset: any) => {
   await sendNft(sendToAddress, sendAsset, sendModalRef)
@@ -138,10 +138,11 @@ const isAmountError = computed(() => {
 })
 
 const isValidAddress = (address: string) => {
-  if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
+  if (/^(0x)[0]{40}$/.test(address)) {
+    return false
+  } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
     return true
   }
-
   return false
 }
 

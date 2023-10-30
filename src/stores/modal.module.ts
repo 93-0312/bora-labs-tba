@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 export const setupModalStore = () => {
   const addModalRef = ref<HTMLDialogElement>()
   const sendModalRef = ref<HTMLDialogElement>()
+  const sendTokenModalRef = ref<HTMLDialogElement>()
 
   const sendLoadingModalRef = ref<HTMLDialogElement>()
   const addLoadingModalRef = ref<HTMLDialogElement>()
@@ -42,6 +43,7 @@ export const setupModalStore = () => {
     // references
     addModalRef,
     sendModalRef,
+    sendTokenModalRef,
     radialModalRef,
     stepModalRef,
     sendLoadingModalRef,

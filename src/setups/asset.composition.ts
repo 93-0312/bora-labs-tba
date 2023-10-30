@@ -14,17 +14,14 @@ export const setupAsset = () => {
   const accountStore = useAccountStore()
   const modalStore = useModalStore()
   const { isSigned } = storeToRefs(accountStore)
-  const { setAsset721, setAsset1155, setAsset6551, setAsset20 } = assetStore
-  const { hasAsset, detail1155Asset, tbaMintStep } = storeToRefs(assetStore)
+  const { setAsset721, setAsset1155, setAsset6551, setAsset20, addAsset } = assetStore
+  const { hasAsset, detail1155Asset, tbaMintStep, toAddress, toAmounts } = storeToRefs(assetStore)
 
   const { sendLoadingModalRef, radialModalRef, progressTime, stepModalRef } =
     storeToRefs(modalStore)
 
   const { setShowToast, setToastMsg } = modalStore
   const { connectWallet } = setupAccount()
-
-  const toAddress = ref<string>('')
-  const toAmounts = ref<string>('')
 
   const createWallet = async () => {
     if (isSigned.value) {
@@ -245,6 +242,10 @@ export const setupAsset = () => {
     setAsset20({ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount })
   }
 
+  const send20Token = async (toAddress: string, a: any, b: any) => {
+    console.log(toAddress)
+  }
+
   const sendNft = async (toAddress: string, asset: any, upperModalRef: any) => {
     const assetType = asset[1].metadata.type
 
@@ -266,7 +267,7 @@ export const setupAsset = () => {
       const progressInterval = setInterval(
         () =>
           (progressTime.value =
-            progressTime.value <= 100 ? progressTime.value + 0.07 : progressTime.value),
+            progressTime.value <= 100 ? progressTime.value + 0.05 : progressTime.value),
         10
       )
 
@@ -283,9 +284,18 @@ export const setupAsset = () => {
     }
 
     if (assetType === 1155) {
+      console.log(asset, 'asset')
+      console.log(toAmounts.value, 'toAmounts.value')
       const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
 
-      const tx = await mts.safeTransferFrom(address, toAddress, asset[0], toAmounts.value, '0x')
+      const tx = await mts.safeTransferFrom(
+        address,
+        toAddress,
+        asset[0],
+        BigInt(toAmounts.value),
+        '0x'
+      )
+      // const tx = await mts.safeTransferFrom(address, toAddress, asset[0], toAmounts.value, '0x')
       upperModalRef.value.close()
       sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
 
@@ -293,7 +303,7 @@ export const setupAsset = () => {
       const progressInterval = setInterval(
         () =>
           (progressTime.value =
-            progressTime.value <= 100 ? progressTime.value + 0.07 : progressTime.value),
+            progressTime.value <= 100 ? progressTime.value + 0.05 : progressTime.value),
         10
       )
 
@@ -316,6 +326,52 @@ export const setupAsset = () => {
 
     setShowToast(true)
     setToastMsg('Send Completed!')
+  }
+
+  const addNft = async (toAddress: string, asset: any, upperModalRef: any) => {
+    const wallet = new MetamaskService()
+    await wallet.init()
+    const provider = await wallet.getWeb3Provider()
+    const address = await wallet.getAddress()
+    const signer = await provider.getSigner()
+
+    const assetIdList: bigint[] = []
+    const assetAmountsList: bigint[] = []
+
+    addAsset.forEach((value: any, key: bigint) => {
+      assetIdList.push(key), assetAmountsList.push(value.amount), console.log(value.amount)
+    })
+
+    console.log(assetAmountsList)
+    console.log(assetIdList)
+
+    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+
+    const tx = await mts.safeBatchTransferFrom(
+      address,
+      toAddress,
+      assetIdList,
+      assetAmountsList,
+      '0x'
+    )
+    upperModalRef.value.close()
+    sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
+
+    progressTime.value = 0
+    const progressInterval = setInterval(
+      () =>
+        (progressTime.value =
+          progressTime.value <= 100 ? progressTime.value + 0.05 : progressTime.value),
+      10
+    )
+
+    await waitTransaction(provider, tx)
+
+    progressTime.value = 100
+    clearInterval(progressInterval)
+    sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
+
+    await checkAsset()
   }
 
   const convert721to6551 = async (nft721Id: bigint, initMint?: boolean) => {
@@ -342,7 +398,7 @@ export const setupAsset = () => {
       const progressInterval = setInterval(
         () =>
           (progressTime.value =
-            progressTime.value <= 100 ? progressTime.value + 0.07 : progressTime.value),
+            progressTime.value <= 100 ? progressTime.value + 0.05 : progressTime.value),
         10
       )
 
@@ -441,6 +497,8 @@ export const setupAsset = () => {
     tbaMint,
     checkAsset,
     sendNft,
+    addNft,
+    send20Token,
     check721Asset,
     check1155Asset,
     checkOwner,

@@ -13,6 +13,7 @@ export const setupAssetStore = () => {
   const detail721Asset = ref<any>(new Map())
 
   const toAddress = ref<string>('')
+  const toAmounts = ref<string>('')
 
   const tbaMintStep = ref<1 | 2 | 3 | 4>(1)
 
@@ -20,7 +21,9 @@ export const setupAssetStore = () => {
     () => asset721.value.size > 0 || asset1155.value.size > 0 || asset6551.value.size > 0
   )
 
+  const addAsset = ref<any>(new Map())
   const sendAsset = ref<any>()
+  const sendErc20Asset = ref<any>()
   const selectedAsset = ref<Map<bigint, any>>(new Map())
 
   const setTbaMintStep = (data: 1 | 2 | 3 | 4) => {
@@ -44,11 +47,22 @@ export const setupAssetStore = () => {
     sendAsset.value = data
   }
 
+  const setAddAsset = (data: any) => {
+    addAsset.value = data
+  }
+
+  const setSendErc20Asset = (data: any) => {
+    sendErc20Asset.value = data
+  }
+
   const setSelectedAsset = (data: any) => {
     selectedAsset.value.set = data
   }
 
   const setToAddress = (data: any) => {
+    toAddress.value = data
+  }
+  const setToAmounts = (data: any) => {
     toAddress.value = data
   }
 
@@ -68,9 +82,12 @@ export const setupAssetStore = () => {
     detail1155Asset,
     detail721Asset,
 
+    addAsset,
     sendAsset,
+    sendErc20Asset,
     selectedAsset,
     toAddress,
+    toAmounts,
 
     tbaMintStep,
 
@@ -80,8 +97,11 @@ export const setupAssetStore = () => {
     setAsset6551,
     setAsset20,
     setSendAsset,
+    setAddAsset,
+    setSendErc20Asset,
     setSelectedAsset,
     setToAddress,
+    setToAmounts,
     resetAsset,
 
     setTbaMintStep

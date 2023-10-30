@@ -6,19 +6,36 @@ export const setupModal = () => {
   const assetStore = useAssetStore()
   const modalStore = useModalStore()
 
-  const { setSendAsset } = assetStore
-  const { sendModalRef } = storeToRefs(modalStore)
+  const { setSendAsset, setSendErc20Asset, setAddAsset } = assetStore
+  const { addModalRef, sendModalRef, sendTokenModalRef } = storeToRefs(modalStore)
 
-  const { toAddress } = storeToRefs(assetStore)
+  const { toAddress, toAmounts } = storeToRefs(assetStore)
 
   const showSendModal = (sendAsset: any) => {
     toAddress.value = ''
+    toAmounts.value = ''
     setSendAsset(sendAsset)
     sendModalRef.value?.showModal()
     return
   }
+  const showAddModal = (addToAddress: string) => {
+    toAddress.value = ''
+    toAmounts.value = ''
+    addModalRef.value?.showModal()
+    return
+  }
+
+  const showTokenSendModal = (sendErc20Asset: any) => {
+    toAddress.value = ''
+    toAmounts.value = ''
+    setSendErc20Asset(sendErc20Asset)
+    sendTokenModalRef.value?.showModal()
+    return
+  }
 
   return {
-    showSendModal
+    showAddModal,
+    showSendModal,
+    showTokenSendModal
   }
 }

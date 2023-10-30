@@ -1,5 +1,11 @@
 <template>
-  <ModalLayout @modal-ref="(ref) => (modalRef = ref.value)" title="Send Token" btn-name="Send">
+  <ModalLayout
+    @modal-ref="(ref) => (sendTokenModalRef = ref.value)"
+    title="Send Token"
+    btn-name="Send"
+    :btn-click="async () => await confirmSendToken(toAddress, sendAsset)"
+    :btnDisable="isSendBtnDisable"
+  >
     <div class="form-control w-full mt-4">
       <label class="label">
         <span class="label-text md:text-base">How many token are you sending?</span>
@@ -26,24 +32,24 @@
         <!-- input error시 class에 input-error 추가  -->
         <input
           type="text"
-          value="1.0000 tBORA"
           :class="[
             'input',
             'input-bordered',
             'w-full',
             'pl-20',
             'text-right',
-            { 'input-error': isInputError }
+            { 'input-error': isAmountError }
           ]"
           aria-label="token input"
+          v-model="toAmounts"
         />
       </div>
       <!-- input error시 노출 -->
       <label class="label">
         <span class="label-text-alt text-secondary-focus md:text-sm"
-          >Balance: 92.3245 tBORA</span
+          >Balance: {{ sendErc20Asset?.formatEtherAmount }} {{ sendErc20Asset?.tknSymbol }}</span
         >
-        <span v-if="isInputError" class="label-text-alt text-error md:text-sm">
+        <span v-if="isAmountError" class="label-text-alt text-error md:text-sm">
           Exceed balance
         </span>
       </label>
@@ -59,6 +65,7 @@
         placeholder="ex. 0x1234..."
         :class="['input', 'input-bordered', 'w-full', { 'input-error': isInputError }]"
         maxlength="42"
+        v-model="toAddress"
       />
       <!-- input error시 노출 -->
       <label v-if="isInputError" class="label pb-1">
@@ -76,51 +83,81 @@
 
 <script setup lang="ts">
 import ModalLayout from '@/components/ui/ModalLayout.vue'
-import { computed, onBeforeMount, onMounted, ref } from 'vue'
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import { setupAsset } from '@/setups/asset.composition'
 import { storeToRefs } from 'pinia'
 import { useAssetStore } from '@/stores/asset.module'
+import { useModalStore } from '@/stores/modal.module'
+
+const modalStore = useModalStore()
+
+const { sendTokenModalRef } = storeToRefs(modalStore)
 
 const modalRef = ref<HTMLDialogElement>()
 
 const isSelected = ref(false)
 
 const props = defineProps({
-  modalSendTokenRef: HTMLDialogElement,
   isDisabled: { type: Boolean }
 })
 
 const emit = defineEmits(['modalRef'])
 
-const { sendNft, toAddress } = setupAsset()
-// const { sendNft } = setupAsset()
+const { send20Token } = setupAsset()
 const assetStore = useAssetStore()
 
-const { sendAsset } = storeToRefs(assetStore)
+const { sendAsset, toAmounts, toAddress, sendErc20Asset } = storeToRefs(assetStore)
 
-const confirmSend = async (sendToAddress: string, sendAsset: any) => {
-  await sendNft(sendToAddress, sendAsset)
-  props.modalSendTokenRef?.close()
-  toAddress.value = ''
+const confirmSendToken = async (sendToAddress: string, sendAsset: any) => {
+  await send20Token(sendToAddress, sendAsset, sendTokenModalRef)
 }
 
 const isInputError = computed(() => {
-  return !isValidAddress(toAddress.value)
+  return toAddress.value !== '' && !isValidAddress(toAddress.value)
 })
 
 const isValidAddress = (address: string) => {
-  if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
+  if (/^(0x)[0]{40}$/.test(address)) {
+    return false
+  } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
     return true
   }
-
   return false
 }
 
-onMounted(() => {
-  emit('modalRef', modalRef)
+const isAmountError = computed(() => {
+  console.log(toAmounts.value)
+  console.log(sendErc20Asset.value?.formatEtherAmount)
+  return toAmounts.value > sendErc20Asset.value?.formatEtherAmount
 })
 
-onBeforeMount(() => {
-  toAddress.value = ''
+const isSendBtnDisable = computed(() => {
+  return (
+    isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
+  )
+})
+
+watch(
+  () => isSelected.value,
+  (isSelected: boolean) => {
+    if (isSelected) {
+      toAmounts.value = sendErc20Asset.value?.formatEtherAmount
+    }
+    // if (!isSelected) {
+    //   toAmounts.value = ''
+    // }
+  }
+)
+
+watch(
+  () => toAmounts.value,
+  (toAmounts: string) => {
+    if (toAmounts === sendErc20Asset.value?.formatEtherAmount) isSelected.value = true
+    else isSelected.value = false
+  }
+)
+
+onMounted(() => {
+  emit('modalRef', modalRef)
 })
 </script>

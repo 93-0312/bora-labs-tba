@@ -117,7 +117,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
                     <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="white"/>
                   </svg>
-                  3
+                  {{ asset[1].amount }}
                 </span>
               </li>
               <li v-for="asset in tbaAsset1155" :key="Number(asset[0])" class="relative">
@@ -150,7 +150,7 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
                     <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="white"/>
                   </svg>
-                  3
+                  {{ asset[1].amount }}
                 </span>
               </li>
             </ul>
@@ -184,7 +184,7 @@
             <button
               class="btn btn-neutral btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
               type="button"
-              @click="modalSendTokenRef?.showModal()"
+              @click="showTokenSendModal(asset)"
               aria-label="send"
             >
               <!-- prettier-ignore -->
@@ -254,11 +254,12 @@
       />
     </section>
 
-    <AddModal @modal-ref="(ref) => (modalAddRef = ref.value)" :modalAddRef="modalAddRef" />
+    <AddModal />
     <SendModal />
     <SendTokenModal
       @modal-ref="(ref) => (modalSendTokenRef = ref.value)"
       :modalSendTokenRef="modalSendTokenRef"
+      :isDisabled="false"
     />
 
     <ModalLoading
@@ -291,6 +292,8 @@ import axios from 'axios'
 import { copy, truncate } from '@/constant/utils'
 import { setupModal } from '@/setups/modal.composition'
 
+const toAmounts = ref<number>(0)
+
 const route = useRoute()
 const router = useRouter()
 
@@ -321,7 +324,7 @@ const nftContractAddress = DEPLOYED.nft
 
 const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL
 
-const { showSendModal } = setupModal()
+const { showSendModal, showTokenSendModal } = setupModal()
 
 const is6551 = computed(() => ercType.value === 6551)
 const is1155 = computed(() => ercType.value === 1155)
