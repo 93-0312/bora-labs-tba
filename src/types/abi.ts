@@ -46,12 +46,3 @@ export const ITBA = [
   'function isValidSigner(address signer, bytes calldata context) external view returns (bytes4 magicValue)',
   'function execute(address to, uint256 value, bytes calldata data, uint256 operation) external payable returns (bytes memory result)'
 ]
-
-// DEV TEST CONTRACT JH
-export const DEPLOYED = {
-  nft: '0x9525a1fd87bDe37BD24f7bE188F3Ec7E275e4766',
-  tkn: '0x34A43a4916bd03b24f9549284E2984138f5D19F9',
-  mts: '0x9e7e9eBcACbeCBE503ab5aAcF0e958608494D0B3',
-  tAcc: '0x98133B32bc4E5c9cFB95c4276CB9D694004bc1C6',
-  tReg: '0xEBCc623d01F241F6182eB007D658864C59bd8d54'
-} as const

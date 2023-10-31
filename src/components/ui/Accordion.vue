@@ -20,15 +20,17 @@
         <dl v-if="props.isInfo" class="p-4 grid grid-cols-7 text-sm md:text-base md:p-5">
           <dt class="col-span-2 my-2 text-secondary-focus font-medium">Owner</dt>
           <dd class="col-span-5 my-2 text-right break-all">
-            0xEB53f06D54BEADf63A53C642D22bf4531a389e3F
+            {{ owner }}
           </dd>
           <dt class="col-span-2 my-2 text-secondary-focus font-medium">Chain</dt>
-          <dd class="col-span-5 my-2 text-right break-all">Bora Testnet</dd>
+          <dd class="col-span-5 my-2 text-right break-all">
+            {{ chainName }}
+          </dd>
           <dt class="col-span-2 my-2 text-secondary-focus font-medium">Token ID</dt>
-          <dd class="col-span-5 my-2 text-right break-all">1234</dd>
+          <dd class="col-span-5 my-2 text-right break-all">{{ TokenId }}</dd>
           <dt class="col-span-2 my-2 text-secondary-focus font-medium">Contract ID</dt>
           <dd class="col-span-5 my-2 text-right break-all">
-            0xEB53f06D54BEADf63A53C642D22bf4531a389e3F
+            {{ ContractAddress }}
           </dd>
         </dl>
 
@@ -56,6 +58,7 @@ const props = defineProps({
 })
 
 const showContents = ref(false)
+const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME
 
 onMounted(() => (showContents.value = props.isInfo ? false : true))
 </script>

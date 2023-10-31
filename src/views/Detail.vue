@@ -155,13 +155,6 @@
                 </ItemCard>
               </li>
             </ul>
-
-            <!-- <button
-              class="btn btn-primary btn-sm block mt-3 ml-auto rounded-lg text-xs md:btn-md md:mt-4 md:text-md"
-              type="button"
-            >
-              + Add NFT
-            </button> -->
           </template>
         </Accordion>
 
@@ -271,27 +264,29 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onUpdated, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+
+import { setupAsset } from '@/setups/asset.composition'
+import { setupModal } from '@/setups/modal.composition'
+import { useAssetStore } from '@/stores/asset.module.ts'
 import Accordion from '@/components/ui/Accordion.vue'
 import ItemCard from '@/components/service/ItemCard.vue'
-import { useRoute, useRouter } from 'vue-router'
-import { setupAsset } from '@/setups/asset.composition'
-import { useAssetStore } from '@/stores/asset.module.ts'
-import { useAccountStore } from '@/stores/account.module.ts'
-import { storeToRefs } from 'pinia'
 import AddModal from '@/components/service/AddModal.vue'
 import SendModal from '@/components/service/SendModal.vue'
 import SendTokenModal from '@/components/service/SendTokenModal.vue'
 import ModalLoading from '@/components/ui/ModalLoading.vue'
-import { useModalStore } from '@/stores/modal.module'
-import MetamaskService from '@/services/metamask.service'
-import { DEPLOYED, IERC1155, IERC20, IERC721, IREG } from '@/types/abi'
-import { Contract, ethers } from 'ethers'
-import axios from 'axios'
+
 import { copy, truncate } from '@/constant/utils'
-import { setupModal } from '@/setups/modal.composition'
 
 // env로 이동
-const nftContractAddress = DEPLOYED.nft
+const nftContractAddress = computed(() =>
+  ercType.value === 721
+    ? import.meta.env.VITE_BORALABS_NFT_CONTRACT
+    : ercType.value === 6551
+    ? import.meta.env.VITE_BORALABS_TACC_CONTRACT
+    : import.meta.env.VITE_BORALABS_MTS_CONTRACT
+)
 const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL
 //
 
@@ -299,25 +294,26 @@ const route = useRoute()
 const router = useRouter()
 
 const assetStore = useAssetStore()
-const accountStore = useAccountStore()
 
 const { asset6551, detail1155Asset, detail721Asset, tbaAsset20, tbaAsset721, tbaAsset1155 } =
   storeToRefs(assetStore)
-const { isSigned } = storeToRefs(accountStore)
 
-const { convert721to6551, checkOwner } = setupAsset()
-
-const modalConvertRef = ref<HTMLDialogElement>()
+const { convert721to6551, checkOwner, checkDetailAsset, assetOwner } = setupAsset()
+const { showSendModal, showTokenSendModal } = setupModal()
 
 const ercType = ref<number>(0)
 const tokenId = ref<bigint>(0n)
 const notIncluded = ref(true)
-
+const isCopy = ref(true)
 const tbaWalletAddress = ref<string>('')
 
-const assetOwner = ref<string>('')
+const modalSendTokenRef = ref<HTMLDialogElement>()
+const modalConvertRef = ref<HTMLDialogElement>()
 
-const { showSendModal, showTokenSendModal } = setupModal()
+const changeIcon = () => {
+  isCopy.value = false
+  setTimeout(() => (isCopy.value = true), 3000)
+}
 
 const is6551 = computed(() => ercType.value === 6551)
 const is1155 = computed(() => ercType.value === 1155)
@@ -339,7 +335,6 @@ const tbaAssetisEmpty = computed(
 )
 
 const tbaAssetSize = computed(() => tbaAsset1155.value.size + tbaAsset721.value.size)
-const { check721Asset, check1155Asset } = setupAsset()
 
 onMounted(async () => {
   ercType.value = route?.meta.type as number
@@ -353,90 +348,10 @@ onMounted(async () => {
 onUpdated(() => (ercType.value = route?.meta.type as number))
 
 watch(
-  () => isSigned.value,
-  (isSigned: boolean) => {
-    return !isSigned && router.replace('/')
-  },
-  { immediate: true }
-)
-
-watch(
   () => ercType.value,
   async (ercType: number) => {
-    if (ercType === 6551) {
-      const wallet = new MetamaskService()
-      await wallet.init()
-      const provider = await wallet.getWeb3Provider()
-      const signer = await provider.getSigner()
-
-      const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-      const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-      const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
-
-      assetOwner.value = await nft.ownerOf(tokenId.value)
-      tbaWalletAddress.value = await reg.account(
-        DEPLOYED.tAcc,
-        Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-        DEPLOYED.nft,
-        tokenId.value,
-        0n
-      )
-
-      const tknAmountWei = await tkn.balanceOf(tbaWalletAddress.value)
-      const tknSymbol = await tkn.symbol()
-      const tknDecimals = await tkn.decimals()
-      const formatEtherAmount = ethers.formatEther(tknAmountWei)
-
-      const result = await Promise.all([
-        check721Asset(tbaWalletAddress.value),
-        check1155Asset(tbaWalletAddress.value)
-      ])
-
-      const asset721 = result[0]['asset721']
-      const asset1155 = result[1]
-
-      tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
-      tbaAsset721.value = asset721
-      tbaAsset1155.value = asset1155
-    } else if (ercType === 721) {
-      const wallet = new MetamaskService()
-      await wallet.init()
-      const provider = await wallet.getWeb3Provider()
-      const signer = await provider.getSigner()
-
-      const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-      assetOwner.value = await nft.ownerOf(tokenId.value)
-      const uri = await nft.tokenURI(BigInt(tokenId.value))
-      const metadata = await axios.get(uri)
-
-      detail721Asset.value.set(tokenId.value, { metadata: { ...metadata.data, type: 721 } })
-    } else if (ercType === 1155) {
-      const wallet = new MetamaskService()
-      await wallet.init()
-      const provider = await wallet.getWeb3Provider()
-      const signer = await provider.getSigner()
-
-      const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
-
-      const uri = await mts.uri(BigInt(tokenId.value))
-      const metadata = await axios.get(uri)
-      const amount = await mts.balanceOf(signer.getAddress(), tokenId.value)
-
-      detail1155Asset.value.set(tokenId.value, {
-        metadata: { ...metadata.data, type: 1155 },
-        amount
-      })
-    }
+    await checkDetailAsset(ercType, tokenId.value)
   },
   { immediate: true }
 )
-
-const modalSendTokenRef = ref<HTMLDialogElement>()
-
-const isCopy = ref(true)
-
-const changeIcon = () => {
-  isCopy.value = false
-  setTimeout(() => (isCopy.value = true), 3000)
-}
 </script>

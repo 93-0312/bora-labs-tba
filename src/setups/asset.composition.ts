@@ -1,20 +1,20 @@
-import MetamaskService from '@/services/metamask.service'
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import axios from 'axios'
+import { Contract, ethers } from 'ethers'
+import { setupAccount } from '@/setups/account.composition'
 import { useAccountStore } from '@/stores/account.module.ts'
 import { useAssetStore } from '@/stores/asset.module.ts'
-import { Contract, ethers } from 'ethers'
-import { DEPLOYED, IERC1155, IERC20, IERC721, IREG, ITBA } from '@/types/abi'
-import axios from 'axios'
-import { ref } from 'vue'
 import { useModalStore } from '@/stores/modal.module'
-import { storeToRefs } from 'pinia'
-import { setupAccount } from '@/setups/account.composition'
+import MetamaskService from '@/services/metamask.service'
+import { IERC1155, IERC20, IERC721, IREG, ITBA } from '@/types/abi'
 
 export const setupAsset = () => {
   const assetStore = useAssetStore()
   const accountStore = useAccountStore()
   const modalStore = useModalStore()
   const { isSigned } = storeToRefs(accountStore)
-  const { setAsset721, setAsset1155, setAsset6551, setAsset20, addAsset } = assetStore
+  const { setAsset721, setAsset1155, setAsset6551, setTba20, addAsset } = assetStore
   const {
     hasAsset,
     detail1155Asset,
@@ -24,14 +24,17 @@ export const setupAsset = () => {
     from6551,
     tbaAsset1155,
     tbaAsset20,
+    detail721Asset,
     tbaAsset721
   } = storeToRefs(assetStore)
 
-  const { sendLoadingModalRef, radialModalRef, progressTime, stepModalRef } =
+  const { sendLoadingModalRef, addLoadingModalRef, radialModalRef, progressTime, stepModalRef } =
     storeToRefs(modalStore)
 
   const { setShowToast, setToastMsg } = modalStore
   const { connectWallet } = setupAccount()
+
+  const assetOwner = ref<string>('')
 
   const createWallet = async () => {
     if (isSigned.value) {
@@ -56,10 +59,10 @@ export const setupAsset = () => {
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
-    const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
-    const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
-    const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+    const tkn = new Contract(import.meta.env.VITE_BORALABS_TKN_CONTRACT, IERC20, signer)
+    const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
+    const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
+    const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
 
     // 721mint & convertTo6551
     try {
@@ -75,9 +78,9 @@ export const setupAsset = () => {
       tbaMintStep.value = 3
 
       const walletAddress = await reg.account(
-        DEPLOYED.tAcc,
+        import.meta.env.VITE_BORALABS_TACC_CONTRACT,
         Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-        DEPLOYED.nft,
+        import.meta.env.VITE_BORALABS_NFT_CONTRACT,
         tokensOf721[0],
         0n
       )
@@ -113,7 +116,7 @@ export const setupAsset = () => {
 
     try {
       if (ercType === 721 || ercType === 6551) {
-        const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+        const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
 
         const ownerAddress = await nft.ownerOf(id)
         console.log({ ownerAddress })
@@ -121,7 +124,7 @@ export const setupAsset = () => {
 
         return address === ownerAddress
       } else if (ercType === 1155) {
-        const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+        const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
         const tokensOf1155 = await mts.tokensOf(address)
 
         return tokensOf1155[0].includes(id)
@@ -141,8 +144,14 @@ export const setupAsset = () => {
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
-    const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-    const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+    const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
+    const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
+
+    console.log(import.meta.env.VITE_BORALABS_NFT_CONTRACT)
+    console.log(import.meta.env.VITE_BORALABS_NFT_CONTRACT)
+
+    // const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
+    // const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
 
     // const address = signer.getAddress()
 
@@ -153,7 +162,7 @@ export const setupAsset = () => {
 
     const is6551List = await Promise.all(
       tokensOf721.map(async (tokenId: bigint) => {
-        const is6551 = await reg.accountsOf(DEPLOYED.nft, tokenId)
+        const is6551 = await reg.accountsOf(import.meta.env.VITE_BORALABS_NFT_CONTRACT, tokenId)
         return is6551.length !== 0
       })
     )
@@ -177,9 +186,9 @@ export const setupAsset = () => {
       asset6551List.map(async (tokenId: any) => {
         const uri = await nft.tokenURI(tokenId)
         const walletAddress = await reg.account(
-          DEPLOYED.tAcc,
+          import.meta.env.VITE_BORALABS_TACC_CONTRACT,
           Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-          DEPLOYED.nft,
+          import.meta.env.VITE_BORALABS_NFT_CONTRACT,
           tokenId,
           0n
         )
@@ -203,7 +212,7 @@ export const setupAsset = () => {
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
-    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+    const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
     const tokensOf1155 = await mts.tokensOf(address)
 
     const asset1155: Map<bigint, { metadata: any; amount?: bigint }> = new Map()
@@ -229,8 +238,8 @@ export const setupAsset = () => {
     const wallet = new MetamaskService()
     await wallet.init()
     const address = await wallet.getAddress()
-    const provider = await wallet.getWeb3Provider()
-    const signer = await provider.getSigner()
+    // const provider = await wallet.getWeb3Provider()
+    // const signer = await provider.getSigner()
 
     const result = await Promise.all([check721Asset(address), check1155Asset(address)])
 
@@ -238,18 +247,18 @@ export const setupAsset = () => {
     const asset6551 = result[0]['asset6551']
     const asset1155 = result[1]
 
-    setAsset1155(asset1155)
     setAsset721(asset721)
+    setAsset1155(asset1155)
     setAsset6551(asset6551)
 
-    const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
+    // user's erc-20 data
+    // const tkn = new Contract(import.meta.env.VITE_BORALABS_TKN_CONTRACT, IERC20, signer)
 
-    const tknAmountWei = await tkn.balanceOf(address)
-    const tknSymbol = await tkn.symbol()
-    const tknDecimals = await tkn.decimals()
-    const formatEtherAmount = ethers.formatEther(tknAmountWei)
-
-    setAsset20({ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount })
+    // const tknAmountWei = await tkn.balanceOf(address)
+    // const tknSymbol = await tkn.symbol()
+    // const tknDecimals = await tkn.decimals()
+    // const formatEtherAmount = ethers.formatEther(tknAmountWei)
+    // setAsset20({ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount })
   }
 
   const send20Token = async (asset: any, upperModalRef: any) => {
@@ -258,28 +267,30 @@ export const setupAsset = () => {
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
-    const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-    const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
-    const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
-    console.log(from6551.value?.tokenId)
+    const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
+    const tkn = new Contract(import.meta.env.VITE_BORALABS_TKN_CONTRACT, IERC20, signer)
+
     const tbaWalletAddress = await reg.account(
-      DEPLOYED.tAcc,
+      import.meta.env.VITE_BORALABS_TACC_CONTRACT,
       Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-      DEPLOYED.nft,
+      import.meta.env.VITE_BORALABS_NFT_CONTRACT,
       from6551.value?.tokenId,
       0n
     )
 
     const encodedFn = tkn.interface.encodeFunctionData('transfer', [
       toAddress.value,
-
       ethers.toBigInt(toAmounts.value)
     ])
 
     const proxy6551 = new Contract(tbaWalletAddress, ITBA, signer)
 
-    const tx = await proxy6551.execute(DEPLOYED.tkn, 0n, encodedFn, 0n)
+    const tx = await proxy6551.execute(
+      import.meta.env.VITE_BORALABS_TKN_CONTRACT,
+      0n,
+      encodedFn,
+      0n
+    )
 
     upperModalRef.value.close()
 
@@ -304,7 +315,7 @@ export const setupAsset = () => {
     const tknDecimals = await tkn.decimals()
     const formatEtherAmount = ethers.formatEther(tknAmountWei)
 
-    tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
+    setTba20([{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }])
 
     await checkAsset()
 
@@ -322,7 +333,7 @@ export const setupAsset = () => {
     const signer = await provider.getSigner()
 
     if (assetType === 721 || assetType === 6551) {
-      const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+      const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
 
       const tx = await nft.transferFrom(address, toAddress, asset[0])
       upperModalRef.value.close()
@@ -350,7 +361,7 @@ export const setupAsset = () => {
     }
 
     if (assetType === 1155) {
-      const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+      const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
 
       const tx = await mts.safeTransferFrom(
         address,
@@ -400,15 +411,15 @@ export const setupAsset = () => {
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
-    const nft = new Contract(DEPLOYED.nft, IERC721, signer)
-    const reg = new Contract(DEPLOYED.tReg, IREG, signer)
-    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
-    const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
+    const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
+    const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
+    const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
+    const tkn = new Contract(import.meta.env.VITE_BORALABS_TKN_CONTRACT, IERC20, signer)
 
     const tbaWalletAddress = await reg.account(
-      DEPLOYED.tAcc,
+      import.meta.env.VITE_BORALABS_TACC_CONTRACT,
       Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-      DEPLOYED.nft,
+      import.meta.env.VITE_BORALABS_NFT_CONTRACT,
       from6551.value?.tokenId,
       0n
     )
@@ -422,7 +433,12 @@ export const setupAsset = () => {
 
       const proxy6551 = new Contract(tbaWalletAddress, ITBA, signer)
 
-      const tx = await proxy6551.execute(DEPLOYED.nft, 0n, encodedFn, 0n)
+      const tx = await proxy6551.execute(
+        import.meta.env.VITE_BORALABS_NFT_CONTRACT,
+        0n,
+        encodedFn,
+        0n
+      )
 
       upperModalRef.value.close()
 
@@ -459,7 +475,12 @@ export const setupAsset = () => {
 
       const proxy6551 = new Contract(tbaWalletAddress, ITBA, signer)
 
-      const tx = await proxy6551.execute(DEPLOYED.mts, 0n, encodedFn, 0n)
+      const tx = await proxy6551.execute(
+        import.meta.env.VITE_BORALABS_MTS_CONTRACT,
+        0n,
+        encodedFn,
+        0n
+      )
 
       upperModalRef.value.close()
       sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
@@ -501,7 +522,7 @@ export const setupAsset = () => {
     const asset721 = result[0]['asset721']
     const asset1155 = result[1]
 
-    tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
+    setTba20([{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }])
     tbaAsset721.value = asset721
     tbaAsset1155.value = asset1155
 
@@ -528,7 +549,7 @@ export const setupAsset = () => {
     console.log(assetAmountsList)
     console.log(assetIdList)
 
-    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+    const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
 
     const tx = await mts.safeBatchTransferFrom(
       address,
@@ -538,7 +559,7 @@ export const setupAsset = () => {
       '0x'
     )
     upperModalRef.value.close()
-    sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
+    addLoadingModalRef.value && addLoadingModalRef?.value.showModal()
 
     progressTime.value = 0
     const progressInterval = setInterval(
@@ -552,9 +573,12 @@ export const setupAsset = () => {
 
     progressTime.value = 100
     clearInterval(progressInterval)
-    sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
+    addLoadingModalRef.value && addLoadingModalRef?.value.close()
 
     await checkAsset()
+
+    setShowToast(true)
+    setToastMsg('Add Completed!')
   }
 
   const convert721to6551 = async (nft721Id: bigint, initMint?: boolean) => {
@@ -564,11 +588,11 @@ export const setupAsset = () => {
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
-    const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+    const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
     const createTx = await reg.createAccount(
-      DEPLOYED.tAcc,
+      import.meta.env.VITE_BORALABS_TACC_CONTRACT,
       Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-      DEPLOYED.nft,
+      import.meta.env.VITE_BORALABS_NFT_CONTRACT,
       Number(nft721Id),
       0n,
       '0x'
@@ -617,9 +641,6 @@ export const setupAsset = () => {
     return
   }
 
-  const detail721Asset = ref<any>(new Map())
-  // const detail1155Asset = ref<any>(new Map())
-
   const checkDetailAsset = async (ercType: number, tokenId: bigint) => {
     const wallet = new MetamaskService()
     await wallet.init()
@@ -627,15 +648,28 @@ export const setupAsset = () => {
     const signer = await provider.getSigner()
 
     if (ercType === 6551) {
-      const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
+
+      const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
+      const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
+      const tkn = new Contract(import.meta.env.VITE_BORALABS_TKN_CONTRACT, IERC20, signer)
+
+      assetOwner.value = await nft.ownerOf(tokenId)
       const tbaWalletAddress = await reg.account(
-        DEPLOYED.tAcc,
+        import.meta.env.VITE_BORALABS_TACC_CONTRACT,
         Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
-        DEPLOYED.nft,
-        // tokenId.value,
+        import.meta.env.VITE_BORALABS_NFT_CONTRACT,
         tokenId,
         0n
       )
+
+      const tknAmountWei = await tkn.balanceOf(tbaWalletAddress)
+      const tknSymbol = await tkn.symbol()
+      const tknDecimals = await tkn.decimals()
+      const formatEtherAmount = ethers.formatEther(tknAmountWei)
 
       const result = await Promise.all([
         check721Asset(tbaWalletAddress),
@@ -645,22 +679,33 @@ export const setupAsset = () => {
       const asset721 = result[0]['asset721']
       const asset1155 = result[1]
 
+      tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
       tbaAsset721.value = asset721
       tbaAsset1155.value = asset1155
     } else if (ercType === 721) {
-      const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
 
+      const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
+      assetOwner.value = await nft.ownerOf(tokenId)
       const uri = await nft.tokenURI(BigInt(tokenId))
       const metadata = await axios.get(uri)
 
       detail721Asset.value.set(tokenId, { metadata: { ...metadata.data, type: 721 } })
     } else if (ercType === 1155) {
-      const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+      const wallet = new MetamaskService()
+      await wallet.init()
+      const provider = await wallet.getWeb3Provider()
+      const signer = await provider.getSigner()
+
+      const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
 
       const uri = await mts.uri(BigInt(tokenId))
       const metadata = await axios.get(uri)
-
       const amount = await mts.balanceOf(signer.getAddress(), tokenId)
+
       detail1155Asset.value.set(tokenId, {
         metadata: { ...metadata.data, type: 1155 },
         amount
@@ -669,8 +714,9 @@ export const setupAsset = () => {
   }
 
   return {
-    toAddress,
-    toAmounts,
+    assetOwner,
+    // toAddress,
+    // toAmounts,
     tbaMintStep,
     createWallet,
     convert721to6551,

@@ -76,6 +76,10 @@ export const setupAssetStore = () => {
     toAddress.value = data
   }
 
+  const setTba20 = (data: any) => {
+    tbaAsset20.value = data
+  }
+
   const resetAsset = () => {
     setAsset721(new Map())
     setAsset1155(new Map())
@@ -120,6 +124,7 @@ export const setupAssetStore = () => {
     setSelectedAsset,
     setToAddress,
     setToAmounts,
+    setTba20,
     resetAsset,
 
     setTbaMintStep

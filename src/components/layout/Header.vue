@@ -19,20 +19,24 @@ import SignBtn from '@/components/service/SignBtn.vue'
 import { setupAsset } from '@/setups/asset.composition'
 import { useAccountStore } from '@/stores/account.module'
 import { storeToRefs } from 'pinia'
-import { onMounted, watch } from 'vue'
+import { watch } from 'vue'
 import icTBA from '@/assets/ic-tba.svg'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const accountStore = useAccountStore()
 
-const { tbaMint, checkAsset, tbaMintStep, tbaMintDesc } = setupAsset()
+const { checkAsset } = setupAsset()
 const { isSigned } = storeToRefs(accountStore)
 
 watch(
   () => isSigned.value,
   async (isSigned: boolean) => {
-    if (isSigned) await checkAsset()
-    else if (!isSigned) {
-    }
+    if (isSigned) {
+      console.log('header watch')
+      await checkAsset()
+    } else !isSigned && router.replace('/')
   },
   { immediate: true }
 )

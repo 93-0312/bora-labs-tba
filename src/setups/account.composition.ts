@@ -24,10 +24,11 @@ export const setupAccount = () => {
   }
 
   const disconnectWallet = () => {
-    setWalletAddress('')
-    confirm('Disconnect Wallet?')
-    resetAsset()
-    setIsSigned(false)
+    if (confirm('Disconnect Wallet?')) {
+      resetAsset()
+      setWalletAddress('')
+      setIsSigned(false)
+    }
   }
 
   return {

@@ -32,7 +32,9 @@
           aria-label="token input"
           v-model="toAmounts"
         />
-        <span class="absolute top-2 right-2 md:top-3 md:right-3">tBORA</span>
+        <span class="absolute top-2 right-2 md:top-3 md:right-3">{{
+          sendErc20Asset?.tknSymbol
+        }}</span>
       </div>
       <!-- input error시 노출 -->
       <label class="label">
