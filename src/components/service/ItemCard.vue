@@ -1,7 +1,7 @@
 <template>
   <div
     :class="[
-      'overflow-hidden relative bg-base-100 rounded-lg border border-base-300 transition translate-y-0 will-change-transform',
+      'overflow-hidden relative bg-base-100 rounded-md border border-base-300 transition translate-y-0 will-change-transform',
       props.isSmall ? '' : 'hover:-translate-y-1 hover:shadow-[0_5px_15px] hover:shadow-neutral/20'
     ]"
   >
@@ -51,7 +51,7 @@
     <input
       v-if="props.hasCheckbox"
       type="checkbox"
-      class="checkbox checkbox-neutral absolute top-3 right-3 rounded-lg bg-base-200/80"
+      class="checkbox checkbox-neutral absolute top-3 right-3 rounded-md bg-neutral/60"
       aria-label="checkbox"
       :checked="addAsset.has(props.asset?.[0])"
       @click="selectAddAsset"
@@ -71,7 +71,7 @@
       >
         {{ truncate(props.walletAddress) }}
         <button
-          class="p-1.5 rounded-lg md:ml-0.5 md:p-2 md:hover:bg-neutral-content"
+          class="p-1.5 rounded-md md:ml-0.5 md:p-2 md:hover:bg-neutral-content"
           type="button"
           aria-label="copy"
           @click="copy(props.walletAddress), changeIcon()"

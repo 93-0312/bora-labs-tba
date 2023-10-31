@@ -2,7 +2,7 @@
   <button
     v-if="!isSigned"
     type="button"
-    class="btn btn-sm btn-neutral rounded-lg text-xs md:btn-md md:text-base"
+    class="btn btn-sm btn-neutral rounded-sm text-xs md:btn-md md:text-base"
     @click="connectWallet"
   >
     <!-- prettier-ignore -->
@@ -17,10 +17,10 @@
     Sign in
   </button>
 
-  <div v-else class="flex items-center h-8 bg-base-200 rounded-lg md:h-12">
+  <div v-else class="flex items-center h-8 bg-base-200 rounded-sm md:h-12">
     <button
       type="button"
-      class="flex items-center ic-metamask w-[136px] h-8 px-2 rounded-l-lg rounded- text-xs transition md:w-40 md:h-12 md:px-3 md:text-sm hover:bg-base-300"
+      class="flex items-center ic-metamask w-[136px] h-8 px-2 rounded-l-sm text-xs transition md:w-40 md:h-12 md:px-3 md:text-sm hover:bg-base-300"
       @click="disconnectWallet"
     >
       <p class="overflow-hidden h-5">
@@ -43,7 +43,7 @@
 
     <button
       type="button"
-      class="h-8 px-1.5 rounded-r-lg md:h-12 md:px-3 hover:bg-base-300"
+      class="h-8 px-1.5 rounded-r-sm md:h-12 md:px-3 hover:bg-base-300"
       @click="copy(walletAddress), changeIcon()"
     >
       <!-- prettier-ignore -->

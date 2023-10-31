@@ -6,41 +6,44 @@
     <span>There is no NFT.</span>
   </section>
 
-  <section v-else>
+  <section v-else class="relative">
     <swiper
       :modules="modules"
-      :slides-per-view="1.2"
-      :space-between="12"
+      :slides-per-view="1.1"
+      :space-between="15"
       :pagination="{ clickable: true, el: '.swiper-custom-pagination' }"
       :navigation="{
         nextEl: '.button-next',
         prevEl: '.button-prev'
       }"
       :loop="true"
+      :breakpoints="{
+        '768': {
+          slidesPerView: 1.2,
+          spaceBetween: 12
+        }
+      }"
     >
       <swiper-slide
         v-for="asset in asset6551"
         :key="Number(asset[0])"
-        class="p-7 bg-[#1c235d] rounded-lg md:p-5"
+        class="p-6 bg-[#1c235d] rounded-md md:p-7"
       >
-        <div class="grid grid-cols-1 gap-7 md:grid-cols-2 md:pr-20 md:gap-10">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-10 md:pr-5">
           <a :href="`/tba/6551/${Number(asset[0])}`">
             <img
               :src="asset[1]?.metadata.image"
               :alt="asset[1]?.metadata.name"
-              class="w-full h-auto rounded-md"
+              class="w-full h-auto rounded-sm"
             />
           </a>
-          <div class="flex flex-col justify-center items-start text-base-100 z-20">
-            <span
-              class="inline-flex items-center justify-center px-2 py-1 bg-warning rounded-lg text-neutral text-xs font-medium md:px-2.5 md:py-1.5 md:text-sm"
-              >ERC-6551</span
-            >
-            <p class="mt-1 font-bold text-2xl md:mt-2 md:text-4xl">{{ asset[1]?.metadata.name }}</p>
-            <p class="flex items-center mt-3 text-sm md:text-md">
+          <div class="flex flex-col justify-center items-start text-base-100">
+            <span class="absolute top-8 left-8 badge badge-warning badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md">ERC-6551</span>
+            <p class="hidden h-7 font-bold text-lg md:mt-2 md:text-4xl md:block">{{ asset[1]?.metadata.name }}</p>
+            <p class="flex items-center h-7 text-xs md:mt-8 md:text-base">
               {{ truncate(asset[1]?.metadata.walletAddress) }}
               <button
-                class="p-1.5 rounded-lg md:ml-1.5 md:p-2 hover:bg-base-100/20"
+                class="p-1.5 rounded-sm md:ml-1.5 md:p-2 hover:bg-base-100/20"
                 type="button"
                 aria-label="copy"
                 @click="copy(asset[1]?.metadata.walletAddress), changeIcon()"
@@ -57,10 +60,10 @@
                 </svg>
               </button>
             </p>
-            <p class="text-base-100/70 text-sm md:text-md">Bora Testnet</p>
-            <div class="grid grid-cols-7 gap-2 w-full mt-5">
+            <p class="text-base-100/70 text-sm md:mt-1 md:text-base">Bora Testnet</p>
+            <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
               <button
-                class="min-h-0 h-9 col-span-4 btn btn-primary rounded-lg text-[11px] md:h-12 md:text-base"
+                class="min-h-0 h-9 col-span-4 btn btn-primary rounded-sm text-[11px] md:h-12 md:text-base"
                 type="button"
                 @click="
                   showAddModal(asset[1]?.metadata.walletAddress)
@@ -70,7 +73,7 @@
                 Add NFT
               </button>
               <button
-                class="min-h-0 h-9 col-span-3 btn rounded-lg text-[11px] md:h-12 md:text-base"
+                class="min-h-0 h-9 col-span-3 btn rounded-sm text-[11px] md:h-12 md:text-base"
                 type="button"
                 @click="showSendModal(asset)"
               >
@@ -80,7 +83,7 @@
           </div>
         </div>
 
-        <div
+        <!-- <div
           class="swiper-button hidden absolute w-full h-12 -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2"
         >
           <button
@@ -97,39 +100,36 @@
           >
             ❯
           </button>
-        </div>
+        </div> -->
       </swiper-slide>
 
       <swiper-slide
         v-for="asset in asset721"
         :key="Number(asset[0])"
-        class="p-7 bg-[#1c235d] rounded-lg md:p-5"
+        class="p-6 bg-[#1c235d] rounded-md md:p-7"
       >
-        <div class="grid grid-cols-1 gap-7 md:grid-cols-2 md:pr-20 md:gap-10">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-10 md:pr-5">
           <a :href="`/tba/721/${Number(asset[0])}`">
             <img
               :src="asset[1]?.metadata.image"
               :alt="asset[1]?.metadata.name"
-              class="w-full h-auto rounded-md"
+              class="w-full h-auto rounded-sm"
             />
           </a>
           <div class="flex flex-col justify-center items-start text-base-100">
-            <span
-              class="inline-flex items-center justify-center px-2 py-1 bg-warning rounded-lg text-neutral text-xs font-medium md:px-2.5 md:py-1.5 md:text-sm"
-              >ERC-721</span
-            >
-            <p class="mt-1 font-bold text-2xl md:mt-2 md:text-4xl">{{ asset[1]?.metadata.name }}</p>
-            <p class="text-base-100/70 text-sm md:text-md">Bora Testnet</p>
-            <div class="grid grid-cols-7 gap-2 w-full mt-8">
+            <span class="absolute top-8 left-8 badge badge-info badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md">ERC-721</span>
+            <p class="h-7 font-bold text-lg md:mt-2 md:text-4xl">{{ asset[1]?.metadata.name }}</p>
+            <p class="text-base-100/70 text-sm md:mt-8 md:text-base">Bora Testnet</p>
+            <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
               <button
-                class="min-h-0 h-9 col-span-4 btn btn-accent rounded-lg text-[11px] md:h-12 md:text-base"
+                class="min-h-0 h-9 col-span-4 btn btn-accent rounded-sm text-[11px] md:h-12 md:text-base"
                 type="button"
                 @click="convert721to6551(asset[0])"
               >
                 Convert to TBA
               </button>
               <button
-                class="min-h-0 h-9 col-span-3 btn rounded-lg text-[11px] md:h-12 md:text-base"
+                class="min-h-0 h-9 col-span-3 btn rounded-sm text-[11px] md:h-12 md:text-base"
                 type="button"
                 @click="showSendModal(asset)"
               >
@@ -138,31 +138,38 @@
             </div>
           </div>
         </div>
-
-        <div
-          class="swiper-button hidden absolute w-full h-12 -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2"
-        >
-          <button
-            type="button"
-            class="button-prev btn btn-circle btn-sm absolute left-1 mr-2 bg-base-100/60 border-none md:btn-md md:left-3"
-            aria-label="previous"
-          >
-            ❮
-          </button>
-          <button
-            type="button"
-            class="button-next btn btn-circle btn-sm absolute right-1 bg-base-100/60 border-none md:btn-md md:right-3"
-            aria-label="next"
-          >
-            ❯
-          </button>
-        </div>
       </swiper-slide>
     </swiper>
 
-    <div class="swiper-custom-pagination" />
+    <div class="absolute -top-[50px] right-0 md:-top-[68px]">
+      <button
+        type="button"
+        class="button-prev btn btn-circle btn-ghost btn-sm mr-0.5 bg-base-100/60 border-none text-2xl md:btn-md hover:bg-neutral-content"
+        aria-label="previous"
+      >
+        <!-- prettier-ignore -->
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" class="w-5 h-auto md:w-6">
+          <path d="M16.62 2.99a1.25 1.25 0 0 0-1.77 0L6.54 11.3a.996.996 0 0 0 0 1.41l8.31 8.31c.49.49 1.28.49 1.77 0s.49-1.28 0-1.77L9.38 12l7.25-7.25c.48-.48.48-1.28-.01-1.76z" fill="currentColor"></path>
+        </svg>
+      </button>
+      <button
+        type="button"
+        class="button-next btn btn-circle btn-ghost btn-sm bg-base-100/60 border-none md:btn-md hover:bg-neutral-content"
+        aria-label="next"
+      >
+        <!-- prettier-ignore -->
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 24 24" class="w-5 h-auto rotate-180 md:w-6">
+          <path d="M16.62 2.99a1.25 1.25 0 0 0-1.77 0L6.54 11.3a.996.996 0 0 0 0 1.41l8.31 8.31c.49.49 1.28.49 1.77 0s.49-1.28 0-1.77L9.38 12l7.25-7.25c.48-.48.48-1.28-.01-1.76z" fill="currentColor"></path>
+        </svg>
+      </button>
+    </div>
 
-    <ul class="grid grid-cols-2 gap-3 mt-20 md:grid-cols-5 md:gap-5">
+    <div class="swiper-custom-pagination flex justify-center w-full h-[6px] mt-5 mb-10 md:mb-16" />
+    <!-- <div
+      class="swiper-custom-progressbar relative overflow-hidden w-1/2 h-1.5 mx-auto mt-8 mb-16 bg-neutral-content rounded-md"
+    /> -->
+
+    <ul class="grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-5">
       <!-- 1155 -->
       <li v-for="asset in asset1155" :key="Number(asset[0])">
         <ItemCard
@@ -174,7 +181,7 @@
         >
           <div class="pt-4 pb-2 md:pt-5 md:pb-3">
             <button
-              class="min-h-0 h-9 btn btn-neutral btn-outline w-full rounded-lg text-[11px] md:btn-base md:h-12 md:text-base"
+              class="min-h-0 h-9 btn btn-neutral btn-outline w-full rounded-sm text-[11px] md:btn-base md:h-12 md:text-base"
               type="button"
               @click="showSendModal(asset)"
             >

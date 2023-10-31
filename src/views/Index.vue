@@ -1,10 +1,10 @@
 <template>
   <main class="px-5 pt-8 md:px-7">
     <section
-      class="w-full max-w-[1200px] mx-auto bg-neutral-content p-3 rounded-xl bg-no-repeat bg-[top_65%_center] bg-[length:auto_135%] md:p-12 md:bg-[top_60%_right_-10%] md:bg-[length:auto_155%]"
+      class="w-full max-w-[1200px] mx-auto bg-neutral-content p-3 rounded-md bg-no-repeat bg-[top_65%_center] bg-[length:auto_135%] md:p-12 md:bg-[top_60%_right_-10%] md:bg-[length:auto_155%]"
       :style="{ backgroundImage: 'url(' + bgImg + ')' }"
     >
-      <div class="p-4 bg-base-100/60 backdrop-blur-sm rounded-lg md:p-8">
+      <div class="p-4 bg-base-100/60 backdrop-blur-sm rounded-sm md:p-8">
         <h1 class="text-3xl font-bold md:text-4xl">WHAT IS TBA?</h1>
         <p class="py-4 text-sm md:text-lg">
           TBA, or a token-bound account, allows you to use NFTs like wallets.
@@ -24,15 +24,15 @@
       <!-- Create wallet -->
       <button
         v-show="!isSigned || !hasAsset"
-        class="flex btn btn-sm btn-primary mt-4 ml-auto rounded-lg text-xs text-base-100 md:btn-md md:mt-9 md:text-base"
+        class="flex btn btn-sm btn-primary mt-4 ml-auto rounded-sm text-xs text-base-100 md:btn-md md:mt-9 md:text-base"
         type="button"
         @click="createWallet()"
       >
+        Create Wallet
         <!-- prettier-ignore -->
         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" class="w-4 h-auto md:w-5">
           <path d="M24 40.0001L21.9 37.8501L34.25 25.5001H8V22.5001H34.25L21.9 10.1501L24 8.00012L40 24.0001L24 40.0001Z" fill="white"/>
         </svg>
-        Create Wallet
       </button>
     </section>
 
@@ -46,7 +46,7 @@
     <!-- About NFT -->
     <section class="mt-10 bg-base-200 -mx-5 py-12 px-5 md:-mx-7 md:mt-12">
       <div
-        class="relative w-full max-w-[1200px] mx-auto bg-base-100/80 rounded-xl border border-base-300"
+        class="relative w-full max-w-[1200px] mx-auto bg-base-100/80 rounded-sm border border-base-300"
       >
         <button
           class="flex items-center justify-between w-full p-5 text-lg font-medium md:p-8 md:text-2xl"
