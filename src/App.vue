@@ -21,7 +21,7 @@
   <ModalLoading
     @modal-ref="(ref) => (addLoadingModalRef = ref.value)"
     :is-radial="true"
-    desc="It takes about 5 minutes. Once complete, you can check in send address."
+    desc="It takes about 5 minutes. Once complete, you can check in TBA address."
     progress-name="Add"
   />
 

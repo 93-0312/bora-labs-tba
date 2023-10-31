@@ -6,7 +6,9 @@
     >
       <div class="p-4 bg-base-100/60 backdrop-blur-sm rounded-lg md:p-8">
         <h1 class="text-3xl font-bold md:text-4xl">WHAT IS TBA?</h1>
-        <p class="py-4 text-sm md:text-lg">ERC-6551은 NFT를 지갑처럼 사용할 수 있는 기능입니다.</p>
+        <p class="py-4 text-sm md:text-lg">
+          TBA, or a token-bound account, allows you to use NFTs like wallets.
+        </p>
         <ul class="text-secondary-focus font-medium text-xs md:text-base">
           <li>
             NFTs integrated with an ERC-6551 token can hold multiple tokens and NFTs, similar to
@@ -68,8 +70,7 @@
                 />ERC-6551
               </dt>
               <dd class="w-[70%] mb-5 md:w-[80%]">
-                지갑처럼 Token과 NFT를 보관할 수 있습니다.<br />보라랩스에서 Minting 시, 6551 NFT에
-                bGas와 Token 2가지를 발급해줍니다.
+                Tokens and NFTs can be stored in an ERC-6551 wallet.
               </dd>
               <dt
                 class="shrink-0 w-[30%] pr-1 text-md font-medium text-neutral md:w-[20%] md:text-lg"
@@ -77,8 +78,8 @@
                 <img :src="icToken" class="inline-block w-4 h-auto -mt-0.5 md:w-6 md:mr-1" />ERC-721
               </dt>
               <dd class="w-[70%] mb-5 md:w-[80%]">
-                6551 NFT로 변환 가능한 NFT입니다.<br />보라 테스트넷에서 721 NFT를 6551 NFT로 변환할
-                수 있으며, 다른 지갑 주소로 전송도 가능합니다.
+                This NFT can be converted with ERC-6551.
+                <br />When minting at BORA LABS, you can receive two ERC-721 tokens.
               </dd>
               <dt
                 class="shrink-0 w-[30%] pr-1 text-md font-medium text-neutral md:w-[20%] md:text-lg"
@@ -89,8 +90,8 @@
                 />ERC-1155
               </dt>
               <dd class="w-[70%] md:w-[80%]">
-                6551 NFT로 변환이 불가한 NFT입니다.<br />1155 NFT를 다른 지갑 주소 혹은 6551로
-                전송할 수 있습니다.
+                This NFT can not be converted with ERC-6551.
+                <br />You can send ERC-1155 to other wallet address or ERC-6551.
               </dd>
             </dl>
           </div>
@@ -119,31 +120,6 @@ const { isSigned } = storeToRefs(accountStore)
 const { createWallet } = setupAsset()
 
 const isAbout = ref(true)
-const modalStepRef = ref<HTMLDialogElement>()
-
-// const createWallet = async () => {
-//   if (isSigned.value) {
-//     modalStepRef.value?.showModal()
-//     await tbaMint()
-//     modalStepRef.value?.close()
-//   } else if (!isSigned.value) {
-//     await connectWallet()
-//     await checkAsset()
-//     if (!hasAsset.value) {
-//       modalStepRef.value?.showModal()
-//       await tbaMint()
-//       modalStepRef.value?.close()
-//     }
-//   }
-// }
-
-// const test = async () => {
-//   modalStepRef.value?.showModal()
-//   await tbaMint()
-//   modalStepRef.value?.close()
-// }
-
-// modal
 
 const enter = (el: HTMLDivElement) => {
   el.style.height = el.scrollHeight + 'px'
