@@ -24,11 +24,13 @@
         class="p-7 bg-[#1c235d] rounded-lg md:p-5"
       >
         <div class="grid grid-cols-1 gap-7 md:grid-cols-2 md:pr-20 md:gap-10">
-          <img
-            :src="asset[1]?.metadata.image"
-            :alt="asset[1]?.metadata.name"
-            class="w-full h-auto rounded-md"
-          />
+          <a :href="`/tba/6551/${Number(asset[0])}`">
+            <img
+              :src="asset[1]?.metadata.image"
+              :alt="asset[1]?.metadata.name"
+              class="w-full h-auto rounded-md"
+            />
+          </a>
           <div class="flex flex-col justify-center items-start text-base-100 z-20">
             <span
               class="inline-flex items-center justify-center px-2 py-1 bg-warning rounded-lg text-neutral text-xs font-medium md:px-2.5 md:py-1.5 md:text-sm"
@@ -104,11 +106,13 @@
         class="p-7 bg-[#1c235d] rounded-lg md:p-5"
       >
         <div class="grid grid-cols-1 gap-7 md:grid-cols-2 md:pr-20 md:gap-10">
-          <img
-            :src="asset[1]?.metadata.image"
-            :alt="asset[1]?.metadata.name"
-            class="w-full h-auto rounded-md"
-          />
+          <a :href="`/tba/721/${Number(asset[0])}`">
+            <img
+              :src="asset[1]?.metadata.image"
+              :alt="asset[1]?.metadata.name"
+              class="w-full h-auto rounded-md"
+            />
+          </a>
           <div class="flex flex-col justify-center items-start text-base-100">
             <span
               class="inline-flex items-center justify-center px-2 py-1 bg-warning rounded-lg text-neutral text-xs font-medium md:px-2.5 md:py-1.5 md:text-sm"
