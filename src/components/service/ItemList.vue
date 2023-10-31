@@ -188,7 +188,7 @@
 
   <!-- modal: add nft -->
   <SendModal />
-  <AddModal @modal-ref="(ref) => setAddModalRef(ref.value)" :modalAddRef="addModalRef" />
+  <AddModal />
 </template>
 
 <script setup lang="ts">
@@ -203,6 +203,8 @@ import { useAccountStore } from '@/stores/account.module.ts'
 import { setupAsset } from '@/setups/asset.composition'
 import { setupModal } from '@/setups/modal.composition'
 import { copy, truncate } from '@/constant/utils'
+import AddModal from './AddModal.vue'
+import SendModal from './SendModal.vue'
 
 const accountStore = useAccountStore()
 const assetStore = useAssetStore()

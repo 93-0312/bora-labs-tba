@@ -14,9 +14,10 @@ export const setupAsset = () => {
   const accountStore = useAccountStore()
   const modalStore = useModalStore()
   const { isSigned } = storeToRefs(accountStore)
-  const { setAsset721, setAsset1155, setAsset6551, setTba20, addAsset } = assetStore
+  const { setAsset721, setAsset1155, setAsset6551, setTba20 } = assetStore
   const {
     hasAsset,
+    addAsset,
     detail1155Asset,
     tbaMintStep,
     toAddress,
@@ -531,7 +532,7 @@ export const setupAsset = () => {
     const assetIdList: bigint[] = []
     const assetAmountsList: bigint[] = []
 
-    addAsset.forEach((value: any, key: bigint) => {
+    addAsset.value.forEach((value: any, key: bigint) => {
       assetIdList.push(key), assetAmountsList.push(value.amount), console.log(value.amount)
     })
 

@@ -130,11 +130,6 @@ const { addAsset } = storeToRefs(assetStore)
 
 const selectAddAsset = () => {
   addAsset.value.set(props.asset[0], props.asset[1])
-
-  console.log(addAsset.value, ': addAsset')
-  // const addAssetKeyArr: bigint[] = []
-  // addAsset.value.forEach((value: any, key: bigint) => addAssetKeyArr.push(key))
-  // console.log(addAssetKeyArr, 'addAssetKeyArr')
 }
 
 const props = defineProps({

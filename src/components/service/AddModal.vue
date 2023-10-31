@@ -63,7 +63,6 @@ const { setSendAsset } = assetStore
 const { addModalRef } = storeToRefs(modalStore)
 
 const confirmSend = async (addToAddress: string, addAsset: any) => {
-  console.log('add')
   await addNft(addToAddress, addAsset, addModalRef)
 }
 
