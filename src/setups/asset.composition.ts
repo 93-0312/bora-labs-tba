@@ -252,8 +252,64 @@ export const setupAsset = () => {
     setAsset20({ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount })
   }
 
-  const send20Token = async (toAddress: string, a: any, b: any) => {
-    console.log(toAddress)
+  const send20Token = async (asset: any, upperModalRef: any) => {
+    const wallet = new MetamaskService()
+    await wallet.init()
+    const provider = await wallet.getWeb3Provider()
+    const signer = await provider.getSigner()
+
+    const nft = new Contract(DEPLOYED.nft, IERC721, signer)
+    const reg = new Contract(DEPLOYED.tReg, IREG, signer)
+    const mts = new Contract(DEPLOYED.mts, IERC1155, signer)
+    const tkn = new Contract(DEPLOYED.tkn, IERC20, signer)
+    console.log(from6551.value?.tokenId)
+    const tbaWalletAddress = await reg.account(
+      DEPLOYED.tAcc,
+      Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID),
+      DEPLOYED.nft,
+      from6551.value?.tokenId,
+      0n
+    )
+
+    const encodedFn = tkn.interface.encodeFunctionData('transfer', [
+      toAddress.value,
+
+      ethers.toBigInt(toAmounts.value)
+    ])
+
+    const proxy6551 = new Contract(tbaWalletAddress, ITBA, signer)
+
+    const tx = await proxy6551.execute(DEPLOYED.tkn, 0n, encodedFn, 0n)
+
+    upperModalRef.value.close()
+
+    sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
+
+    progressTime.value = 0
+    const progressInterval = setInterval(
+      () =>
+        (progressTime.value =
+          progressTime.value <= 100 ? progressTime.value + 0.05 : progressTime.value),
+      10
+    )
+
+    await waitTransaction(provider, tx)
+
+    progressTime.value = 100
+    clearInterval(progressInterval)
+    sendLoadingModalRef.value && sendLoadingModalRef?.value.close()
+
+    const tknAmountWei = await tkn.balanceOf(tbaWalletAddress)
+    const tknSymbol = await tkn.symbol()
+    const tknDecimals = await tkn.decimals()
+    const formatEtherAmount = ethers.formatEther(tknAmountWei)
+
+    tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
+
+    await checkAsset()
+
+    setShowToast(true)
+    setToastMsg('Send Completed!')
   }
 
   const sendNft = async (toAddress: string, asset: any, upperModalRef: any) => {

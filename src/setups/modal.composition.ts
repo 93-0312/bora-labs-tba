@@ -26,10 +26,11 @@ export const setupModal = () => {
     return
   }
 
-  const showTokenSendModal = (sendErc20Asset: any) => {
+  const showTokenSendModal = (sendErc20Asset: any, tokenId?: any) => {
     toAddress.value = ''
     toAmounts.value = ''
     setSendErc20Asset(sendErc20Asset)
+    setFrom6551({ from6551: tokenId !== undefined, tokenId: tokenId })
     sendTokenModalRef.value?.showModal()
     return
   }

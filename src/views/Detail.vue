@@ -156,12 +156,12 @@
               </li>
             </ul>
 
-            <button
+            <!-- <button
               class="btn btn-primary btn-sm block mt-3 ml-auto rounded-lg text-xs md:btn-md md:mt-4 md:text-md"
               type="button"
             >
               + Add NFT
-            </button>
+            </button> -->
           </template>
         </Accordion>
 
@@ -185,7 +185,7 @@
             <button
               class="btn btn-neutral btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
               type="button"
-              @click="showTokenSendModal(asset)"
+              @click="showTokenSendModal(asset, tokenId)"
               aria-label="send"
             >
               <!-- prettier-ignore -->

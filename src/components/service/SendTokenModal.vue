@@ -99,7 +99,7 @@ const assetStore = useAssetStore()
 const { sendAsset, toAmounts, toAddress, sendErc20Asset } = storeToRefs(assetStore)
 
 const confirmSendToken = async (sendToAddress: string, sendAsset: any) => {
-  await send20Token(sendToAddress, sendAsset, sendTokenModalRef)
+  await send20Token(sendToAddress, sendTokenModalRef)
 }
 
 const isInputError = computed(() => {
@@ -118,7 +118,7 @@ const isValidAddress = (address: string) => {
 const isAmountError = computed(() => {
   console.log(toAmounts.value)
   console.log(sendErc20Asset.value?.formatEtherAmount)
-  return toAmounts.value > sendErc20Asset.value?.formatEtherAmount
+  return Number(toAmounts.value) > Number(sendErc20Asset.value?.formatEtherAmount)
 })
 
 const isSendBtnDisable = computed(() => {
