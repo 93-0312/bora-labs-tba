@@ -121,8 +121,8 @@
 </template>
 
 <script lang="ts" setup>
-import { copy, truncate } from '@/constant/utils'
 import { ref } from 'vue'
+import { copy, truncate } from '@/constant/utils'
 
 const checkedList = ref<any[]>([])
 
