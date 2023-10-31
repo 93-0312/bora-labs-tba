@@ -99,6 +99,10 @@
       </div>
     </section>
   </main>
+
+  <!-- modal: add nft -->
+  <SendModal />
+  <AddModal />
 </template>
 
 <script setup lang="ts">
@@ -110,6 +114,8 @@ import { useAccountStore } from '@/stores/account.module.ts'
 import ItemList from '@/components/service/ItemList.vue'
 import bgImg from '@/assets/bg-6551.webp'
 import icToken from '@/assets/ic-token.webp'
+import SendModal from '@/components/service/SendModal.vue'
+import AddModal from '@/components/service/AddModal.vue'
 
 const assetStore = useAssetStore()
 const accountStore = useAccountStore()

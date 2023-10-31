@@ -119,8 +119,6 @@ export const setupAsset = () => {
         const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
 
         const ownerAddress = await nft.ownerOf(id)
-        console.log({ ownerAddress })
-        console.log({ address })
 
         return address === ownerAddress
       } else if (ercType === 1155) {
@@ -138,7 +136,6 @@ export const setupAsset = () => {
   const check721Asset = async (address2?: string) => {
     const wallet = new MetamaskService()
     await wallet.init()
-    // const address = wallet.getAddress()
     const address = address2
 
     const provider = await wallet.getWeb3Provider()
@@ -146,14 +143,6 @@ export const setupAsset = () => {
 
     const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
     const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
-
-    console.log(import.meta.env.VITE_BORALABS_NFT_CONTRACT)
-    console.log(import.meta.env.VITE_BORALABS_NFT_CONTRACT)
-
-    // const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
-    // const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
-
-    // const address = signer.getAddress()
 
     const tokensOf721 = await nft.tokensOf(address)
 
@@ -545,9 +534,6 @@ export const setupAsset = () => {
     addAsset.forEach((value: any, key: bigint) => {
       assetIdList.push(key), assetAmountsList.push(value.amount), console.log(value.amount)
     })
-
-    console.log(assetAmountsList)
-    console.log(assetIdList)
 
     const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
 

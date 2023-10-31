@@ -23,7 +23,7 @@
       <a
         class="mb-2 text-sm transition hover:opacity-80"
         target="_blank"
-        href="https://scope.boraportal.com"
+        href="https://scope.boraportal.cc"
       >
         <img :src="icBorascope" width="96" height="16" alt="bora scope" class="w-24 h-4" />
       </a>

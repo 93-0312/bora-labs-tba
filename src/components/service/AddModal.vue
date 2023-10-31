@@ -33,7 +33,6 @@
           :card-name="asset[1]?.metadata.name"
           :img-src="asset[1]?.metadata.image"
           :linkDisable="true"
-          :checked="true"
           :asset="asset"
         />
       </li>

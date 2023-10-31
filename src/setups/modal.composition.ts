@@ -9,7 +9,7 @@ export const setupModal = () => {
   const { setSendAsset, setSendErc20Asset, setAddAsset, setFrom6551 } = assetStore
   const { addModalRef, sendModalRef, sendTokenModalRef } = storeToRefs(modalStore)
 
-  const { toAddress, toAmounts } = storeToRefs(assetStore)
+  const { toAddress, toAmounts, addAsset } = storeToRefs(assetStore)
 
   const showSendModal = (sendAsset: any, tokenId?: any) => {
     toAddress.value = ''
@@ -20,8 +20,9 @@ export const setupModal = () => {
     return
   }
   const showAddModal = (addToAddress: string) => {
-    toAddress.value = ''
+    toAddress.value = addToAddress
     toAmounts.value = ''
+    addAsset.value = new Map()
     addModalRef.value?.showModal()
     return
   }
@@ -29,6 +30,7 @@ export const setupModal = () => {
   const showTokenSendModal = (sendErc20Asset: any, tokenId?: any) => {
     toAddress.value = ''
     toAmounts.value = ''
+    addAsset.value = ''
     setSendErc20Asset(sendErc20Asset)
     setFrom6551({ from6551: tokenId !== undefined, tokenId: tokenId })
     sendTokenModalRef.value?.showModal()

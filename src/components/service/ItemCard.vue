@@ -151,7 +151,6 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  checked: { type: Boolean },
   ercType: {
     type: Number,
     default: 721

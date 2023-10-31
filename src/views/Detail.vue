@@ -245,7 +245,7 @@
       />
     </section>
 
-    <AddModal />
+    <!-- <AddModal /> -->
     <SendModal />
     <SendTokenModal
       @modal-ref="(ref) => (modalSendTokenRef = ref.value)"
@@ -334,7 +334,7 @@ const tbaAssetisEmpty = computed(
     tbaAsset1155.value.size === 0
 )
 
-const tbaAssetSize = computed(() => tbaAsset1155.value.size + tbaAsset721.value.size)
+const tbaAssetSize = computed(() => tbaAsset1155.value?.size + tbaAsset721.value?.size)
 
 onMounted(async () => {
   ercType.value = route?.meta.type as number
