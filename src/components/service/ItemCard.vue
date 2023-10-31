@@ -120,10 +120,10 @@
 </template>
 
 <script lang="ts" setup>
-import { copy, truncate } from '@/constant/utils'
 import { useAssetStore } from '@/stores/asset.module'
 import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
+import { copy, truncate } from '@/constant/utils'
 
 const assetStore = useAssetStore()
 const { addAsset } = storeToRefs(assetStore)

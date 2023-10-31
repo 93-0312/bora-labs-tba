@@ -18,15 +18,26 @@
   </button>
 
   <div v-else class="flex items-center h-8 bg-base-200 rounded-lg md:h-12">
-    <div>
-      <button
-        type="button"
-        class="flex items-center ic-metamask h-8 px-2 rounded-l-lg rounded- text-xs transition md:h-12 md:px-4 md:text-sm hover:bg-base-300"
-        @click="disconnectWallet"
-      >
-        {{ truncate(walletAddress) }}
-      </button>
-    </div>
+    <button
+      type="button"
+      class="flex items-center ic-metamask w-[136px] h-8 px-2 rounded-l-lg rounded- text-xs transition md:w-40 md:h-12 md:px-3 md:text-sm hover:bg-base-300"
+      @click="disconnectWallet"
+    >
+      <p class="overflow-hidden h-5">
+        <span class="wallet-address flex items-center transition">{{
+          truncate(walletAddress)
+        }}</span>
+        <span class="sign-out flex items-center mt-0.5 transition md:mt-0">
+          <!-- prettier-ignore -->
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" class="w-5 h-auto mr-1">
+              <path d="M304 336v40a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V136a40 40 0 0 1 40-40h152c22.09 0 48 17.91 48 40v40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 336l80-80l-80-80"></path>
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M176 256h256"></path>
+            </svg>
+          Sign out
+        </span>
+      </p>
+    </button>
 
     <span class="w-[1px] h-4 bg-neutral/50" />
 
