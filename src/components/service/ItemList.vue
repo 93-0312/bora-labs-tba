@@ -38,8 +38,13 @@
             />
           </a>
           <div class="flex flex-col justify-center items-start text-base-100">
-            <span class="absolute top-8 left-8 badge badge-warning badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md">ERC-6551</span>
-            <p class="hidden h-7 font-bold text-lg md:mt-2 md:text-4xl md:block">{{ asset[1]?.metadata.name }}</p>
+            <span
+              class="absolute top-8 left-8 badge badge-warning badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md"
+              >ERC-6551</span
+            >
+            <p class="hidden h-7 font-bold text-lg md:mt-2 md:text-4xl md:block">
+              {{ asset[1]?.metadata.name }}
+            </p>
             <p class="flex items-center h-7 text-xs md:mt-8 md:text-base">
               {{ truncate(asset[1]?.metadata.walletAddress) }}
               <button
@@ -63,7 +68,7 @@
             <p class="text-base-100/70 text-sm md:mt-1 md:text-base">Bora Testnet</p>
             <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
               <button
-                class="min-h-0 h-9 col-span-4 btn btn-primary rounded-sm text-[11px] md:h-12 md:text-base"
+                class="min-h-0 h-9 col-span-4 btn btn-primary rounded-sm text-xs md:h-12 md:text-base"
                 type="button"
                 @click="
                   showAddModal(asset[1]?.metadata.walletAddress)
@@ -73,7 +78,7 @@
                 Add NFT
               </button>
               <button
-                class="min-h-0 h-9 col-span-3 btn rounded-sm text-[11px] md:h-12 md:text-base"
+                class="min-h-0 h-9 col-span-3 btn rounded-sm text-xs md:h-12 md:text-base"
                 type="button"
                 @click="showSendModal(asset)"
               >
@@ -82,25 +87,6 @@
             </div>
           </div>
         </div>
-
-        <!-- <div
-          class="swiper-button hidden absolute w-full h-12 -translate-y-1/2 -translate-x-1/2 top-1/2 left-1/2"
-        >
-          <button
-            type="button"
-            class="button-prev btn btn-circle btn-sm absolute left-1 mr-2 bg-base-100/60 border-none md:btn-md md:left-3"
-            aria-label="previous"
-          >
-            ❮
-          </button>
-          <button
-            type="button"
-            class="button-next btn btn-circle btn-sm absolute right-1 bg-base-100/60 border-none md:btn-md md:right-3"
-            aria-label="next"
-          >
-            ❯
-          </button>
-        </div> -->
       </swiper-slide>
 
       <swiper-slide
@@ -117,19 +103,22 @@
             />
           </a>
           <div class="flex flex-col justify-center items-start text-base-100">
-            <span class="absolute top-8 left-8 badge badge-info badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md">ERC-721</span>
+            <span
+              class="absolute top-8 left-8 badge badge-info badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md"
+              >ERC-721</span
+            >
             <p class="h-7 font-bold text-lg md:mt-2 md:text-4xl">{{ asset[1]?.metadata.name }}</p>
             <p class="text-base-100/70 text-sm md:mt-8 md:text-base">Bora Testnet</p>
             <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
               <button
-                class="min-h-0 h-9 col-span-4 btn btn-accent rounded-sm text-[11px] md:h-12 md:text-base"
+                class="min-h-0 h-9 col-span-4 btn btn-accent rounded-sm text-xs md:h-12 md:text-base"
                 type="button"
                 @click="convert721to6551(asset[0])"
               >
                 Convert to TBA
               </button>
               <button
-                class="min-h-0 h-9 col-span-3 btn rounded-sm text-[11px] md:h-12 md:text-base"
+                class="min-h-0 h-9 col-span-3 btn rounded-sm text-xs md:h-12 md:text-base"
                 type="button"
                 @click="showSendModal(asset)"
               >
@@ -165,9 +154,6 @@
     </div>
 
     <div class="swiper-custom-pagination flex justify-center w-full h-[6px] mt-5 mb-10 md:mb-16" />
-    <!-- <div
-      class="swiper-custom-progressbar relative overflow-hidden w-1/2 h-1.5 mx-auto mt-8 mb-16 bg-neutral-content rounded-md"
-    /> -->
 
     <ul class="grid grid-cols-2 gap-3 md:grid-cols-5 md:gap-5">
       <!-- 1155 -->
@@ -179,9 +165,16 @@
           :img-src="asset[1]?.metadata.image"
           :id="Number(asset[0])"
         >
-          <div class="pt-4 pb-2 md:pt-5 md:pb-3">
+          <!-- <button
+            class="btn btn-neutral btn-outline btn-block min-h-0 h-9 mt-3 rounded-sm text-xs md:h-10 md:mt-4 md:btn-base md:text-base"
+            type="button"
+            @click="showSendModal(asset)"
+          >
+            Send
+          </button> -->
+          <div class="border-t mt-1.5 md:mt-3">
             <button
-              class="min-h-0 h-9 btn btn-neutral btn-outline w-full rounded-sm text-[11px] md:btn-base md:h-12 md:text-base"
+              class="btn btn-ghost btn-block min-h-0 h-7 mx-auto mt-1.5 rounded-sm hover:bg-neutral hover:text-base-100 md:h-10 md:mt-2 md:text-base"
               type="button"
               @click="showSendModal(asset)"
             >
@@ -220,7 +213,6 @@ const { convert721to6551 } = setupAsset()
 const { isSigned } = storeToRefs(accountStore)
 const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore)
 const { showSendModal, showAddModal } = setupModal()
-const { setToAddress } = assetStore
 const modules = [Pagination, Navigation, Mousewheel]
 
 const isCopy = ref(true)
