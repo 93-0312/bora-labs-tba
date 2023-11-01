@@ -1,3 +1,10 @@
+export interface Erc20 {
+  tknAmountWei: bigint
+  tknSymbol: string
+  tknDecimals: bigint
+  formatEtherAmount: string
+}
+
 export type asset = [
   bigint,
   {
