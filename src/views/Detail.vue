@@ -11,30 +11,26 @@
         width="100"
         height="100"
         :src="detailAsset && detailAsset?.get(tokenId)?.metadata['image']"
-        class="w-full h-auto rounded-lg"
+        class="w-full h-auto rounded-md"
         alt="nft"
       />
 
       <!-- badge: 6551 -->
-      <div
-        v-if="is6551"
-        class="absolute left-4 top-4 badge h-8 bg-neutral-content/60 backdrop-blur-md rounded-md border-none text-xs md:text-sm"
-      >
-        <!-- prettier-ignore -->
-        <svg width="22px" height="22px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-1">
-          <path d="M14.25 4H9.75C6.56802 4 4.97703 4 3.98851 5.00421C3 6.00841 3 7.62465 3 10.8571V13.1429C3 16.3753 3 17.9916 3.98851 18.9958C4.97703 20 6.56802 20 9.75 20H14.25C17.432 20 19.023 20 20.0115 18.9958C21 17.9916 21 16.3753 21 13.1429V10.8571C21 7.62465 21 6.00841 20.0115 5.00421C19.023 4 17.432 4 14.25 4Z" stroke="currentColor" />
-          <path d="M7 8H10" stroke="currentColor" stroke-linecap="round" />
-          <path d="M19 16H17C16.0572 16 15.5858 16 15.2929 15.7071C15 15.4142 15 14.9428 15 14C15 13.0572 15 12.5858 15.2929 12.2929C15.5858 12 16.0572 12 17 12H19C19.9428 12 20.4142 12 20.7071 12.2929C21 12.5858 21 13.0572 21 14C21 14.9428 21 15.4142 20.7071 15.7071C20.4142 16 19.9428 16 19 16Z" stroke="currentColor" />
-        </svg>
+      <div v-if="is6551" class="absolute left-4 top-4 badge badge-warning font-medium md:badge-lg">
         ERC-6551
       </div>
 
-      <!-- badge: 721, 1155 -->
+      <!-- badge: 1155 -->
       <p
-        v-else
-        class="absolute left-4 top-4 badge h-8 bg-neutral-content/60 backdrop-blur-md rounded-md border-none text-xs md:text-sm"
+        v-else-if="is1155"
+        class="absolute left-4 top-4 badge bg-base-100/90 border-none backdrop-blur-md font-medium"
       >
-        {{ is1155 ? 'ERC-1155' : 'ERC-721' }}
+        {{ 'ERC-1155' }}
+      </p>
+
+      <!-- badge: 721 -->
+      <p v-else class="absolute left-4 top-4 badge badge-info font-medium md:badge-lg">
+        {{ 'ERC-721' }}
       </p>
     </section>
 
@@ -49,7 +45,7 @@
             v-if="is6551"
             :href="`${scopeUrl}address/${tbaWalletAddress}`"
             target="_blank"
-            class="flex items-center justify-center w-11 h-11 rounded-full bg-neutral-content"
+            class="flex items-center justify-center w-11 h-11 rounded-md bg-neutral-content"
             aria-label="go to borascope"
           >
             <!-- prettier-ignore -->
@@ -66,7 +62,7 @@
       <!-- erc-6551 -->
       <template v-if="is6551">
         <p
-          class="inline-flex items-center h-11 mt-3 pl-4 bg-neutral-content rounded-lg text-sm md:mt-4 md:text-lg"
+          class="inline-flex items-center h-11 mt-3 pl-4 bg-neutral-content rounded-md text-sm md:mt-4 md:text-base"
         >
           {{ detailAsset && truncate(detailAsset?.get(tokenId)?.metadata['walletAddress'] || '') }}
           <button
@@ -74,7 +70,7 @@
               copy(detailAsset && detailAsset?.get(tokenId)?.metadata['walletAddress']),
                 changeIcon()
             "
-            class="px-3 h-11 ml-1 rounded-r-lg hover:bg-secondary/20"
+            class="px-3 h-11 ml-1 rounded-r-sm hover:bg-secondary/20"
             type="button"
             aria-label="copy"
           >
@@ -98,7 +94,7 @@
           </p>
 
           <template v-else>
-            <ul class="grid grid-cols-2 gap-4 md:grid-cols-3">
+            <ul class="grid grid-cols-2 gap-6 md:grid-cols-3">
               <li v-for="asset in tbaAsset1155" :key="Number(asset[0])" class="relative">
                 <ItemCard
                   :is-small="true"
@@ -108,29 +104,35 @@
                   :img-src="asset[1]?.metadata.image"
                   :id="Number(asset[0])"
                 >
-                  <button
-                    class="btn btn-sm btn-neutral border-none w-[calc(100%_+_24px)] p-1 -mx-3 mt-1.5 rounded-none text-xs md:text-xs"
-                    type="button"
-                    @click="showSendModal(asset, tokenId)"
-                  >
-                    Send
-                    <!-- prettier-ignore -->
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
-                      <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
+                  <div class="border-t mt-2">
+                    <button
+                      class="btn btn-ghost btn-sm btn-block min-h-0 h-7 mx-auto mt-1 rounded-sm hover:bg-neutral hover:text-base-100 md:h-8"
+                      type="button"
+                      @click="showSendModal(asset, tokenId)"
+                    >
+                      Send
+                    </button>
+                  </div>
                 </ItemCard>
 
                 <!-- 카드 갯수 -->
                 <span
-                  class="absolute -top-2 -right-2 badge badge-accent px-1 rounded-md text-xs font-bold text-base-100"
+                  class="absolute -top-2 -right-2 badge badge-warning px-1 rounded-sm text-xs font-bold"
                 >
                   <!-- prettier-ignore -->
                   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
-                    <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="white"/>
+                    <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="currentColor"/>
                   </svg>
                   {{ asset[1].amount }}
                 </span>
+
+                <!-- <button
+                  class="absolute bottom-[55px] right-5 z-10 btn btn-sm btn-circle btn-neutral"
+                  type="button"
+                  @click="showSendModal(asset, tokenId)"
+                >
+                  send
+                </button> -->
               </li>
               <li v-for="asset in tbaAsset721" :key="asset" class="relative">
                 <ItemCard
@@ -141,17 +143,15 @@
                   :img-src="asset[1].metadata.image"
                   :id="Number(asset[0])"
                 >
-                  <button
-                    class="btn btn-sm btn-neutral border-none w-[calc(100%_+_24px)] p-1 -mx-3 mt-1.5 rounded-none text-xs md:text-xs"
-                    type="button"
-                    @click="showSendModal(asset, tokenId)"
-                  >
-                    Send
-                    <!-- prettier-ignore -->
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4">
-                      <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
+                  <div class="border-t mt-2">
+                    <button
+                      class="btn btn-ghost btn-sm btn-block min-h-0 h-7 mx-auto mt-1 rounded-sm hover:bg-neutral hover:text-base-100 md:h-8"
+                      type="button"
+                      @click="showSendModal(asset, tokenId)"
+                    >
+                      Send
+                    </button>
+                  </div>
                 </ItemCard>
               </li>
             </ul>
@@ -195,7 +195,7 @@
         <div class="overflow-hidden grid grid-cols-6 gap-3 mt-7 md:gap-4">
           <button
             v-if="notIncluded && is721"
-            class="col-span-4 btn btn-accent rounded-lg md:btn-lg"
+            class="col-span-4 btn btn-accent rounded-sm md:btn-lg"
             type="button"
             @click="
               async () => [await convert721to6551(tokenId), router.push(`/tba/6551/${tokenId}`)]
@@ -205,7 +205,7 @@
           </button>
           <button
             :class="[
-              'btn btn-neutral rounded-lg md:btn-lg',
+              'btn btn-neutral rounded-sm md:btn-lg',
               notIncluded && is721 ? 'col-span-2' : 'col-span-6'
             ]"
             type="button"
@@ -272,7 +272,6 @@ import { setupModal } from '@/setups/modal.composition'
 import { useAssetStore } from '@/stores/asset.module.ts'
 import Accordion from '@/components/ui/Accordion.vue'
 import ItemCard from '@/components/service/ItemCard.vue'
-import AddModal from '@/components/service/AddModal.vue'
 import SendModal from '@/components/service/SendModal.vue'
 import SendTokenModal from '@/components/service/SendTokenModal.vue'
 import ModalLoading from '@/components/ui/ModalLoading.vue'

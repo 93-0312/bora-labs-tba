@@ -28,10 +28,6 @@
         </svg>
         Don't worry! You may close the window without affecting the {{ props.progressName }}.
       </p>
-
-      <button class="btn btn-neutral btn-wide mt-6 rounded-lg md:mt-8" type="button" @click="modalRef?.close()">
-        Confirm
-      </button>
     </div>
   </dialog>
 </template>
