@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { Erc6551Asset, ErcAsset, asset } from '@/types/asset'
+import type { Erc20, Erc6551Asset, ErcAsset, asset } from '@/types/asset'
 
 export const setupAssetStore = () => {
   const asset721 = ref<ErcAsset>(new Map())
@@ -8,7 +8,7 @@ export const setupAssetStore = () => {
   const asset6551 = ref<Erc6551Asset>(new Map())
   const asset20 = ref<any>(new Map())
 
-  const tbaAsset20 = ref<any>()
+  const tbaAsset20 = ref<Erc20[]>([])
   const tbaAsset721 = ref<ErcAsset>(new Map())
   const tbaAsset1155 = ref<ErcAsset>(new Map())
 
@@ -24,10 +24,10 @@ export const setupAssetStore = () => {
     () => asset721.value.size > 0 || asset1155.value.size > 0 || asset6551.value.size > 0
   )
 
-  const addAsset = ref<any>(new Map())
+  const addAsset = ref<ErcAsset>(new Map())
   const sendAsset = ref<asset>()
 
-  const sendErc20Asset = ref<any>()
+  const sendErc20Asset = ref<Erc20>()
   const selectedAsset = ref<Map<bigint, any>>(new Map())
 
   const from6551 = ref<any>(false)
@@ -61,7 +61,7 @@ export const setupAssetStore = () => {
     addAsset.value = data
   }
 
-  const setSendErc20Asset = (data: any) => {
+  const setSendErc20Asset = (data: Erc20) => {
     sendErc20Asset.value = data
   }
 
@@ -76,7 +76,7 @@ export const setupAssetStore = () => {
     toAddress.value = data
   }
 
-  const setTba20 = (data: any) => {
+  const setTba20 = (data: Erc20[]) => {
     tbaAsset20.value = data
   }
 
