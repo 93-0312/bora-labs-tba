@@ -1,17 +1,18 @@
 import { useAssetStore } from '@/stores/asset.module'
 import { storeToRefs } from 'pinia'
 import { useModalStore } from '@/stores/modal.module'
+import type { asset } from '@/types/asset'
 
 export const setupModal = () => {
   const assetStore = useAssetStore()
   const modalStore = useModalStore()
 
-  const { setSendAsset, setSendErc20Asset, setAddAsset, setFrom6551 } = assetStore
+  const { setSendAsset, setSendErc20Asset, setFrom6551 } = assetStore
   const { addModalRef, sendModalRef, sendTokenModalRef } = storeToRefs(modalStore)
 
   const { toAddress, toAmounts, addAsset } = storeToRefs(assetStore)
 
-  const showSendModal = (sendAsset: any, tokenId?: any) => {
+  const showSendModal = (sendAsset: asset, tokenId?: any) => {
     toAddress.value = ''
     toAmounts.value = ''
     setSendAsset(sendAsset)

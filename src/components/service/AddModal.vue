@@ -49,20 +49,22 @@ import { storeToRefs } from 'pinia'
 
 import { useModalStore } from '@/stores/modal.module'
 import { setupAsset } from '@/setups/asset.composition'
+import type { Metadata } from '@/types/asset'
 
 const modalStore = useModalStore()
 
 const { addNft } = setupAsset()
 const assetStore = useAssetStore()
 
-const { addAsset, toAddress, toAmounts } = storeToRefs(assetStore)
-const { asset721, asset1155 } = storeToRefs(assetStore)
-
-const { setSendAsset } = assetStore
+const { addAsset, toAddress } = storeToRefs(assetStore)
+const { asset1155 } = storeToRefs(assetStore)
 
 const { addModalRef } = storeToRefs(modalStore)
 
-const confirmSend = async (addToAddress: string, addAsset: any) => {
+const confirmSend = async (
+  addToAddress: string,
+  addAsset: Map<bigint, { amount: bigint; metadata: Metadata }>
+) => {
   await addNft(addToAddress, addAsset, addModalRef)
 }
 

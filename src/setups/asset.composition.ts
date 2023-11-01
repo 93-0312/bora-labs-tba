@@ -8,6 +8,7 @@ import { useAssetStore } from '@/stores/asset.module.ts'
 import { useModalStore } from '@/stores/modal.module'
 import MetamaskService from '@/services/metamask.service'
 import { IERC1155, IERC20, IERC721, IREG, ITBA } from '@/types/abi'
+import type { Erc6551Asset, ErcAsset, Metadata6551 } from '@/types/asset'
 
 export const setupAsset = () => {
   const assetStore = useAssetStore()
@@ -134,10 +135,10 @@ export const setupAsset = () => {
     }
   }
 
-  const check721Asset = async (address2?: string) => {
+  const check721Asset = async (address: string) => {
     const wallet = new MetamaskService()
     await wallet.init()
-    const address = address2
+    // const address = address2
 
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
@@ -145,10 +146,10 @@ export const setupAsset = () => {
     const nft = new Contract(import.meta.env.VITE_BORALABS_NFT_CONTRACT, IERC721, signer)
     const reg = new Contract(import.meta.env.VITE_BORALABS_TREG_CONTRACT, IREG, signer)
 
-    const tokensOf721 = await nft.tokensOf(address)
+    const tokensOf721: bigint[] = await nft.tokensOf(address)
 
-    const asset721: Map<bigint, { metadata: any; amount?: bigint }> = new Map()
-    const asset6551: Map<bigint, { metadata: any; amount?: bigint }> = new Map()
+    const asset721: ErcAsset = new Map()
+    const asset6551: Erc6551Asset = new Map()
 
     const is6551List = await Promise.all(
       tokensOf721.map(async (tokenId: bigint) => {
@@ -157,23 +158,24 @@ export const setupAsset = () => {
       })
     )
 
-    const nftList = tokensOf721.filter((_: any, index: number) => !is6551List[index])
+    const nftList = tokensOf721.filter((_: bigint, index: number) => !is6551List[index])
+
     const asset721Data = await Promise.all(
-      nftList.map(async (tokenId: any) => {
+      nftList.map(async (tokenId: bigint) => {
         const uri = await nft.tokenURI(tokenId)
         const metadata = await axios.get(uri)
         return { tokenId, metadata: metadata.data }
       })
     )
 
-    asset721Data.forEach((x: any) => {
-      asset721.set(x.tokenId, { metadata: { ...x.metadata, type: 721 } })
+    asset721Data.forEach((asset) => {
+      asset721.set(asset.tokenId, { metadata: { ...asset.metadata, type: 721 } })
     })
 
-    const asset6551List = tokensOf721.filter((tokenId: bigint, index: number) => is6551List[index])
+    const asset6551List = tokensOf721.filter((_, index: number) => is6551List[index])
 
     const asset6551Data = await Promise.all(
-      asset6551List.map(async (tokenId: any) => {
+      asset6551List.map(async (tokenId: bigint) => {
         const uri = await nft.tokenURI(tokenId)
         const walletAddress = await reg.account(
           import.meta.env.VITE_BORALABS_TACC_CONTRACT,
@@ -182,30 +184,30 @@ export const setupAsset = () => {
           tokenId,
           0n
         )
-        const metadata = await axios.get(uri)
-        return { tokenId, metadata: { ...metadata.data, walletAddress: walletAddress } }
+        const apiReponse = await axios.get(uri)
+        const metadata: Metadata6551 = apiReponse.data
+        return { tokenId, metadata: { ...metadata, walletAddress: walletAddress } }
       })
     )
 
-    asset6551Data.forEach((x: any) => {
-      asset6551.set(x.tokenId, { metadata: { ...x.metadata, type: 6551 } })
+    asset6551Data.forEach((asset) => {
+      asset6551.set(asset.tokenId, { metadata: { ...asset.metadata, type: 6551 } })
     })
 
     return { asset721, asset6551 }
   }
 
-  const check1155Asset = async (address2?: string) => {
+  const check1155Asset = async (address: string) => {
     const wallet = new MetamaskService()
     await wallet.init()
-    // const address = wallet.getAddress()
-    const address = address2
+
     const provider = await wallet.getWeb3Provider()
     const signer = await provider.getSigner()
 
     const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
     const tokensOf1155 = await mts.tokensOf(address)
 
-    const asset1155: Map<bigint, { metadata: any; amount?: bigint }> = new Map()
+    const asset1155: ErcAsset = new Map()
 
     const mtsList = tokensOf1155
 
@@ -221,21 +223,19 @@ export const setupAsset = () => {
       asset1155.set(x.tokenId, { metadata: { ...x.metadata, type: 1155 }, amount: x.amount })
     })
 
-    return asset1155
+    return { asset1155 }
   }
 
   const checkAsset = async () => {
     const wallet = new MetamaskService()
     await wallet.init()
     const address = await wallet.getAddress()
-    // const provider = await wallet.getWeb3Provider()
-    // const signer = await provider.getSigner()
 
     const result = await Promise.all([check721Asset(address), check1155Asset(address)])
 
     const asset721 = result[0]['asset721']
     const asset6551 = result[0]['asset6551']
-    const asset1155 = result[1]
+    const asset1155 = result[1]['asset1155']
 
     setAsset721(asset721)
     setAsset1155(asset1155)
@@ -243,7 +243,6 @@ export const setupAsset = () => {
 
     // user's erc-20 data
     // const tkn = new Contract(import.meta.env.VITE_BORALABS_TKN_CONTRACT, IERC20, signer)
-
     // const tknAmountWei = await tkn.balanceOf(address)
     // const tknSymbol = await tkn.symbol()
     // const tknDecimals = await tkn.decimals()
@@ -510,7 +509,7 @@ export const setupAsset = () => {
     ])
 
     const asset721 = result[0]['asset721']
-    const asset1155 = result[1]
+    const asset1155 = result[1]['asset1155']
 
     setTba20([{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }])
     tbaAsset721.value = asset721
@@ -631,8 +630,8 @@ export const setupAsset = () => {
   const checkDetailAsset = async (ercType: number, tokenId: bigint) => {
     const wallet = new MetamaskService()
     await wallet.init()
-    const provider = await wallet.getWeb3Provider()
-    const signer = await provider.getSigner()
+    // const provider = await wallet.getWeb3Provider()
+    // const signer = await provider.getSigner()
 
     if (ercType === 6551) {
       const wallet = new MetamaskService()
@@ -664,7 +663,7 @@ export const setupAsset = () => {
       ])
 
       const asset721 = result[0]['asset721']
-      const asset1155 = result[1]
+      const asset1155 = result[1]['asset1155']
 
       tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
       tbaAsset721.value = asset721

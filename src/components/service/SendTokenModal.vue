@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
 import ModalLayout from '@/components/ui/ModalLayout.vue'
-import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { setupAsset } from '@/setups/asset.composition'
 import { storeToRefs } from 'pinia'
 import { useAssetStore } from '@/stores/asset.module'
@@ -89,7 +89,7 @@ const modalRef = ref<HTMLDialogElement>()
 
 const isSelected = ref(false)
 
-const props = defineProps({
+defineProps({
   isDisabled: { type: Boolean }
 })
 
@@ -100,7 +100,7 @@ const assetStore = useAssetStore()
 
 const { sendAsset, toAmounts, toAddress, sendErc20Asset } = storeToRefs(assetStore)
 
-const confirmSendToken = async (sendToAddress: string, sendAsset: any) => {
+const confirmSendToken = async (sendToAddress: string) => {
   await send20Token(sendToAddress, sendTokenModalRef)
 }
 
@@ -135,9 +135,6 @@ watch(
     if (isSelected) {
       toAmounts.value = sendErc20Asset.value?.formatEtherAmount
     }
-    // if (!isSelected) {
-    //   toAmounts.value = ''
-    // }
   }
 )
 

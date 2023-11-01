@@ -64,11 +64,10 @@
         <p
           class="inline-flex items-center h-11 mt-3 pl-4 bg-neutral-content rounded-md text-sm md:mt-4 md:text-base"
         >
-          {{ detailAsset && truncate(detailAsset?.get(tokenId)?.metadata['walletAddress'] || '') }}
+          {{ truncate((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress) }}
           <button
             @click="
-              copy(detailAsset && detailAsset?.get(tokenId)?.metadata['walletAddress']),
-                changeIcon()
+              copy((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress), changeIcon()
             "
             class="px-3 h-11 ml-1 rounded-r-sm hover:bg-secondary/20"
             type="button"
@@ -134,7 +133,7 @@
                   send
                 </button> -->
               </li>
-              <li v-for="asset in tbaAsset721" :key="asset" class="relative">
+              <li v-for="asset in tbaAsset721" :key="Number(asset[0])" class="relative">
                 <ItemCard
                   :is-small="true"
                   :has-badge="false"
@@ -210,7 +209,7 @@
             ]"
             type="button"
             :disabled="detailAsset?.get(tokenId)?.['amount'] === 0n"
-            @click="showSendModal([tokenId, detailAsset.get(tokenId)])"
+            @click="showSendModal([tokenId, detailAsset.get(tokenId)!])"
           >
             Send
           </button>
@@ -263,7 +262,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref, watch } from 'vue'
+import { computed, onMounted, onUpdated, ref, watch, type ComputedRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 
@@ -277,6 +276,7 @@ import SendTokenModal from '@/components/service/SendTokenModal.vue'
 import ModalLoading from '@/components/ui/ModalLoading.vue'
 
 import { copy, truncate } from '@/constant/utils'
+import type { Erc6551Asset, ErcAsset } from '@/types/asset'
 
 // env로 이동
 const nftContractAddress = computed(() =>
@@ -318,7 +318,7 @@ const is6551 = computed(() => ercType.value === 6551)
 const is1155 = computed(() => ercType.value === 1155)
 const is721 = computed(() => ercType.value === 721)
 
-const detailAsset = computed(() => {
+const detailAsset: ComputedRef<Erc6551Asset | ErcAsset> = computed(() => {
   return ercType.value === 721
     ? detail721Asset.value
     : ercType.value === 6551
