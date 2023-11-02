@@ -101,7 +101,7 @@
     </section>
 
     <!-- My NFT -->
-    <section class="w-full max-w-[1200px] mx-auto mt-10 md:mt-20">
+    <section class="w-full max-w-[1200px] mx-auto mt-10 md:mt-16">
       <h2 class="mb-4 text-3xl font-bold md:mb-6 md:text-4xl">My NFT</h2>
 
       <ItemList />
