@@ -6,7 +6,7 @@ RUN npm install -g yarn --force
 COPY package.json ./
 COPY yarn.lock ./
 RUN yarn install
-COPY local .
+COPY . .
 RUN yarn build
 
 # deploy stage
