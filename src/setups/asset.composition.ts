@@ -8,7 +8,7 @@ import { useAssetStore } from '@/stores/asset.module.ts'
 import { useModalStore } from '@/stores/modal.module'
 import MetamaskService from '@/services/metamask.service'
 import { IERC1155, IERC20, IERC721, IREG, ITBA } from '@/types/abi'
-import type { Erc6551Asset, ErcAsset, Metadata6551 } from '@/types/asset'
+import type { Erc6551Asset, ErcAsset, Metadata, Metadata6551, asset } from '@/types/asset'
 
 export const setupAsset = () => {
   const assetStore = useAssetStore()
@@ -205,22 +205,27 @@ export const setupAsset = () => {
     const signer = await provider.getSigner()
 
     const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
-    const tokensOf1155 = await mts.tokensOf(address)
+    const tokensOf1155: [bigint[], bigint[]] = await mts.tokensOf(address)
+
+    console.log({ tokensOf1155 })
 
     const asset1155: ErcAsset = new Map()
 
     const mtsList = tokensOf1155
 
     const asset1155Data = await Promise.all(
-      mtsList[0].map(async (tokenId: any, i: number) => {
+      mtsList[0].map(async (tokenId: bigint, i: number) => {
         const uri = await mts.uri(tokenId)
-        const metadata = await axios.get(uri)
-        return { tokenId, metadata: metadata.data, amount: mtsList[1][i] }
+        const metadata: Metadata = await (await axios.get(uri)).data
+        return { tokenId, metadata: metadata, amount: mtsList[1][i] }
       })
     )
 
-    asset1155Data.forEach((x: any) => {
-      asset1155.set(x.tokenId, { metadata: { ...x.metadata, type: 1155 }, amount: x.amount })
+    asset1155Data.forEach((asset) => {
+      asset1155.set(asset.tokenId, {
+        metadata: { ...asset.metadata, type: 1155 },
+        amount: asset.amount
+      })
     })
 
     return { asset1155 }
@@ -250,7 +255,7 @@ export const setupAsset = () => {
     // setAsset20({ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount })
   }
 
-  const send20Token = async (asset: any, upperModalRef: any) => {
+  const send20Token = async (upperModalRef: HTMLDialogElement) => {
     const wallet = new MetamaskService()
     await wallet.init()
     const provider = await wallet.getWeb3Provider()
@@ -281,7 +286,7 @@ export const setupAsset = () => {
       0n
     )
 
-    upperModalRef.value.close()
+    upperModalRef.close()
 
     sendLoadingModalRef.value && sendLoadingModalRef?.value.showModal()
 
@@ -312,7 +317,7 @@ export const setupAsset = () => {
     setToastMsg('Send Completed!')
   }
 
-  const sendNft = async (toAddress: string, asset: any, upperModalRef: any) => {
+  const sendNft = async (toAddress: string, asset: asset, upperModalRef: any) => {
     const assetType = asset[1].metadata.type
 
     const wallet = new MetamaskService()
@@ -392,7 +397,7 @@ export const setupAsset = () => {
     setToastMsg('Send Completed!')
   }
 
-  const sendNftFrom6551 = async (asset: any, upperModalRef: any) => {
+  const sendNftFrom6551 = async (asset: asset, upperModalRef: any) => {
     const assetType = asset[1].metadata.type
 
     const wallet = new MetamaskService()
@@ -521,7 +526,7 @@ export const setupAsset = () => {
     setToastMsg('Send Completed!')
   }
 
-  const addNft = async (toAddress: string, asset: any, upperModalRef: any) => {
+  const addNft = async (toAddress: string, upperModalRef: any) => {
     const wallet = new MetamaskService()
     await wallet.init()
     const provider = await wallet.getWeb3Provider()
@@ -531,8 +536,8 @@ export const setupAsset = () => {
     const assetIdList: bigint[] = []
     const assetAmountsList: bigint[] = []
 
-    addAsset.value.forEach((value: any, key: bigint) => {
-      assetIdList.push(key), assetAmountsList.push(value.amount), console.log(value.amount)
+    addAsset.value.forEach((value, key: bigint) => {
+      assetIdList.push(key), assetAmountsList.push(value.amount!)
     })
 
     const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer)
@@ -652,9 +657,9 @@ export const setupAsset = () => {
         0n
       )
 
-      const tknAmountWei = await tkn.balanceOf(tbaWalletAddress)
-      const tknSymbol = await tkn.symbol()
-      const tknDecimals = await tkn.decimals()
+      const tknAmountWei: bigint = await tkn.balanceOf(tbaWalletAddress)
+      const tknSymbol: string = await tkn.symbol()
+      const tknDecimals: bigint = await tkn.decimals()
       const formatEtherAmount = ethers.formatEther(tknAmountWei)
 
       const result = await Promise.all([
@@ -666,6 +671,7 @@ export const setupAsset = () => {
       const asset1155 = result[1]['asset1155']
 
       tbaAsset20.value = [{ tknAmountWei, tknSymbol, tknDecimals, formatEtherAmount }]
+
       tbaAsset721.value = asset721
       tbaAsset1155.value = asset1155
     } else if (ercType === 721) {

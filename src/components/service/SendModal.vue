@@ -7,7 +7,7 @@
     "
     title="Send NFT"
     btn-name="Send"
-    :btn-click="async () => await confirmSend(toAddress, sendAsset)"
+    :btn-click="async () => await confirmSend(toAddress, sendAsset!)"
     :btnDisable="isSendBtnDisable"
   >
     <div class="indicator block w-28 mx-auto md:w-32">
@@ -89,6 +89,7 @@ import { setupAsset } from '@/setups/asset.composition'
 import { storeToRefs } from 'pinia'
 import { useAssetStore } from '@/stores/asset.module'
 import { useModalStore } from '@/stores/modal.module'
+import type { asset } from '@/types/asset'
 
 const modalStore = useModalStore()
 
@@ -101,8 +102,7 @@ const assetStore = useAssetStore()
 
 const { sendAsset, toAddress, toAmounts, from6551 } = storeToRefs(assetStore)
 
-const confirmSend = async (sendToAddress: string, sendAsset: any) => {
-  console.log({ sendAsset })
+const confirmSend = async (sendToAddress: string, sendAsset: asset) => {
   if (!from6551.value.from6551) await sendNft(sendToAddress, sendAsset, sendModalRef)
   else await sendNftFrom6551(sendAsset, sendModalRef)
   toAddress.value = ''
@@ -121,7 +121,7 @@ const isInputError = computed(() => {
 })
 
 const isAmountError = computed(() => {
-  return toAmounts.value > amountsOf1155.value
+  return Number(toAmounts.value) > Number(amountsOf1155.value)
 })
 
 const isValidAddress = (address: string) => {
@@ -136,6 +136,6 @@ const isValidAddress = (address: string) => {
 const isSendBtnDisable = computed(() => {
   return is1155.value
     ? isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
-    : isInputError.value || toAddress.value === '' || amountsOf1155.value === 0
+    : isInputError.value || toAddress.value === '' || Number(amountsOf1155.value) === 0
 })
 </script>

@@ -157,10 +157,10 @@
           </template>
         </Accordion>
 
-        <Accordion title="Token (2)">
+        <Accordion title="Token (1)">
           <div
-            v-for="asset in tbaAsset20"
-            :key="asset"
+            v-for="(asset, i) in tbaAsset20"
+            :key="i"
             class="flex justify-between items-center mb-5 last:mb-0"
           >
             <div class="flex items-center mr-4 font-medium text-md">

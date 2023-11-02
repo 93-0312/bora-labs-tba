@@ -3,7 +3,7 @@
     @modal-ref="(ref) => (sendTokenModalRef = ref.value)"
     title="Send Token"
     btn-name="Send"
-    :btn-click="async () => await confirmSendToken(toAddress, sendAsset)"
+    :btn-click="async () => await confirmSendToken()"
     :btnDisable="isSendBtnDisable"
   >
     <div class="form-control w-full mt-4">
@@ -98,10 +98,10 @@ const emit = defineEmits(['modalRef'])
 const { send20Token } = setupAsset()
 const assetStore = useAssetStore()
 
-const { sendAsset, toAmounts, toAddress, sendErc20Asset } = storeToRefs(assetStore)
+const { toAmounts, toAddress, sendErc20Asset } = storeToRefs(assetStore)
 
-const confirmSendToken = async (sendToAddress: string) => {
-  await send20Token(sendToAddress, sendTokenModalRef)
+const confirmSendToken = async () => {
+  await send20Token(sendTokenModalRef.value!)
 }
 
 const isInputError = computed(() => {
