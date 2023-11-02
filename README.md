@@ -1,52 +1,87 @@
-# boralabs-www-6551
+# Boralabs - TBA Project
 
-This template should help get you started developing with Vue 3 in Vite.
+## Introduction
 
-## Recommended IDE Setup
+BORAlabs - TBA Project is an Token Bound Account Standard project. We present a groundbreaking NFT market that
+transcends traditional NFT trading by incorporating the ERC-1155 Multi Token Standard. This project introduces a
+transformative feature, enabling the transfer of entire wallet (account) ownership through NFT trades. At its core, this
+project introduces ERC-6551, Token Bound Accounts (TBA) Standard that are tightly connected to NFTs, allowing the
+seamless transfer of all assets within an account during TBA trades. Join us as we explore these concepts, their
+real-world applications, and reshape the landscape of blockchain asset ownership and management.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Table of Contents
 
-## Type Support for `.vue` Imports in TS
+### 0. [Prerequisite](#prerequisite)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+### 1. [Quick Start](#quick-start)
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+### 2. [Features](#features)
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+### 3. [Examples](#examples)
 
-## Customize configuration
+### 4. [Licenses](#licenses)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+### 5. [References & Docs](#references---docs)
 
-## Project Setup
+---
 
-```sh
-yarn
+## Prerequisite
+
+### System Requirement
+
+- 🐳 **Docker Desktop** (latest with docker-compose)
+- 🥮 **Ganache GUI** [download](https://trufflesuite.com/ganache/)
+- 🟩 **Node v18.17** (latest)
+- 🐱 **Yarn v1.22.19**
+- 🌐 **Chrome Web Browser / with Metamask Extension** 🦊
+- **WSL 2** (for windows only)
+---
+
+## Quick Start
+
+### Visit our 👉 [live demo]()
+
+### Local Environment Setup
+
+**Step 1. Install required packages via Yarn**</br>
+```shell
+cd <project_root_dir>
+
 ```
 
-### Compile and Hot-Reload for Development
+**Step 2. Open Ganache GUI** </br>
+- Open Ganache > Click Quick start
+- Get the Private Key for the first account
+- Import your private to Metamask
 
-```sh
-yarn dev
+
+**Step 3. Deploy Contracts** </br>
+```shell
+cd <project_root_dir>/storage
+hardhat compile
+hardhat run --network ganache scripts/deploy.ts
 ```
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-yarn build
+**step 4. Build & Run Application**
+```shell
+cd <project_root_dir>
+docker-compose up -d
 ```
+- open http://localhost:8080 on Chrome
+- Login with Metamask
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+---
+## Features
 
-```sh
-yarn test:unit
-```
+---
 
-### Lint with [ESLint](https://eslint.org/)
+## Examples
 
-```sh
-yarn lint
-```
+---
+
+## Licenses
+
+---
+
+## References & Docs
+
