@@ -21,11 +21,11 @@
       <!-- 카드 갯수 -->
       <span
         v-show="is1155"
-        class="indicator-item badge badge-warning px-1 rounded-sm text-xs font-bold"
+        class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-medium"
       >
         <!-- prettier-ignore -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
-          <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="currentColor"/>
+        <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-auto">
+          <path d="M12 12L6 6M12 12L18 18M12 12L18 6M12 12L6 18" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
         </svg>
         {{ amountsOf1155 }}
       </span>

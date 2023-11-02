@@ -45,7 +45,7 @@
     <div
       :class="[
         props.isSmall
-          ? 'p-2.5 border border-base-300 border-t-0 rounded-b-md'
+          ? 'px-2.5 py-2 border border-base-300 border-t-0 rounded-b-md'
           : 'px-2.5 py-1.5 md:px-5 md:py-3'
       ]"
     >
@@ -94,7 +94,7 @@
         v-if="showNetwork"
         :class="[
           'flex items-center text-neutral/60 font-medium',
-          props.isSmall ? 'mt-0.5 pl-[1px] text-xs md:text-md' : 'text-xs md:text-sm'
+          props.isSmall ? 'mt-0.5 pl-[1px] text-[10px] md:text-[12px]' : 'text-xs md:text-sm'
         ]"
       >
         Bora Testnet
