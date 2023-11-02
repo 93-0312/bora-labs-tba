@@ -1,20 +1,22 @@
 import { useAssetStore } from '@/stores/asset.module'
 import { storeToRefs } from 'pinia'
 import { useModalStore } from '@/stores/modal.module'
+import type { Erc20, asset } from '@/types/asset'
 
 export const setupModal = () => {
   const assetStore = useAssetStore()
   const modalStore = useModalStore()
 
-  const { setSendAsset, setSendErc20Asset, setAddAsset, setFrom6551 } = assetStore
+  const { setSendAsset, setSendErc20Asset, setFrom6551 } = assetStore
   const { addModalRef, sendModalRef, sendTokenModalRef } = storeToRefs(modalStore)
 
   const { toAddress, toAmounts, addAsset } = storeToRefs(assetStore)
 
-  const showSendModal = (sendAsset: any, tokenId?: any) => {
+  const showSendModal = (sendAsset: asset, tokenId?: bigint) => {
     toAddress.value = ''
     toAmounts.value = ''
     setSendAsset(sendAsset)
+    // :CHECKLIST
     setFrom6551({ from6551: tokenId !== undefined, tokenId: tokenId })
     sendModalRef.value?.showModal()
     return
@@ -27,10 +29,9 @@ export const setupModal = () => {
     return
   }
 
-  const showTokenSendModal = (sendErc20Asset: any, tokenId?: any) => {
+  const showTokenSendModal = (sendErc20Asset: Erc20, tokenId?: bigint) => {
     toAddress.value = ''
     toAmounts.value = ''
-    addAsset.value = ''
     setSendErc20Asset(sendErc20Asset)
     setFrom6551({ from6551: tokenId !== undefined, tokenId: tokenId })
     sendTokenModalRef.value?.showModal()

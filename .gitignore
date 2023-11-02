@@ -1,25 +1,43 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# dependencies
 node_modules
-.DS_Store
-dist
-dist-ssr
+.pnp
+.pnp.js
+
+# testing
 coverage
+
+# build
+.next/
+out/
+build
+dist
 *.local
 
-/cypress/videos/
-/cypress/screenshots/
+#infrastructure
+.k8s*
+skaffold.yaml
 
-# Editor directories and files
+# misc
+.DS_Store
 .vscode
 .idea
+*.pem
+
+# debug
+*.log*
+
+# local env files
+.env
+
+# turbo
+.turbo
+
+# visualizations
+graph.*
+
+# editors
 *.suo
 *.ntvs*
 *.njsproj

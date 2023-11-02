@@ -4,7 +4,7 @@
     @modal-ref="(ref) => (addModalRef = ref.value)"
     title="Add NFT"
     btn-name="Add"
-    :btn-click="async () => await confirmSend(toAddress, addAsset)"
+    :btn-click="async () => await confirmSend(toAddress)"
   >
     <p class="mb-2.5 text-sm md:text-base">Select the NFT to add to Pitcher #1234.</p>
     <ul
@@ -55,15 +55,13 @@ const modalStore = useModalStore()
 const { addNft } = setupAsset()
 const assetStore = useAssetStore()
 
-const { addAsset, toAddress, toAmounts } = storeToRefs(assetStore)
-const { asset721, asset1155 } = storeToRefs(assetStore)
-
-const { setSendAsset } = assetStore
+const { toAddress } = storeToRefs(assetStore)
+const { asset1155 } = storeToRefs(assetStore)
 
 const { addModalRef } = storeToRefs(modalStore)
 
-const confirmSend = async (addToAddress: string, addAsset: any) => {
-  await addNft(addToAddress, addAsset, addModalRef)
+const confirmSend = async (addToAddress: string) => {
+  await addNft(addToAddress, addModalRef)
 }
 
 defineProps({

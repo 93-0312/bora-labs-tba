@@ -1,0 +1,39 @@
+version: 0.2
+# TODO: Get Env file from build, get correct ecr url
+env:
+  variables:
+    IMAGE_REPO_NAME: boralabs-tba-www
+batch:
+  fast-fail: true
+
+phases:
+  install:
+    commands:
+      - echo Installing app dependencies...
+      - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+      - source ~/.bashrc
+  pre_build:
+    commands:
+      - echo Entered the pre_build phase...
+      - echo Logging in to Metabora Account Amazon ECR...
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ...
+  build:
+    commands:
+      - echo Building the Docker image...
+      - BUILD_TAG=$CODEBUILD_RESOLVED_SOURCE_VERSION-$CODEBUILD_BUILD_NUMBER
+      - docker build -t $IMAGE_REPO_NAME:$BUILD_TAG -t $IMAGE_REPO_NAME:latest --build-arg APP_ENV=$_APP_ENV -f ./storage/build/Dockerfile .
+      - docker tag $IMAGE_REPO_NAME:$BUILD_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$BUILD_TAG
+      - docker tag $IMAGE_REPO_NAME:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - echo ReLogin On Amazon ECR to push
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$BUILD_TAG
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:latest
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+      - echo Change directory to secondary source
+      - cd $CODEBUILD_SRC_DIR
+      - echo List directory
+      - ls -la
