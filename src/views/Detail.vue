@@ -5,13 +5,11 @@
     class="grid gap-6 items-start w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:gap-10 md:px-7 md:pb-20 md:grid-cols-[4fr_5fr] md:pt-8"
   >
     <section
-      class="relative w-full max-w-lg mx-auto h-auto text-center md:sticky md:top-28 md:max-w-lg"
+      class="relative w-full max-w-[80%] mx-auto h-auto text-center md:sticky md:top-28 md:max-w-lg"
     >
       <img
-        width="100"
-        height="100"
         :src="detailAsset && detailAsset?.get(tokenId)?.metadata['image']"
-        class="w-full h-auto rounded-md"
+        class="w-full h-auto rounded-md border"
         alt="nft"
       />
 
@@ -35,57 +33,57 @@
     </section>
 
     <section>
-      <div class="flex items-center justify-between">
-        <h2 class="text-3xl font-bold md:text-4xl">
-          {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
-        </h2>
-
-        <div class="tooltip tooltip-neutral tooltip-left" data-tip="Go to Bora Scope">
-          <a
-            v-if="is6551"
-            :href="`${scopeUrl}address/${tbaWalletAddress}`"
-            target="_blank"
-            class="flex items-center justify-center w-11 h-11 rounded-md bg-neutral-content"
-            aria-label="go to borascope"
-          >
-            <!-- prettier-ignore -->
-            <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
-              <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
-      </div>
+      <h2 class="text-3xl font-bold md:text-4xl">
+        {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
+      </h2>
 
       <!-- erc-6551 -->
       <template v-if="is6551">
-        <p
-          class="inline-flex items-center h-11 mt-3 pl-4 bg-neutral-content rounded-md text-sm md:mt-4 md:text-base"
-        >
-          {{ truncate((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress) }}
-          <button
-            @click="
-              copy((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress), changeIcon()
-            "
-            class="px-3 h-11 ml-1 rounded-r-sm hover:bg-secondary/20"
-            type="button"
-            aria-label="copy"
+        <div class="flex items-center justify-between mt-3 md:mt-4">
+          <p
+            class="inline-flex items-center h-10 pl-4 bg-neutral-content rounded-md text-sm md:h-11 md:text-base"
           >
-            <!-- prettier-ignore -->
-            <svg v-if="isCopy" width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-              <path d="M4.79175 17.7502C4.37508 17.7502 4.02091 17.6043 3.72925 17.3127C3.43758 17.021 3.29175 16.6668 3.29175 16.2502V5.66683H4.54175V16.2502C4.54175 16.3196 4.56591 16.3785 4.61425 16.4268C4.66314 16.4757 4.7223 16.5002 4.79175 16.5002H12.8751V17.7502H4.79175ZM7.70841 14.8335C7.29175 14.8335 6.93758 14.6877 6.64591 14.396C6.35425 14.1043 6.20841 13.7502 6.20841 13.3335V3.85433C6.20841 3.42377 6.35425 3.06266 6.64591 2.771C6.93758 2.47933 7.29175 2.3335 7.70841 2.3335H14.6876C15.1181 2.3335 15.4792 2.47933 15.7709 2.771C16.0626 3.06266 16.2084 3.42377 16.2084 3.85433V13.3335C16.2084 13.7502 16.0626 14.1043 15.7709 14.396C15.4792 14.6877 15.1181 14.8335 14.6876 14.8335H7.70841ZM7.70841 13.5835H14.6876C14.757 13.5835 14.8195 13.5591 14.8751 13.5102C14.9306 13.4618 14.9584 13.4029 14.9584 13.3335V3.85433C14.9584 3.78488 14.9306 3.72239 14.8751 3.66683C14.8195 3.61127 14.757 3.5835 14.6876 3.5835H7.70841C7.63897 3.5835 7.58008 3.61127 7.53175 3.66683C7.48286 3.72239 7.45841 3.78488 7.45841 3.85433V13.3335C7.45841 13.4029 7.48286 13.4618 7.53175 13.5102C7.58008 13.5591 7.63897 13.5835 7.70841 13.5835Z" fill="currentColor" />
-            </svg>
+            {{ truncate((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress) }}
+            <button
+              @click="
+                copy((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress),
+                  changeIcon()
+              "
+              class="px-3 h-11 ml-1 rounded-r-md hover:bg-secondary/20"
+              type="button"
+              aria-label="copy"
+            >
+              <!-- prettier-ignore -->
+              <svg v-if="isCopy" width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+                <path d="M4.79175 17.7502C4.37508 17.7502 4.02091 17.6043 3.72925 17.3127C3.43758 17.021 3.29175 16.6668 3.29175 16.2502V5.66683H4.54175V16.2502C4.54175 16.3196 4.56591 16.3785 4.61425 16.4268C4.66314 16.4757 4.7223 16.5002 4.79175 16.5002H12.8751V17.7502H4.79175ZM7.70841 14.8335C7.29175 14.8335 6.93758 14.6877 6.64591 14.396C6.35425 14.1043 6.20841 13.7502 6.20841 13.3335V3.85433C6.20841 3.42377 6.35425 3.06266 6.64591 2.771C6.93758 2.47933 7.29175 2.3335 7.70841 2.3335H14.6876C15.1181 2.3335 15.4792 2.47933 15.7709 2.771C16.0626 3.06266 16.2084 3.42377 16.2084 3.85433V13.3335C16.2084 13.7502 16.0626 14.1043 15.7709 14.396C15.4792 14.6877 15.1181 14.8335 14.6876 14.8335H7.70841ZM7.70841 13.5835H14.6876C14.757 13.5835 14.8195 13.5591 14.8751 13.5102C14.9306 13.4618 14.9584 13.4029 14.9584 13.3335V3.85433C14.9584 3.78488 14.9306 3.72239 14.8751 3.66683C14.8195 3.61127 14.757 3.5835 14.6876 3.5835H7.70841C7.63897 3.5835 7.58008 3.61127 7.53175 3.66683C7.48286 3.72239 7.45841 3.78488 7.45841 3.85433V13.3335C7.45841 13.4029 7.48286 13.4618 7.53175 13.5102C7.58008 13.5591 7.63897 13.5835 7.70841 13.5835Z" fill="currentColor" />
+              </svg>
 
-            <!-- prettier-ignore -->
-            <svg v-else xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" class="w-5 h-auto">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M464 128L240 384l-96-96"></path>
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M144 384l-96-96"></path>
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 128L232 284"></path>
-            </svg>
-          </button>
-        </p>
+              <!-- prettier-ignore -->
+              <svg v-else xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" class="w-5 h-auto">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M464 128L240 384l-96-96"></path>
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M144 384l-96-96"></path>
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 128L232 284"></path>
+              </svg>
+            </button>
+          </p>
+
+          <div class="tooltip tooltip-neutral tooltip-left" data-tip="Go to Bora Scope">
+            <a
+              :href="`${scopeUrl}address/${tbaWalletAddress}`"
+              target="_blank"
+              class="flex items-center justify-center w-10 h-10 rounded-md bg-neutral-content md:w-11 md:h-11"
+              aria-label="go to borascope"
+            >
+              <!-- prettier-ignore -->
+              <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
+                <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
 
         <Accordion :title="`NFT (${tbaAssetSize})`">
           <p v-if="tbaAssetisEmpty" class="flex flex-col empty empty-sm py-2 text-sm text-center">
@@ -93,7 +91,7 @@
           </p>
 
           <template v-else>
-            <ul class="grid grid-cols-2 gap-6 md:grid-cols-3">
+            <ul class="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-4">
               <li v-for="asset in tbaAsset1155" :key="Number(asset[0])" class="relative">
                 <ItemCard
                   :is-small="true"
@@ -116,11 +114,11 @@
 
                 <!-- 카드 갯수 -->
                 <span
-                  class="absolute -top-2 -right-2 badge badge-warning px-1 rounded-sm text-xs font-bold"
+                  class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-medium"
                 >
                   <!-- prettier-ignore -->
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
-                    <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="currentColor"/>
+                  <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-auto">
+                    <path d="M12 12L6 6M12 12L18 18M12 12L18 6M12 12L6 18" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
                   </svg>
                   {{ asset[1].amount }}
                 </span>

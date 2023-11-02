@@ -34,7 +34,7 @@
             <img
               :src="asset[1]?.metadata.image"
               :alt="asset[1]?.metadata.name"
-              class="w-full h-auto rounded-sm"
+              class="w-full h-auto rounded-sm border border-base-300/10"
             />
           </a>
           <div class="flex flex-col justify-center items-start text-base-100">
@@ -42,13 +42,16 @@
               class="absolute top-8 left-8 badge badge-warning badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md"
               >ERC-6551</span
             >
-            <p class="hidden h-7 font-bold text-lg md:mt-2 md:text-4xl md:block">
+            <a
+              :href="`/tba/6551/${Number(asset[0])}`"
+              class="hidden h-7 font-bold text-lg md:h-9 md:mt-2 md:text-4xl md:block"
+            >
               {{ asset[1]?.metadata.name }}
-            </p>
+            </a>
             <p class="flex items-center h-7 text-xs md:mt-8 md:text-base">
               {{ truncate(asset[1]?.metadata.walletAddress) }}
               <button
-                class="p-1.5 rounded-sm md:ml-1.5 md:p-2 hover:bg-base-100/20"
+                class="p-1.5 rounded-md md:ml-1.5 md:p-2 hover:bg-base-100/20"
                 type="button"
                 aria-label="copy"
                 @click="copy(asset[1]?.metadata.walletAddress), changeIcon()"
@@ -99,7 +102,7 @@
             <img
               :src="asset[1]?.metadata.image"
               :alt="asset[1]?.metadata.name"
-              class="w-full h-auto rounded-sm"
+              class="w-full h-auto rounded-sm border border-base-300/10"
             />
           </a>
           <div class="flex flex-col justify-center items-start text-base-100">
@@ -107,7 +110,12 @@
               class="absolute top-8 left-8 badge badge-info badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md"
               >ERC-721</span
             >
-            <p class="h-7 font-bold text-lg md:mt-2 md:text-4xl">{{ asset[1]?.metadata.name }}</p>
+            <a
+              :href="`/tba/721/${Number(asset[0])}`"
+              class="h-7 font-bold text-lg md:h-9 md:mt-2 md:text-4xl"
+            >
+              {{ asset[1]?.metadata.name }}
+            </a>
             <p class="text-base-100/70 text-sm md:mt-8 md:text-base">Bora Testnet</p>
             <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
               <button

@@ -1,6 +1,6 @@
 <template>
   <dialog class="modal" ref="modalRef">
-    <div class="modal-box flex flex-col items-center p-5 md:p-6">
+    <div class="modal-box flex flex-col items-center px-5 py-8 md:px-6 md:py-10">
       <!-- step, 진행된 step에 step-primary 추가 -->
       <ul v-if="props.isStep" class="steps mt-2">
         <li v-for="i in step" :key="i" :class="['step', currentStep >= i && 'step-primary']" />
