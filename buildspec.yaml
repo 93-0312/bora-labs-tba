@@ -5,7 +5,7 @@ version: 0.2
 # TODO: Get Env file from build, get correct ecr url
 env:
   variables:
-    IMAGE_REPO_NAME: boralabs-tba-www
+    IMAGE_REPO_NAME: boralabs-tba
     AWS_DEFAULT_REGION: "ap-northeast-2"
     AWS_REGION: "ap-northeast-2"
     DOCKERFILE_PATH: storage/build/Dockerfile
@@ -27,6 +27,7 @@ phases:
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 030628981456.dkr.ecr.ap-northeast-2.amazonaws.com
       - echo Generating .env config...
+      - cp .env.public .env
   build:
     commands:
       - echo Building the Docker image...
@@ -45,6 +46,6 @@ phases:
       - ls -la
       - |
         aws ssm send-command --document-name "AWS-RunShellScript" \
-          --parameters "commands=[\"sudo docker pull $REPOSITORY_URL:$BUILD_TAG && sudo docker service update --image $REPOSITORY_URL:$BUILD_TAG tba-web\"]" \
+          --parameters "commands=[\"sudo docker pull $REPOSITORY_URL:$BUILD_TAG && sudo docker service update --image $REPOSITORY_URL:$BUILD_TAG tba-www\"]" \
           --targets "Key=instanceids,Values=i-08cfad7e388143ca0" \
           --comment "BoraLabs DAO API - Code Deploy"
