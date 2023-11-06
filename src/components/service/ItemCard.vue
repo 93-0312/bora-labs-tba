@@ -115,7 +115,12 @@ const assetStore = useAssetStore()
 const { addAsset } = storeToRefs(assetStore)
 
 const selectAddAsset = () => {
-  addAsset.value.set(props.asset[0], props.asset[1])
+  const alreadyCheck = addAsset.value.get(props.asset[0]) !== undefined
+
+  if (alreadyCheck) {
+    addAsset.value.delete(props.asset[0])
+    return
+  } else addAsset.value.set(props.asset[0], props.asset[1])
 }
 
 const props = defineProps({

@@ -16,6 +16,9 @@
         :has-badge="false"
         :img-src="sendAsset?.[1].metadata.image"
         :card-name="sendAsset?.[1]?.metadata.name"
+        :hasCheckbox="false"
+        :id="Number(sendAsset?.[0])"
+        :ercType="sendAsset?.[1]?.metadata.type"
       />
 
       <!-- 카드 갯수 -->
