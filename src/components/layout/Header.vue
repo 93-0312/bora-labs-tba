@@ -34,9 +34,8 @@ watch(
   () => isSigned.value,
   async (isSigned: boolean) => {
     if (isSigned) {
-      // console.log('header watch')
       await checkAsset()
-    } else !isSigned && router.replace('/')
+    }
   },
   { immediate: true }
 )
