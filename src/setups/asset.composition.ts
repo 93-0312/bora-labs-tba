@@ -274,7 +274,7 @@ export const setupAsset = () => {
 
     const encodedFn = tkn.interface.encodeFunctionData('transfer', [
       toAddress.value,
-      ethers.toBigInt(toAmounts.value)
+      ethers.parseEther(toAmounts.value)
     ])
 
     const proxy6551 = new Contract(tbaWalletAddress, ITBA, signer)
