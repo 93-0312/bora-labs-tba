@@ -1,5 +1,6 @@
 <template>
-  <template v-if="!detailAsset.size"></template>
+  <template v-if="!detailAsset.size" />
+
   <main
     v-else
     class="grid gap-6 items-start w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:gap-10 md:px-7 md:pb-20 md:grid-cols-[4fr_5fr] md:pt-8"
@@ -11,6 +12,8 @@
         :src="detailAsset && detailAsset?.get(tokenId)?.metadata['image']"
         class="w-full h-auto rounded-md border"
         alt="nft"
+        width="490"
+        height="490"
       />
 
       <!-- badge: 6551 -->
@@ -53,17 +56,8 @@
               type="button"
               aria-label="copy"
             >
-              <!-- prettier-ignore -->
-              <svg v-if="isCopy" width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-                <path d="M4.79175 17.7502C4.37508 17.7502 4.02091 17.6043 3.72925 17.3127C3.43758 17.021 3.29175 16.6668 3.29175 16.2502V5.66683H4.54175V16.2502C4.54175 16.3196 4.56591 16.3785 4.61425 16.4268C4.66314 16.4757 4.7223 16.5002 4.79175 16.5002H12.8751V17.7502H4.79175ZM7.70841 14.8335C7.29175 14.8335 6.93758 14.6877 6.64591 14.396C6.35425 14.1043 6.20841 13.7502 6.20841 13.3335V3.85433C6.20841 3.42377 6.35425 3.06266 6.64591 2.771C6.93758 2.47933 7.29175 2.3335 7.70841 2.3335H14.6876C15.1181 2.3335 15.4792 2.47933 15.7709 2.771C16.0626 3.06266 16.2084 3.42377 16.2084 3.85433V13.3335C16.2084 13.7502 16.0626 14.1043 15.7709 14.396C15.4792 14.6877 15.1181 14.8335 14.6876 14.8335H7.70841ZM7.70841 13.5835H14.6876C14.757 13.5835 14.8195 13.5591 14.8751 13.5102C14.9306 13.4618 14.9584 13.4029 14.9584 13.3335V3.85433C14.9584 3.78488 14.9306 3.72239 14.8751 3.66683C14.8195 3.61127 14.757 3.5835 14.6876 3.5835H7.70841C7.63897 3.5835 7.58008 3.61127 7.53175 3.66683C7.48286 3.72239 7.45841 3.78488 7.45841 3.85433V13.3335C7.45841 13.4029 7.48286 13.4618 7.53175 13.5102C7.58008 13.5591 7.63897 13.5835 7.70841 13.5835Z" fill="currentColor" />
-              </svg>
-
-              <!-- prettier-ignore -->
-              <svg v-else xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" class="w-5 h-auto">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M464 128L240 384l-96-96"></path>
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M144 384l-96-96"></path>
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 128L232 284"></path>
-              </svg>
+              <img v-if="isCopy" :src="icCopy" alt="copy" width="20" height="20" class="w-5 h-auto" />
+              <img v-else :src="icCheck" alt="check" width="20" height="20" class="w-5 h-auto" />
             </button>
           </p>
 
@@ -90,8 +84,7 @@
             v-if="tbaAssetisEmpty"
             class="text-center flex flex-col justify-center items-center py-5"
           >
-            <!-- prettier-ignore -->
-            <svg class="w-9 h-auto md:w-10" enable-background="new 0 0 32 32" height="32px" id="_x3C_Layer_x3E_" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="page_x2C__document_x2C__emoji_x2C__No_results_x2C__empty_page"><g id="XMLID_1521_"><path d="M21.5,14.75c0.41,0,0.75,0.34,0.75,0.75s-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75    S21.09,14.75,21.5,14.75z" fill="#263238" id="XMLID_1887_"/><path d="M10.5,14.75c0.41,0,0.75,0.34,0.75,0.75s-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75    S10.09,14.75,10.5,14.75z" fill="#263238" id="XMLID_1885_"/></g><g id="XMLID_1337_"><g id="XMLID_4010_"><polyline fill="none" id="XMLID_4073_" points="     21.5,1.5 4.5,1.5 4.5,30.5 27.5,30.5 27.5,7.5    " stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><polyline fill="none" id="XMLID_4072_" points="     21.5,1.5 27.479,7.5 21.5,7.5 21.5,4    " stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5" fill="none" id="XMLID_4071_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><g id="XMLID_4068_"><path d="      M20.75,15.5c0,0.41,0.34,0.75,0.75,0.75s0.75-0.34,0.75-0.75s-0.34-0.75-0.75-0.75S20.75,15.09,20.75,15.5z" fill="none" id="XMLID_4070_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z" fill="none" id="XMLID_4069_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g><g id="XMLID_2974_"><polyline fill="none" id="XMLID_4009_" points="     21.5,1.5 4.5,1.5 4.5,30.5 27.5,30.5 27.5,7.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><polyline fill="none" id="XMLID_4008_" points="     21.5,1.5 27.479,7.5 21.5,7.5 21.5,4    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5" fill="none" id="XMLID_4007_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><g id="XMLID_4004_"><path d="      M20.75,15.5c0,0.41,0.34,0.75,0.75,0.75s0.75-0.34,0.75-0.75s-0.34-0.75-0.75-0.75S20.75,15.09,20.75,15.5z" fill="none" id="XMLID_4006_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z" fill="none" id="XMLID_4005_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g></g></g></svg>
+            <img :src="icEmpty" alt="empty" width="40" height="40" class="w-9 h-auto md:w-10" />
             <span class="mt-2 font-medium text-sm md:text-md">There is no NFT</span>
           </div>
 
@@ -239,7 +232,7 @@
       />
     </section>
 
-    <!-- <AddModal /> -->
+    <!-- modal -->
     <SendModal />
     <SendTokenModal
       @modal-ref="(ref) => (modalSendTokenRef = ref.value)"
@@ -269,6 +262,9 @@ import ItemCard from '@/components/service/ItemCard.vue'
 import SendModal from '@/components/service/SendModal.vue'
 import SendTokenModal from '@/components/service/SendTokenModal.vue'
 import ModalLoading from '@/components/ui/ModalLoading.vue'
+import icCopy from '@/assets/ic-copy.svg'
+import icCheck from '@/assets/ic-check.svg'
+import icEmpty from '@/assets/ic-empty.svg'
 
 import { copy, truncate } from '@/constant/utils'
 import type { Erc6551Asset, ErcAsset } from '@/types/asset'

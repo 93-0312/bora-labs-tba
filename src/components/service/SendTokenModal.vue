@@ -11,7 +11,6 @@
         <span class="label-text md:text-base">How many token are you sending?</span>
       </label>
       <div class="relative">
-        <!-- max 버튼 활성화 시, -->
         <button
           type="button"
           :class="[
@@ -22,7 +21,7 @@
         >
           Max
         </button>
-        <!-- input error시 class에 input-error 추가  -->
+        <!-- input error시 class에 input-error 추가 -->
         <input
           type="text"
           :class="[

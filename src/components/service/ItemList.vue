@@ -1,11 +1,12 @@
 <template>
+  <!-- skeleton -->
   <SItemList v-if="isAssetLoading" />
+
   <template v-else-if="!isSigned || !hasAsset">
     <section
       class="flex flex-col justify-center items-center w-full aspect-[2/1] text-center text-sm whitespace-nowrap md:top-1/3 md:aspect-[3/1] md:text-lg"
     >
-      <!-- prettier-ignore -->
-      <svg class="w-10 h-auto md:w-16" enable-background="new 0 0 32 32" height="32px" id="_x3C_Layer_x3E_" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="page_x2C__document_x2C__emoji_x2C__No_results_x2C__empty_page"><g id="XMLID_1521_"><path d="M21.5,14.75c0.41,0,0.75,0.34,0.75,0.75s-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75    S21.09,14.75,21.5,14.75z" fill="#263238" id="XMLID_1887_"/><path d="M10.5,14.75c0.41,0,0.75,0.34,0.75,0.75s-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75    S10.09,14.75,10.5,14.75z" fill="#263238" id="XMLID_1885_"/></g><g id="XMLID_1337_"><g id="XMLID_4010_"><polyline fill="none" id="XMLID_4073_" points="     21.5,1.5 4.5,1.5 4.5,30.5 27.5,30.5 27.5,7.5    " stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><polyline fill="none" id="XMLID_4072_" points="     21.5,1.5 27.479,7.5 21.5,7.5 21.5,4    " stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5" fill="none" id="XMLID_4071_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><g id="XMLID_4068_"><path d="      M20.75,15.5c0,0.41,0.34,0.75,0.75,0.75s0.75-0.34,0.75-0.75s-0.34-0.75-0.75-0.75S20.75,15.09,20.75,15.5z" fill="none" id="XMLID_4070_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z" fill="none" id="XMLID_4069_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g><g id="XMLID_2974_"><polyline fill="none" id="XMLID_4009_" points="     21.5,1.5 4.5,1.5 4.5,30.5 27.5,30.5 27.5,7.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><polyline fill="none" id="XMLID_4008_" points="     21.5,1.5 27.479,7.5 21.5,7.5 21.5,4    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5" fill="none" id="XMLID_4007_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><g id="XMLID_4004_"><path d="      M20.75,15.5c0,0.41,0.34,0.75,0.75,0.75s0.75-0.34,0.75-0.75s-0.34-0.75-0.75-0.75S20.75,15.09,20.75,15.5z" fill="none" id="XMLID_4006_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z" fill="none" id="XMLID_4005_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g></g></g></svg>
+      <img :src="icEmpty" alt="empty" width="64" height="64" class="w-10 h-auto md:w-16" />
       <p class="mt-2">
         You do not have any NFTs yet.<br /><strong>Create Wallet</strong> and then mint NFTs!
       </p>
@@ -21,7 +22,6 @@
         </svg>
       </button>
     </section>
-    <!-- 스켈레톤 -->
   </template>
 
   <section v-else class="relative">
@@ -52,6 +52,8 @@
             <img
               :src="asset[1]?.metadata.image"
               :alt="asset[1]?.metadata.name"
+              width="441"
+              height="441"
               class="w-full h-auto rounded-sm border border-base-300/10"
             />
           </a>
@@ -120,6 +122,8 @@
             <img
               :src="asset[1]?.metadata.image"
               :alt="asset[1]?.metadata.name"
+              width="441"
+              height="441"
               class="w-full h-auto rounded-sm border border-base-300/10"
             />
           </a>
@@ -205,7 +209,7 @@
     </ul>
   </section>
 
-  <!-- modal: add nft -->
+  <!-- modal -->
   <SendModal />
   <AddModal />
 </template>
@@ -225,6 +229,7 @@ import { copy, truncate } from '@/constant/utils'
 import AddModal from './AddModal.vue'
 import SendModal from './SendModal.vue'
 import SItemList from '@/components/ui/SItemList.vue'
+import icEmpty from '@/assets/ic-empty.svg'
 
 const accountStore = useAccountStore()
 const assetStore = useAssetStore()
