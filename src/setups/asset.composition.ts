@@ -246,6 +246,11 @@ export const setupAsset = () => {
     setAsset721(asset721)
     setAsset1155(asset1155)
     setAsset6551(asset6551)
+
+    const isAssetEmpty = asset721.size + asset1155.size + asset6551.size === 0
+
+    if (isAssetEmpty) await new Promise((resolve) => setTimeout(resolve, 800))
+
     setIsAssetLoading(false)
 
     // user's erc-20 data
