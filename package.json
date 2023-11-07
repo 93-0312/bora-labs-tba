@@ -1,6 +1,7 @@
 {
-  "name": "boralabs-www-6551",
-  "version": "0.0.0",
+  "name": "boralabs-tba",
+  "version": "1.0.0",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "vite",
