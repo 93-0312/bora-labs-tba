@@ -1,13 +1,13 @@
 <template>
   <main class="px-5 md:px-7">
     <section
-      class="relative rounded-md bg-neutral-content -mx-5 py-8 px-7 text-left md:-mx-7 md:py-10"
+      class="relative rounded-md bg-neutral-content -mx-5 py-8 px-5 text-left md:-mx-7 md:py-10 md:px-7"
     >
       <div
-        class="grid items-center w-full max-w-[1200px] mx-auto md:grid-cols-[3fr_1fr] md:bg-transparent"
+        class="grid gap-5 items-center w-full max-w-[1200px] mx-auto md:grid-cols-[3fr_1fr] md:bg-transparent"
       >
         <div>
-          <h1 class="text-3xl font-bold rounded-sm md:text-5xl lg:text-6xl">
+          <h1 class="text-3xl font-bold rounded-sm md:text-4xl lg:text-[54px]">
             WHAT is
             <a href="https://eips.ethereum.org/EIPS/eip-6551" target="_blank" class="text-highlight"
               >TBA</a
@@ -43,7 +43,7 @@
           alt="bg"
           width="300"
           height="298"
-          class="absolute top-0 right-0 w-[25%] h-auto md:block md:relative md:w-full md:top-3"
+          class="absolute top-3 right-3 w-[18%] h-auto md:block md:relative md:w-[95%] md:top-0 md:right-0"
         />
       </div>
     </section>
