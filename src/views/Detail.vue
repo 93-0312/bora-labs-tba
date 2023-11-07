@@ -86,9 +86,14 @@
         </div>
 
         <Accordion :title="`NFT (${tbaAssetSize})`">
-          <p v-if="tbaAssetisEmpty" class="flex flex-col empty empty-sm py-2 text-sm text-center">
-            There is no NFT.
-          </p>
+          <div
+            v-if="tbaAssetisEmpty"
+            class="text-center flex flex-col justify-center items-center py-5"
+          >
+            <!-- prettier-ignore -->
+            <svg class="w-9 h-auto md:w-10" enable-background="new 0 0 32 32" height="32px" id="_x3C_Layer_x3E_" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="page_x2C__document_x2C__emoji_x2C__No_results_x2C__empty_page"><g id="XMLID_1521_"><path d="M21.5,14.75c0.41,0,0.75,0.34,0.75,0.75s-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75    S21.09,14.75,21.5,14.75z" fill="#263238" id="XMLID_1887_"/><path d="M10.5,14.75c0.41,0,0.75,0.34,0.75,0.75s-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75    S10.09,14.75,10.5,14.75z" fill="#263238" id="XMLID_1885_"/></g><g id="XMLID_1337_"><g id="XMLID_4010_"><polyline fill="none" id="XMLID_4073_" points="     21.5,1.5 4.5,1.5 4.5,30.5 27.5,30.5 27.5,7.5    " stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><polyline fill="none" id="XMLID_4072_" points="     21.5,1.5 27.479,7.5 21.5,7.5 21.5,4    " stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5" fill="none" id="XMLID_4071_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><g id="XMLID_4068_"><path d="      M20.75,15.5c0,0.41,0.34,0.75,0.75,0.75s0.75-0.34,0.75-0.75s-0.34-0.75-0.75-0.75S20.75,15.09,20.75,15.5z" fill="none" id="XMLID_4070_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z" fill="none" id="XMLID_4069_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g><g id="XMLID_2974_"><polyline fill="none" id="XMLID_4009_" points="     21.5,1.5 4.5,1.5 4.5,30.5 27.5,30.5 27.5,7.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><polyline fill="none" id="XMLID_4008_" points="     21.5,1.5 27.479,7.5 21.5,7.5 21.5,4    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5" fill="none" id="XMLID_4007_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><g id="XMLID_4004_"><path d="      M20.75,15.5c0,0.41,0.34,0.75,0.75,0.75s0.75-0.34,0.75-0.75s-0.34-0.75-0.75-0.75S20.75,15.09,20.75,15.5z" fill="none" id="XMLID_4006_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z" fill="none" id="XMLID_4005_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g></g></g></svg>
+            <span class="mt-2 font-medium text-sm md:text-md">There is no NFT</span>
+          </div>
 
           <template v-else>
             <ul class="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-4">
@@ -122,14 +127,6 @@
                   </svg>
                   {{ asset[1].amount }}
                 </span>
-
-                <!-- <button
-                  class="absolute bottom-[55px] right-5 z-10 btn btn-sm btn-circle btn-neutral"
-                  type="button"
-                  @click="showSendModal(asset, tokenId)"
-                >
-                  send
-                </button> -->
               </li>
               <li v-for="asset in tbaAsset721" :key="Number(asset[0])" class="relative">
                 <ItemCard

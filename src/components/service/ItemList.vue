@@ -1,10 +1,32 @@
 <template>
-  <section
-    v-if="!hasAsset || !isSigned"
-    class="flex flex-col empty text-center font-medium my-10 md:my-24"
-  >
-    <span>There is no NFT.</span>
-  </section>
+  hasAsset:{{ hasAsset }}
+  <template v-if="!hasAsset">
+    <section
+      v-if="!isSigned"
+      class="flex flex-col justify-center items-center w-full aspect-[2/1] text-center text-sm whitespace-nowrap md:top-1/3 md:aspect-[3/1] md:text-lg"
+    >
+      <!-- prettier-ignore -->
+      <svg class="w-10 h-auto md:w-16" enable-background="new 0 0 32 32" height="32px" id="_x3C_Layer_x3E_" version="1.1" viewBox="0 0 32 32" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="page_x2C__document_x2C__emoji_x2C__No_results_x2C__empty_page"><g id="XMLID_1521_"><path d="M21.5,14.75c0.41,0,0.75,0.34,0.75,0.75s-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75    S21.09,14.75,21.5,14.75z" fill="#263238" id="XMLID_1887_"/><path d="M10.5,14.75c0.41,0,0.75,0.34,0.75,0.75s-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75    S10.09,14.75,10.5,14.75z" fill="#263238" id="XMLID_1885_"/></g><g id="XMLID_1337_"><g id="XMLID_4010_"><polyline fill="none" id="XMLID_4073_" points="     21.5,1.5 4.5,1.5 4.5,30.5 27.5,30.5 27.5,7.5    " stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><polyline fill="none" id="XMLID_4072_" points="     21.5,1.5 27.479,7.5 21.5,7.5 21.5,4    " stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5" fill="none" id="XMLID_4071_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><g id="XMLID_4068_"><path d="      M20.75,15.5c0,0.41,0.34,0.75,0.75,0.75s0.75-0.34,0.75-0.75s-0.34-0.75-0.75-0.75S20.75,15.09,20.75,15.5z" fill="none" id="XMLID_4070_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z" fill="none" id="XMLID_4069_" stroke="#455A64" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g><g id="XMLID_2974_"><polyline fill="none" id="XMLID_4009_" points="     21.5,1.5 4.5,1.5 4.5,30.5 27.5,30.5 27.5,7.5    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><polyline fill="none" id="XMLID_4008_" points="     21.5,1.5 27.479,7.5 21.5,7.5 21.5,4    " stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="     M14.5,18.5c0-0.83,0.67-1.5,1.5-1.5s1.5,0.67,1.5,1.5" fill="none" id="XMLID_4007_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><g id="XMLID_4004_"><path d="      M20.75,15.5c0,0.41,0.34,0.75,0.75,0.75s0.75-0.34,0.75-0.75s-0.34-0.75-0.75-0.75S20.75,15.09,20.75,15.5z" fill="none" id="XMLID_4006_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/><path d="      M11.25,15.5c0,0.41-0.34,0.75-0.75,0.75s-0.75-0.34-0.75-0.75s0.34-0.75,0.75-0.75S11.25,15.09,11.25,15.5z" fill="none" id="XMLID_4005_" stroke="#263238" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"/></g></g></g></g></svg>
+      <p class="mt-2">
+        You do not have any NFTs yet.<br /><strong>Create Wallet</strong> and then mint NFTs!
+      </p>
+      <button
+        v-if="!isSigned || !hasAsset"
+        class="btn btn-sm btn-primary mt-5 rounded-sm text-xs text-base-100 md:btn-md md:mt-8 md:text-base"
+        type="button"
+        @click="createWallet()"
+      >
+        Create Wallet
+        <!-- prettier-ignore -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" class="w-4 h-auto md:w-5" >
+          <path d="M24 40.0001L21.9 37.8501L34.25 25.5001H8V22.5001H34.25L21.9 10.1501L24 8.00012L40 24.0001L24 40.0001Z" fill="white" />
+        </svg>
+      </button>
+    </section>
+
+    <SItemList v-else />
+  </template>
+
 
   <section v-else class="relative">
     <swiper
@@ -173,13 +195,6 @@
           :img-src="asset[1]?.metadata.image"
           :id="Number(asset[0])"
         >
-          <!-- <button
-            class="btn btn-neutral btn-outline btn-block min-h-0 h-9 mt-3 rounded-sm text-xs md:h-10 md:mt-4 md:btn-base md:text-base"
-            type="button"
-            @click="showSendModal(asset)"
-          >
-            Send
-          </button> -->
           <div class="border-t mt-1.5 md:mt-3">
             <button
               class="btn btn-ghost btn-block min-h-0 h-7 mx-auto mt-1.5 rounded-sm hover:bg-neutral hover:text-base-100 md:h-10 md:mt-2 md:text-base"
@@ -213,11 +228,12 @@ import { setupModal } from '@/setups/modal.composition'
 import { copy, truncate } from '@/constant/utils'
 import AddModal from './AddModal.vue'
 import SendModal from './SendModal.vue'
+import SItemList from '@/components/ui/SItemList.vue'
 
 const accountStore = useAccountStore()
 const assetStore = useAssetStore()
 
-const { convert721to6551 } = setupAsset()
+const { convert721to6551, createWallet } = setupAsset()
 const { isSigned } = storeToRefs(accountStore)
 const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore)
 const { showSendModal, showAddModal } = setupModal()
