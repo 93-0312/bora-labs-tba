@@ -43,12 +43,9 @@
           <p
             class="inline-flex items-center h-10 pl-4 bg-neutral-content rounded-md text-sm md:h-11 md:text-base"
           >
-            {{ truncate((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress) }}
+            {{ truncate(tbaWalletAddress) }}
             <button
-              @click="
-                copy((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress),
-                  changeIcon()
-              "
+              @click="copy(tbaWalletAddress), changeIcon()"
               class="px-3 h-11 ml-1 rounded-r-md hover:bg-secondary/20"
               type="button"
               aria-label="copy"
@@ -302,7 +299,6 @@ const ercType = ref<number>(0)
 const tokenId = ref<bigint>(0n)
 const notIncluded = ref(true)
 const isCopy = ref(true)
-const tbaWalletAddress = ref<string>('')
 
 const modalSendTokenRef = ref<HTMLDialogElement>()
 const modalConvertRef = ref<HTMLDialogElement>()
@@ -332,6 +328,9 @@ const tbaAssetisEmpty = computed(
 )
 
 const tbaAssetSize = computed(() => tbaAsset1155.value?.size + tbaAsset721.value?.size)
+const tbaWalletAddress = computed(
+  () => (detailAsset.value as Erc6551Asset).get(tokenId.value)!.metadata.walletAddress
+)
 
 onMounted(async () => {
   ercType.value = route?.meta.type as number
