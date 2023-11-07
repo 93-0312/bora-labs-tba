@@ -15,7 +15,7 @@ export const setupAsset = () => {
   const accountStore = useAccountStore();
   const modalStore = useModalStore();
   const { isSigned } = storeToRefs(accountStore);
-  const { setAsset721, setAsset1155, setAsset6551, setTba20 } = assetStore;
+  const { setAsset721, setAsset1155, setAsset6551, setTba20, setIsAssetLoading } = assetStore;
   const {
     hasAsset,
     addAsset,
@@ -232,6 +232,7 @@ export const setupAsset = () => {
   };
 
   const checkAsset = async () => {
+    setIsAssetLoading(true);
     const wallet = new MetamaskService();
     await wallet.init();
     const address = await wallet.getAddress();
@@ -245,6 +246,12 @@ export const setupAsset = () => {
     setAsset721(asset721);
     setAsset1155(asset1155);
     setAsset6551(asset6551);
+
+    const isAssetEmpty = asset721.size + asset1155.size + asset6551.size === 0;
+
+    if (isAssetEmpty) await new Promise((resolve) => setTimeout(resolve, 800));
+
+    setIsAssetLoading(false);
 
     // user's erc-20 data
     // const tkn = new Contract(import.meta.env.VITE_BORALABS_TKN_CONTRACT, IERC20, signer)
@@ -275,7 +282,7 @@ export const setupAsset = () => {
     const encodedFn = tkn.interface.encodeFunctionData('transfer', [
       toAddress.value,
       ethers.parseEther(toAmounts.value)
-    ])
+    ]);
 
     const proxy6551 = new Contract(tbaWalletAddress, ITBA, signer);
 

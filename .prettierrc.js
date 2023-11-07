@@ -17,4 +17,4 @@ module.exports = {
     '\\.(css|scss)$' // Styles
   ],
   importOrderCaseInsensitive: true
-}
+};

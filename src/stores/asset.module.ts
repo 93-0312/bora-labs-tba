@@ -32,6 +32,8 @@ export const setupAssetStore = () => {
 
   const from6551 = ref<any>(false);
 
+  const isAssetLoading = ref<boolean>(false);
+
   const setTbaMintStep = (data: 1 | 2 | 3 | 4) => {
     tbaMintStep.value = data;
   };
@@ -80,6 +82,10 @@ export const setupAssetStore = () => {
     tbaAsset20.value = data;
   };
 
+  const setIsAssetLoading = (data: boolean) => {
+    isAssetLoading.value = data;
+  };
+
   const resetAsset = () => {
     setAsset721(new Map());
     setAsset1155(new Map());
@@ -112,6 +118,8 @@ export const setupAssetStore = () => {
 
     tbaMintStep,
 
+    isAssetLoading,
+
     // modifiers
     setFrom6551,
     setAsset721,
@@ -126,8 +134,8 @@ export const setupAssetStore = () => {
     setToAmounts,
     setTba20,
     resetAsset,
-
-    setTbaMintStep
+    setTbaMintStep,
+    setIsAssetLoading
   };
 };
 

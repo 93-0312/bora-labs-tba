@@ -1,10 +1,28 @@
 <template>
-  <section
-    v-if="!hasAsset || !isSigned"
-    class="flex flex-col empty text-center font-medium my-10 md:my-24"
-  >
-    <span>There is no NFT.</span>
-  </section>
+  <!-- skeleton -->
+  <SItemList v-if="isAssetLoading" />
+
+  <template v-else-if="!isSigned || !hasAsset">
+    <section
+      class="flex flex-col justify-center items-center w-full aspect-[2/1] text-center text-sm whitespace-nowrap md:top-1/3 md:aspect-[3/1] md:text-lg"
+    >
+      <img :src="icEmpty" alt="empty" width="64" height="64" class="w-10 h-auto md:w-16" />
+      <p class="mt-2">
+        You do not have any NFTs yet.<br /><strong>Create Wallet</strong> and then mint NFTs!
+      </p>
+      <button
+        class="btn btn-sm btn-primary mt-5 rounded-sm text-xs text-base-100 md:btn-md md:mt-8 md:text-base"
+        type="button"
+        @click="createWallet()"
+      >
+        Create Wallet
+        <!-- prettier-ignore -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" class="w-4 h-auto md:w-5" >
+          <path d="M24 40.0001L21.9 37.8501L34.25 25.5001H8V22.5001H34.25L21.9 10.1501L24 8.00012L40 24.0001L24 40.0001Z" fill="white" />
+        </svg>
+      </button>
+    </section>
+  </template>
 
   <section v-else class="relative">
     <swiper
@@ -34,6 +52,8 @@
             <img
               :src="asset[1]?.metadata.image"
               :alt="asset[1]?.metadata.name"
+              width="441"
+              height="441"
               class="w-full h-auto rounded-sm border border-base-300/10"
             />
           </a>
@@ -102,6 +122,8 @@
             <img
               :src="asset[1]?.metadata.image"
               :alt="asset[1]?.metadata.name"
+              width="441"
+              height="441"
               class="w-full h-auto rounded-sm border border-base-300/10"
             />
           </a>
@@ -173,13 +195,6 @@
           :img-src="asset[1]?.metadata.image"
           :id="Number(asset[0])"
         >
-          <!-- <button
-            class="btn btn-neutral btn-outline btn-block min-h-0 h-9 mt-3 rounded-sm text-xs md:h-10 md:mt-4 md:btn-base md:text-base"
-            type="button"
-            @click="showSendModal(asset)"
-          >
-            Send
-          </button> -->
           <div class="border-t mt-1.5 md:mt-3">
             <button
               class="btn btn-ghost btn-block min-h-0 h-7 mx-auto mt-1.5 rounded-sm hover:bg-neutral hover:text-base-100 md:h-10 md:mt-2 md:text-base"
@@ -194,7 +209,7 @@
     </ul>
   </section>
 
-  <!-- modal: add nft -->
+  <!-- modal -->
   <SendModal />
   <AddModal />
 </template>
@@ -207,18 +222,20 @@ import { Pagination, Navigation, Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { ref } from 'vue';
 import ItemCard from '@/components/service/ItemCard.vue';
+import SItemList from '@/components/ui/SItemList.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { setupModal } from '@/setups/modal.composition';
 import { useAccountStore } from '@/stores/account.module.ts';
 import { useAssetStore } from '@/stores/asset.module.ts';
 import { copy, truncate } from '@/constant/utils';
+import icEmpty from '@/assets/ic-empty.svg';
 
 const accountStore = useAccountStore();
 const assetStore = useAssetStore();
 
-const { convert721to6551 } = setupAsset();
+const { convert721to6551, createWallet } = setupAsset();
 const { isSigned } = storeToRefs(accountStore);
-const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore);
+const { hasAsset, asset721, asset1155, asset6551, isAssetLoading } = storeToRefs(assetStore);
 const { showSendModal, showAddModal } = setupModal();
 const modules = [Pagination, Navigation, Mousewheel];
 
