@@ -9,13 +9,13 @@ const addBorachain = {
   rpcUrls: [import.meta.env.VITE_BORACHAIN_RPC_URL],
   blockExplorerUrls: [import.meta.env.VITE_BORACHAIN_EXPLORER_URL],
   iconUrls: ['https://static.boraportal.com/logo/coins/mainnet/token-ic-t-bora.svg']
-}
+};
 
 export const getNetworkChainConfig = (idx: number) => {
   switch (idx) {
     case Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID): {
-      return addBorachain
+      return addBorachain;
     }
   }
-  return
-}
+  return;
+};

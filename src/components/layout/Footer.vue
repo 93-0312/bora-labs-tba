@@ -3,13 +3,7 @@
     class="grid grid-cols-[200px_1fr] gap-[10px] mt-auto pt-12 pb-7 px-5 border border-t-1 border-base-200 md:px-7 md:pt-16 md:pb-10"
   >
     <a href="#" class="flex items-start">
-      <img
-        :src="icBoraLabs"
-        width="224"
-        height="40"
-        alt="BORA Labs"
-        class="w-auto h-8"
-      />
+      <img :src="icBoraLabs" width="224" height="40" alt="BORA Labs" class="w-auto h-8" />
     </a>
 
     <div class="flex flex-col items-end justify-end md:flex-row">
@@ -25,7 +19,13 @@
         target="_blank"
         href="https://scope.boraportal.cc"
       >
-        <img :src="icBorascope" width="96" height="16" alt="bora scope" class="w-24 h-auto md:w-32" />
+        <img
+          :src="icBorascope"
+          width="96"
+          height="16"
+          alt="bora scope"
+          class="w-24 h-auto md:w-32"
+        />
       </a>
     </div>
 
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import icBoraLabs from '@/assets/ic-boralabs.svg'
-import icBora from '@/assets/ic-bora.svg'
-import icBorascope from '@/assets/ic-borascope.svg'
+import icBora from '@/assets/ic-bora.svg';
+import icBoraLabs from '@/assets/ic-boralabs.svg';
+import icBorascope from '@/assets/ic-borascope.svg';
 </script>

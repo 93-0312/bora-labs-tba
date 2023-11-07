@@ -33,9 +33,9 @@
 </template>
 
 <script lang="ts" setup>
-import { useModalStore } from '@/stores/modal.module'
-import { storeToRefs } from 'pinia'
-import { ref, onMounted } from 'vue'
+import { storeToRefs } from 'pinia';
+import { ref, onMounted } from 'vue';
+import { useModalStore } from '@/stores/modal.module';
 
 const props = defineProps({
   isStep: {
@@ -50,16 +50,16 @@ const props = defineProps({
   step: Number,
   currentStep: { type: Number, default: 1 },
   progressName: String
-})
+});
 
-const modalStore = useModalStore()
-const { progressTime } = storeToRefs(modalStore)
+const modalStore = useModalStore();
+const { progressTime } = storeToRefs(modalStore);
 
-const modalRef = ref<HTMLDialogElement>()
+const modalRef = ref<HTMLDialogElement>();
 
-const emit = defineEmits(['modalRef'])
+const emit = defineEmits(['modalRef']);
 
 onMounted(() => {
-  emit('modalRef', modalRef)
-})
+  emit('modalRef', modalRef);
+});
 </script>

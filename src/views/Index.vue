@@ -1,6 +1,8 @@
 <template>
   <main class="px-5 md:px-7">
-    <section class="relative rounded-md bg-neutral-content -mx-5 py-8 px-7 text-left md:-mx-7 md:py-10">
+    <section
+      class="relative rounded-md bg-neutral-content -mx-5 py-8 px-7 text-left md:-mx-7 md:py-10"
+    >
       <div
         class="grid items-center w-full max-w-[1200px] mx-auto md:grid-cols-[3fr_1fr] md:bg-transparent"
       >
@@ -132,11 +134,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import ItemList from '@/components/service/ItemList.vue'
-import SendModal from '@/components/service/SendModal.vue'
-import AddModal from '@/components/service/AddModal.vue'
-import icToken from '@/assets/ic-token.svg'
+import { ref } from 'vue';
+import AddModal from '@/components/service/AddModal.vue';
+import ItemList from '@/components/service/ItemList.vue';
+import SendModal from '@/components/service/SendModal.vue';
+import icToken from '@/assets/ic-token.svg';
 
-const isAbout = ref(true)
+const isAbout = ref(true);
 </script>

@@ -73,79 +73,79 @@
 </template>
 
 <script setup lang="ts">
-import ModalLayout from '@/components/ui/ModalLayout.vue'
-import { computed, onMounted, ref, watch } from 'vue'
-import { setupAsset } from '@/setups/asset.composition'
-import { storeToRefs } from 'pinia'
-import { useAssetStore } from '@/stores/asset.module'
-import { useModalStore } from '@/stores/modal.module'
+import { storeToRefs } from 'pinia';
+import { computed, onMounted, ref, watch } from 'vue';
+import ModalLayout from '@/components/ui/ModalLayout.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { useAssetStore } from '@/stores/asset.module';
+import { useModalStore } from '@/stores/modal.module';
 
-const modalStore = useModalStore()
+const modalStore = useModalStore();
 
-const { sendTokenModalRef } = storeToRefs(modalStore)
+const { sendTokenModalRef } = storeToRefs(modalStore);
 
-const modalRef = ref<HTMLDialogElement>()
+const modalRef = ref<HTMLDialogElement>();
 
-const isSelected = ref(false)
+const isSelected = ref(false);
 
 defineProps({
   isDisabled: { type: Boolean }
-})
+});
 
-const emit = defineEmits(['modalRef'])
+const emit = defineEmits(['modalRef']);
 
-const { send20Token } = setupAsset()
-const assetStore = useAssetStore()
+const { send20Token } = setupAsset();
+const assetStore = useAssetStore();
 
-const { toAmounts, toAddress, sendErc20Asset } = storeToRefs(assetStore)
+const { toAmounts, toAddress, sendErc20Asset } = storeToRefs(assetStore);
 
 const confirmSendToken = async () => {
-  await send20Token(sendTokenModalRef.value!)
-}
+  await send20Token(sendTokenModalRef.value!);
+};
 
 const isInputError = computed(() => {
-  return toAddress.value !== '' && !isValidAddress(toAddress.value)
-})
+  return toAddress.value !== '' && !isValidAddress(toAddress.value);
+});
 
 const isValidAddress = (address: string) => {
   if (/^(0x)[0]{40}$/.test(address)) {
-    return false
+    return false;
   } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
-    return true
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 const isAmountError = computed(() => {
-  console.log(toAmounts.value)
-  console.log(sendErc20Asset.value?.formatEtherAmount)
-  return Number(toAmounts.value) > Number(sendErc20Asset.value?.formatEtherAmount)
-})
+  console.log(toAmounts.value);
+  console.log(sendErc20Asset.value?.formatEtherAmount);
+  return Number(toAmounts.value) > Number(sendErc20Asset.value?.formatEtherAmount);
+});
 
 const isSendBtnDisable = computed(() => {
   return (
     isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
-  )
-})
+  );
+});
 
 watch(
   () => isSelected.value,
   (isSelected: boolean) => {
     if (isSelected) {
-      toAmounts.value = sendErc20Asset.value?.formatEtherAmount!
+      toAmounts.value = sendErc20Asset.value?.formatEtherAmount!;
     }
   }
-)
+);
 
 watch(
   () => toAmounts.value,
   (toAmounts: string) => {
-    if (toAmounts === sendErc20Asset.value?.formatEtherAmount) isSelected.value = true
-    else isSelected.value = false
+    if (toAmounts === sendErc20Asset.value?.formatEtherAmount) isSelected.value = true;
+    else isSelected.value = false;
   }
-)
+);
 
 onMounted(() => {
-  emit('modalRef', modalRef)
-})
+  emit('modalRef', modalRef);
+});
 </script>

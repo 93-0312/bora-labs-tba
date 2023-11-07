@@ -2,7 +2,7 @@
   <ModalLayout
     @modal-ref="
       (ref) => {
-        sendModalRef = ref.value
+        sendModalRef = ref.value;
       }
     "
     title="Send NFT"
@@ -16,6 +16,9 @@
         :has-badge="false"
         :img-src="sendAsset?.[1].metadata.image"
         :card-name="sendAsset?.[1]?.metadata.name"
+        :hasCheckbox="false"
+        :id="Number(sendAsset?.[0])"
+        :ercType="sendAsset?.[1]?.metadata.type"
       />
 
       <!-- 카드 갯수 -->
@@ -82,60 +85,60 @@
 </template>
 
 <script setup lang="ts">
-import ModalLayout from '@/components/ui/ModalLayout.vue'
-import { computed } from 'vue'
-import ItemCard from './ItemCard.vue'
-import { setupAsset } from '@/setups/asset.composition'
-import { storeToRefs } from 'pinia'
-import { useAssetStore } from '@/stores/asset.module'
-import { useModalStore } from '@/stores/modal.module'
-import type { asset } from '@/types/asset'
+import ItemCard from './ItemCard.vue';
+import { storeToRefs } from 'pinia';
+import { computed } from 'vue';
+import ModalLayout from '@/components/ui/ModalLayout.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { useAssetStore } from '@/stores/asset.module';
+import { useModalStore } from '@/stores/modal.module';
+import type { asset } from '@/types/asset';
 
-const modalStore = useModalStore()
+const modalStore = useModalStore();
 
-const { sendModalRef } = storeToRefs(modalStore)
+const { sendModalRef } = storeToRefs(modalStore);
 
-defineEmits(['modalRef'])
+defineEmits(['modalRef']);
 
-const { sendNft, sendNftFrom6551 } = setupAsset()
-const assetStore = useAssetStore()
+const { sendNft, sendNftFrom6551 } = setupAsset();
+const assetStore = useAssetStore();
 
-const { sendAsset, toAddress, toAmounts, from6551 } = storeToRefs(assetStore)
+const { sendAsset, toAddress, toAmounts, from6551 } = storeToRefs(assetStore);
 
 const confirmSend = async (sendToAddress: string, sendAsset: asset) => {
-  if (!from6551.value.from6551) await sendNft(sendToAddress, sendAsset, sendModalRef)
-  else await sendNftFrom6551(sendAsset, sendModalRef)
-  toAddress.value = ''
-}
+  if (!from6551.value.from6551) await sendNft(sendToAddress, sendAsset, sendModalRef);
+  else await sendNftFrom6551(sendAsset, sendModalRef);
+  toAddress.value = '';
+};
 
 const is1155 = computed(() => {
-  return sendAsset.value?.[1].metadata.type === 1155
-})
+  return sendAsset.value?.[1].metadata.type === 1155;
+});
 
 const amountsOf1155 = computed(() => {
-  return sendAsset.value?.[1].amount
-})
+  return sendAsset.value?.[1].amount;
+});
 
 const isInputError = computed(() => {
-  return toAddress.value !== '' && !isValidAddress(toAddress.value)
-})
+  return toAddress.value !== '' && !isValidAddress(toAddress.value);
+});
 
 const isAmountError = computed(() => {
-  return Number(toAmounts.value) > Number(amountsOf1155.value)
-})
+  return Number(toAmounts.value) > Number(amountsOf1155.value);
+});
 
 const isValidAddress = (address: string) => {
   if (/^(0x)[0]{40}$/.test(address)) {
-    return false
+    return false;
   } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
-    return true
+    return true;
   }
-  return false
-}
+  return false;
+};
 
 const isSendBtnDisable = computed(() => {
   return is1155.value
     ? isAmountError.value || isInputError.value || toAddress.value === '' || toAmounts.value === ''
-    : isInputError.value || toAddress.value === '' || Number(amountsOf1155.value) === 0
-})
+    : isInputError.value || toAddress.value === '' || Number(amountsOf1155.value) === 0;
+});
 </script>

@@ -21,30 +21,26 @@
 </template>
 
 <script setup lang="ts">
-import SignBtn from '@/components/service/SignBtn.vue'
-import { setupAsset } from '@/setups/asset.composition'
-import { useAccountStore } from '@/stores/account.module'
-import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
-import icBoralabs from '@/assets/ic-boralabs.svg'
-import icB from '@/assets/ic-b.svg'
-import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia';
+import { watch } from 'vue';
+import SignBtn from '@/components/service/SignBtn.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { useAccountStore } from '@/stores/account.module';
+import icB from '@/assets/ic-b.svg';
+import icBoralabs from '@/assets/ic-boralabs.svg';
 
-const router = useRouter()
+const accountStore = useAccountStore();
 
-const accountStore = useAccountStore()
-
-const { checkAsset } = setupAsset()
-const { isSigned } = storeToRefs(accountStore)
+const { checkAsset } = setupAsset();
+const { isSigned } = storeToRefs(accountStore);
 
 watch(
   () => isSigned.value,
   async (isSigned: boolean) => {
     if (isSigned) {
-      // console.log('header watch')
-      await checkAsset()
-    } else !isSigned && router.replace('/')
+      await checkAsset();
+    }
   },
   { immediate: true }
-)
+);
 </script>

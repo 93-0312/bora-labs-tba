@@ -1,17 +1,17 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export const setupAccountStore = () => {
-  const isSigned = ref<boolean>(false)
-  const walletAddress = ref<string>('')
+  const isSigned = ref<boolean>(false);
+  const walletAddress = ref<string>('');
 
   const setIsSigned = (data: boolean) => {
-    isSigned.value = data
-  }
+    isSigned.value = data;
+  };
 
   const setWalletAddress = (data: string) => {
-    walletAddress.value = data
-  }
+    walletAddress.value = data;
+  };
 
   return {
     // references
@@ -21,10 +21,10 @@ export const setupAccountStore = () => {
     // modifiers
     setIsSigned,
     setWalletAddress
-  }
-}
+  };
+};
 
 export const useAccountStore = defineStore('account', setupAccountStore, {
   // @ts-ignore
   persist: { storage: sessionStorage, paths: ['isSigned', 'walletAddress'] }
-})
+});

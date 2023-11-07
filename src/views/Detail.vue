@@ -46,17 +46,21 @@
           <p
             class="inline-flex items-center h-10 pl-4 bg-neutral-content rounded-md text-sm md:h-11 md:text-base"
           >
-            {{ truncate((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress) }}
+            {{ truncate(tbaWalletAddress) }}
             <button
-              @click="
-                copy((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress),
-                  changeIcon()
-              "
+              @click="copy(tbaWalletAddress), changeIcon()"
               class="px-3 h-11 ml-1 rounded-r-md hover:bg-secondary/20"
               type="button"
               aria-label="copy"
             >
-              <img v-if="isCopy" :src="icCopy" alt="copy" width="20" height="20" class="w-5 h-auto" />
+              <img
+                v-if="isCopy"
+                :src="icCopy"
+                alt="copy"
+                width="20"
+                height="20"
+                class="w-5 h-auto"
+              />
               <img v-else :src="icCheck" alt="check" width="20" height="20" class="w-5 h-auto" />
             </button>
           </p>
@@ -250,24 +254,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref, watch, type ComputedRef } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
-
-import { setupAsset } from '@/setups/asset.composition'
-import { setupModal } from '@/setups/modal.composition'
-import { useAssetStore } from '@/stores/asset.module.ts'
-import Accordion from '@/components/ui/Accordion.vue'
-import ItemCard from '@/components/service/ItemCard.vue'
-import SendModal from '@/components/service/SendModal.vue'
-import SendTokenModal from '@/components/service/SendTokenModal.vue'
-import ModalLoading from '@/components/ui/ModalLoading.vue'
-import icCopy from '@/assets/ic-copy.svg'
-import icCheck from '@/assets/ic-check.svg'
-import icEmpty from '@/assets/ic-empty.svg'
-
-import { copy, truncate } from '@/constant/utils'
-import type { Erc6551Asset, ErcAsset } from '@/types/asset'
+import { storeToRefs } from 'pinia';
+import { computed, onMounted, onUpdated, ref, watch, type ComputedRef } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import ItemCard from '@/components/service/ItemCard.vue';
+import SendModal from '@/components/service/SendModal.vue';
+import SendTokenModal from '@/components/service/SendTokenModal.vue';
+import Accordion from '@/components/ui/Accordion.vue';
+import ModalLoading from '@/components/ui/ModalLoading.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { setupModal } from '@/setups/modal.composition';
+import { useAssetStore } from '@/stores/asset.module.ts';
+import { copy, truncate } from '@/constant/utils';
+import type { Erc6551Asset, ErcAsset } from '@/types/asset';
+import icCheck from '@/assets/ic-check.svg';
+import icCopy from '@/assets/ic-copy.svg';
+import icEmpty from '@/assets/ic-empty.svg';
 
 // env로 이동
 const nftContractAddress = computed(() =>
@@ -276,72 +278,74 @@ const nftContractAddress = computed(() =>
     : ercType.value === 6551
     ? import.meta.env.VITE_BORALABS_TACC_CONTRACT
     : import.meta.env.VITE_BORALABS_MTS_CONTRACT
-)
-const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL
+);
+const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL;
 //
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-const assetStore = useAssetStore()
+const assetStore = useAssetStore();
 
 const { asset6551, detail1155Asset, detail721Asset, tbaAsset20, tbaAsset721, tbaAsset1155 } =
-  storeToRefs(assetStore)
+  storeToRefs(assetStore);
 
-const { convert721to6551, checkOwner, checkDetailAsset, assetOwner } = setupAsset()
-const { showSendModal, showTokenSendModal } = setupModal()
+const { convert721to6551, checkOwner, checkDetailAsset, assetOwner } = setupAsset();
+const { showSendModal, showTokenSendModal } = setupModal();
 
-const ercType = ref<number>(0)
-const tokenId = ref<bigint>(0n)
-const notIncluded = ref(true)
-const isCopy = ref(true)
-const tbaWalletAddress = ref<string>('')
+const ercType = ref<number>(0);
+const tokenId = ref<bigint>(0n);
+const notIncluded = ref(true);
+const isCopy = ref(true);
 
-const modalSendTokenRef = ref<HTMLDialogElement>()
-const modalConvertRef = ref<HTMLDialogElement>()
+const modalSendTokenRef = ref<HTMLDialogElement>();
+const modalConvertRef = ref<HTMLDialogElement>();
 
 const changeIcon = () => {
-  isCopy.value = false
-  setTimeout(() => (isCopy.value = true), 3000)
-}
+  isCopy.value = false;
+  setTimeout(() => (isCopy.value = true), 3000);
+};
 
-const is6551 = computed(() => ercType.value === 6551)
-const is1155 = computed(() => ercType.value === 1155)
-const is721 = computed(() => ercType.value === 721)
+const is6551 = computed(() => ercType.value === 6551);
+const is1155 = computed(() => ercType.value === 1155);
+const is721 = computed(() => ercType.value === 721);
 
 const detailAsset: ComputedRef<Erc6551Asset | ErcAsset> = computed(() => {
   return ercType.value === 721
     ? detail721Asset.value
     : ercType.value === 6551
     ? asset6551.value
-    : detail1155Asset.value
-})
+    : detail1155Asset.value;
+});
 
 const tbaAssetisEmpty = computed(
   () =>
     (tbaAsset721.value && tbaAsset721.value.size) === 0 &&
     tbaAsset1155.value &&
     tbaAsset1155.value.size === 0
-)
+);
 
-const tbaAssetSize = computed(() => tbaAsset1155.value?.size + tbaAsset721.value?.size)
+const tbaAssetSize = computed(() => tbaAsset1155.value?.size + tbaAsset721.value?.size);
+const tbaWalletAddress = computed(
+  () => (detailAsset.value as Erc6551Asset).get(tokenId.value)!.metadata.walletAddress
+);
 
 onMounted(async () => {
-  ercType.value = route?.meta.type as number
-  tokenId.value = BigInt(route?.params.id as string)
+  ercType.value = route?.meta.type as number;
+  tokenId.value = BigInt(route?.params.id as string);
 
   // CHECK OWNER LOGIC
-  const isOwner = await checkOwner(tokenId.value, ercType.value)
-  !isOwner && router.replace('/')
-})
+  const isOwner = await checkOwner(tokenId.value, ercType.value);
+  !isOwner && router.replace('/');
+});
 
-onUpdated(() => (ercType.value = route?.meta.type as number))
+onUpdated(() => (ercType.value = route?.meta.type as number));
 
 watch(
   () => ercType.value,
   async (ercType: number) => {
-    await checkDetailAsset(ercType, tokenId.value)
+    await checkDetailAsset(ercType, tokenId.value);
   },
   { immediate: true }
-)
+);
 </script>

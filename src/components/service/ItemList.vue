@@ -215,35 +215,34 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Pagination, Navigation, Mousewheel } from 'swiper/modules'
-import ItemCard from '@/components/service/ItemCard.vue'
-import { useAssetStore } from '@/stores/asset.module.ts'
-import { storeToRefs } from 'pinia'
+import AddModal from './AddModal.vue';
+import SendModal from './SendModal.vue';
+import { storeToRefs } from 'pinia';
+import { Pagination, Navigation, Mousewheel } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { ref } from 'vue';
+import ItemCard from '@/components/service/ItemCard.vue';
+import SItemList from '@/components/ui/SItemList.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { setupModal } from '@/setups/modal.composition';
+import { useAccountStore } from '@/stores/account.module.ts';
+import { useAssetStore } from '@/stores/asset.module.ts';
+import { copy, truncate } from '@/constant/utils';
+import icEmpty from '@/assets/ic-empty.svg';
 
-import { useAccountStore } from '@/stores/account.module.ts'
-import { setupAsset } from '@/setups/asset.composition'
-import { setupModal } from '@/setups/modal.composition'
-import { copy, truncate } from '@/constant/utils'
-import AddModal from './AddModal.vue'
-import SendModal from './SendModal.vue'
-import SItemList from '@/components/ui/SItemList.vue'
-import icEmpty from '@/assets/ic-empty.svg'
+const accountStore = useAccountStore();
+const assetStore = useAssetStore();
 
-const accountStore = useAccountStore()
-const assetStore = useAssetStore()
+const { convert721to6551, createWallet } = setupAsset();
+const { isSigned } = storeToRefs(accountStore);
+const { hasAsset, asset721, asset1155, asset6551, isAssetLoading } = storeToRefs(assetStore);
+const { showSendModal, showAddModal } = setupModal();
+const modules = [Pagination, Navigation, Mousewheel];
 
-const { convert721to6551, createWallet } = setupAsset()
-const { isSigned } = storeToRefs(accountStore)
-const { hasAsset, asset721, asset1155, asset6551, isAssetLoading } = storeToRefs(assetStore)
-const { showSendModal, showAddModal } = setupModal()
-const modules = [Pagination, Navigation, Mousewheel]
-
-const isCopy = ref(true)
+const isCopy = ref(true);
 
 const changeIcon = () => {
-  isCopy.value = false
-  setTimeout(() => (isCopy.value = true), 3000)
-}
+  isCopy.value = false;
+  setTimeout(() => (isCopy.value = true), 3000);
+};
 </script>

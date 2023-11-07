@@ -106,17 +106,22 @@
 </template>
 
 <script lang="ts" setup>
-import { useAssetStore } from '@/stores/asset.module'
-import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
-import { copy, truncate } from '@/constant/utils'
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { useAssetStore } from '@/stores/asset.module';
+import { copy, truncate } from '@/constant/utils';
 
-const assetStore = useAssetStore()
-const { addAsset } = storeToRefs(assetStore)
+const assetStore = useAssetStore();
+const { addAsset } = storeToRefs(assetStore);
 
 const selectAddAsset = () => {
-  addAsset.value.set(props.asset[0], props.asset[1])
-}
+  const alreadyCheck = addAsset.value.get(props.asset[0]) !== undefined;
+
+  if (alreadyCheck) {
+    addAsset.value.delete(props.asset[0]);
+    return;
+  } else addAsset.value.set(props.asset[0], props.asset[1]);
+};
 
 const props = defineProps({
   asset: { type: null },
@@ -157,12 +162,12 @@ const props = defineProps({
     type: Boolean,
     default: false
   }
-})
+});
 
-const isCopy = ref(true)
+const isCopy = ref(true);
 
 const changeIcon = () => {
-  isCopy.value = false
-  setTimeout(() => (isCopy.value = true), 3000)
-}
+  isCopy.value = false;
+  setTimeout(() => (isCopy.value = true), 3000);
+};
 </script>
