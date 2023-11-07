@@ -34,7 +34,6 @@
         nextEl: '.button-next',
         prevEl: '.button-prev'
       }"
-      :loop="true"
       :breakpoints="{
         '768': {
           slidesPerView: 1.2,
@@ -163,7 +162,7 @@
     <div class="absolute -top-[50px] right-0 md:-top-[68px]">
       <button
         type="button"
-        class="button-prev btn btn-circle btn-ghost btn-sm mr-0.5 bg-base-100/60 border-none text-2xl md:btn-md hover:bg-neutral-content"
+        class="button-prev btn btn-circle btn-ghost btn-sm mr-0.5 bg-base-100/60 border-none text-2xl md:btn-md hover:bg-neutral-content disabled:bg-transparent"
         aria-label="previous"
       >
         <!-- prettier-ignore -->
@@ -173,7 +172,7 @@
       </button>
       <button
         type="button"
-        class="button-next btn btn-circle btn-ghost btn-sm bg-base-100/60 border-none md:btn-md hover:bg-neutral-content"
+        class="button-next btn btn-circle btn-ghost btn-sm bg-base-100/60 border-none md:btn-md hover:bg-neutral-content disabled:bg-transparent"
         aria-label="next"
       >
         <!-- prettier-ignore -->
