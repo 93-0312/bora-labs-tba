@@ -1,8 +1,7 @@
 <template>
-  hasAsset:{{ hasAsset }}
-  <template v-if="!hasAsset">
+  <SItemList v-if="isAssetLoading" />
+  <template v-else-if="!isSigned || !hasAsset">
     <section
-      v-if="!isSigned"
       class="flex flex-col justify-center items-center w-full aspect-[2/1] text-center text-sm whitespace-nowrap md:top-1/3 md:aspect-[3/1] md:text-lg"
     >
       <!-- prettier-ignore -->
@@ -11,7 +10,6 @@
         You do not have any NFTs yet.<br /><strong>Create Wallet</strong> and then mint NFTs!
       </p>
       <button
-        v-if="!isSigned || !hasAsset"
         class="btn btn-sm btn-primary mt-5 rounded-sm text-xs text-base-100 md:btn-md md:mt-8 md:text-base"
         type="button"
         @click="createWallet()"
@@ -23,10 +21,8 @@
         </svg>
       </button>
     </section>
-
-    <SItemList v-else />
+    <!-- 스켈레톤 -->
   </template>
-
 
   <section v-else class="relative">
     <swiper
@@ -235,7 +231,7 @@ const assetStore = useAssetStore()
 
 const { convert721to6551, createWallet } = setupAsset()
 const { isSigned } = storeToRefs(accountStore)
-const { hasAsset, asset721, asset1155, asset6551 } = storeToRefs(assetStore)
+const { hasAsset, asset721, asset1155, asset6551, isAssetLoading } = storeToRefs(assetStore)
 const { showSendModal, showAddModal } = setupModal()
 const modules = [Pagination, Navigation, Mousewheel]
 
