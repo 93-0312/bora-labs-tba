@@ -74,6 +74,7 @@ hardhat run --network ganache scripts/deploy.ts
 cd <project_root_dir>
 docker-compose up -d
 ```
+
 - open http://localhost:8080 on Chrome
 - Login with Metamask
 
@@ -84,15 +85,15 @@ docker-compose up -d
     - Mint NFT(ERC-721), TBA(ERC-6551), MTS(Multi Token Standard, ERC-1155), and regular FT(ERC-20) for testing purpose.
     - Each token type follows the standard specified with it.
 2. **Token Conversion:**
-   - Convert NFT to TBA seamlessly.
+    - Convert NFT to TBA seamlessly.
 3. **Asset Transfers:**
-   - Transfer assets, including NFTs, MTS tokens, and FTs to different addresses both EOA and SCA.
+    - Transfer assets, including NFTs, MTS tokens, and FTs to different addresses both EOA and SCA.
 4. **View Assets within TBAs:**
-   - Easily view and manage assets within TBAs, enhancing UX and accessibility.
+    - Easily view and manage assets within TBAs, enhancing UX and accessibility.
 5. **TBA Ownership Transfer:**
     - Facilitate the transfer of TBA ownership, enabling seamless mass transaction of assets with just one transaction.
 6. **Bulk Transfer of MTS:**
-   - Perform bulk transfers of MTS tokens based on ERC-1155 specifications.
+    - Perform bulk transfers of MTS tokens based on ERC-1155 specifications.
 
 ## Examples
 
@@ -103,6 +104,7 @@ docker-compose up -d
 - View all assets in TBA token.
 
 - Transfer assets in TBA token to other addresses.
+
 ---
 
 ## Licenses
