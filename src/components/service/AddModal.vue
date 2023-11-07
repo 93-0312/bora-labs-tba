@@ -41,37 +41,36 @@
 </template>
 
 <script setup lang="ts">
-import ModalLayout from '@/components/ui/ModalLayout.vue'
-import { onMounted, ref } from 'vue'
-import ItemCard from './ItemCard.vue'
-import { useAssetStore } from '@/stores/asset.module'
-import { storeToRefs } from 'pinia'
+import ItemCard from './ItemCard.vue';
+import { storeToRefs } from 'pinia';
+import { onMounted, ref } from 'vue';
+import ModalLayout from '@/components/ui/ModalLayout.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { useAssetStore } from '@/stores/asset.module';
+import { useModalStore } from '@/stores/modal.module';
 
-import { useModalStore } from '@/stores/modal.module'
-import { setupAsset } from '@/setups/asset.composition'
+const modalStore = useModalStore();
 
-const modalStore = useModalStore()
+const { addNft } = setupAsset();
+const assetStore = useAssetStore();
 
-const { addNft } = setupAsset()
-const assetStore = useAssetStore()
+const { toAddress } = storeToRefs(assetStore);
+const { asset1155 } = storeToRefs(assetStore);
 
-const { toAddress } = storeToRefs(assetStore)
-const { asset1155 } = storeToRefs(assetStore)
-
-const { addModalRef } = storeToRefs(modalStore)
+const { addModalRef } = storeToRefs(modalStore);
 
 const confirmSend = async (addToAddress: string) => {
-  await addNft(addToAddress, addModalRef)
-}
+  await addNft(addToAddress, addModalRef);
+};
 
 defineProps({
   isDisabled: { type: Boolean }
-})
-const modalRef = ref<HTMLDialogElement>()
+});
+const modalRef = ref<HTMLDialogElement>();
 
-const emit = defineEmits(['modalRef'])
+const emit = defineEmits(['modalRef']);
 
 onMounted(() => {
-  emit('modalRef', modalRef)
-})
+  emit('modalRef', modalRef);
+});
 </script>

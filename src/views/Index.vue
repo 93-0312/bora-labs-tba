@@ -170,24 +170,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { setupAsset } from '@/setups/asset.composition'
-import { useAssetStore } from '@/stores/asset.module.ts'
-import { useAccountStore } from '@/stores/account.module.ts'
-import ItemList from '@/components/service/ItemList.vue'
-import bgImg from '@/assets/bg-6551.webp'
-import icToken from '@/assets/ic-token.webp'
-import SendModal from '@/components/service/SendModal.vue'
-import AddModal from '@/components/service/AddModal.vue'
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import AddModal from '@/components/service/AddModal.vue';
+import ItemList from '@/components/service/ItemList.vue';
+import SendModal from '@/components/service/SendModal.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { useAccountStore } from '@/stores/account.module.ts';
+import { useAssetStore } from '@/stores/asset.module.ts';
+import bgImg from '@/assets/bg-6551.webp';
+import icToken from '@/assets/ic-token.webp';
 
-const assetStore = useAssetStore()
-const accountStore = useAccountStore()
+const assetStore = useAssetStore();
+const accountStore = useAccountStore();
 
-const { hasAsset } = storeToRefs(assetStore)
-const { isSigned } = storeToRefs(accountStore)
+const { hasAsset } = storeToRefs(assetStore);
+const { isSigned } = storeToRefs(accountStore);
 
-const { createWallet } = setupAsset()
+const { createWallet } = setupAsset();
 
-const isAbout = ref(true)
+const isAbout = ref(true);
 </script>

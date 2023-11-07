@@ -1,50 +1,50 @@
-import detectEthereumProvider from '@metamask/detect-provider'
-import { ethers } from 'ethers'
-import { getNetworkChainConfig } from '../constant/wallet'
+import { getNetworkChainConfig } from '../constant/wallet';
+import detectEthereumProvider from '@metamask/detect-provider';
+import { ethers } from 'ethers';
 
 export default class MetamaskService {
-  private metamask: any
-  private provider = {} as ethers.BrowserProvider
+  private metamask: any;
+  private provider = {} as ethers.BrowserProvider;
 
   async init() {
     try {
-      this.metamask = await detectEthereumProvider()
-      this.provider = new ethers.BrowserProvider(this.metamask)
-      await this.metamask.request({ method: 'eth_requestAccounts' })
+      this.metamask = await detectEthereumProvider();
+      this.provider = new ethers.BrowserProvider(this.metamask);
+      await this.metamask.request({ method: 'eth_requestAccounts' });
     } catch (err) {
-      console.error({ err })
+      console.error({ err });
     }
   }
 
   hasWallet(): boolean {
-    return !!this.metamask
+    return !!this.metamask;
   }
 
   async switchNetworkChain(chainId: number) {
-    console.log(chainId, 'chainId')
+    console.log(chainId, 'chainId');
     await this.metamask.request({
       method: 'wallet_addEthereumChain',
       params: [getNetworkChainConfig(chainId)]
-    })
+    });
   }
 
   async getAddress(): Promise<string> {
-    const wallet = this.provider.getSigner()
-    return await (await wallet).getAddress()
+    const wallet = this.provider.getSigner();
+    return await (await wallet).getAddress();
   }
 
   async signMessage(msg: string): Promise<string> {
-    const wallet = this.provider.getSigner()
-    return await (await wallet).signMessage(msg)
+    const wallet = this.provider.getSigner();
+    return await (await wallet).signMessage(msg);
   }
 
   async getNetworkChainId(): Promise<number> {
-    const chainId = await (await this.provider.getNetwork()).chainId
-    return Number(chainId)
+    const chainId = await (await this.provider.getNetwork()).chainId;
+    return Number(chainId);
   }
 
   async getWeb3Provider() {
-    return this.provider
+    return this.provider;
   }
 
   async addToken(address: string, symbol: string): Promise<void> {
@@ -58,6 +58,6 @@ export default class MetamaskService {
           decimals: 18
         }
       }
-    })
+    });
   }
 }

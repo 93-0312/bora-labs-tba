@@ -62,22 +62,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useAccountStore } from '@/stores/account.module.ts'
-import { setupAccount } from '@/setups/account.composition'
-import { storeToRefs } from 'pinia'
-import { copy, truncate } from '@/constant/utils'
+import { storeToRefs } from 'pinia';
+import { ref } from 'vue';
+import { setupAccount } from '@/setups/account.composition';
+import { useAccountStore } from '@/stores/account.module.ts';
+import { copy, truncate } from '@/constant/utils';
 
-const isCopy = ref(true)
+const isCopy = ref(true);
 
-const accountStore = useAccountStore()
+const accountStore = useAccountStore();
 
-const { isSigned, walletAddress } = storeToRefs(accountStore)
+const { isSigned, walletAddress } = storeToRefs(accountStore);
 
-const { connectWallet, disconnectWallet } = setupAccount()
+const { connectWallet, disconnectWallet } = setupAccount();
 
 const changeIcon = () => {
-  isCopy.value = false
-  setTimeout(() => (isCopy.value = true), 3000)
-}
+  isCopy.value = false;
+  setTimeout(() => (isCopy.value = true), 3000);
+};
 </script>

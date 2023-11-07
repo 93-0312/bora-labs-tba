@@ -10,7 +10,14 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx,vue}": [
+      "yarn format",
+      "yarn lint"
+    ]
   },
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
@@ -24,6 +31,7 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.3.3",
+    "@trivago/prettier-plugin-sort-imports": "^4.2.1",
     "@tsconfig/node18": "^18.2.2",
     "@types/jsdom": "^21.1.2",
     "@types/node": "^18.17.15",
@@ -36,6 +44,7 @@
     "daisyui": "^3.7.5",
     "eslint": "^8.49.0",
     "eslint-plugin-vue": "^9.17.0",
+    "husky": "^8.0.3",
     "jsdom": "^22.1.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.30",

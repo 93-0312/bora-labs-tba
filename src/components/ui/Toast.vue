@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   showToast: {
@@ -19,21 +19,21 @@ const props = defineProps({
     default: false
   },
   msg: String
-})
+});
 
-const isToast = ref(false)
+const isToast = ref(false);
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 
 watch(
   () => props.showToast,
   () => {
     if (props.showToast) {
-      isToast.value = true
-      setTimeout(() => ((isToast.value = false), emit('close')), 5000)
+      isToast.value = true;
+      setTimeout(() => ((isToast.value = false), emit('close')), 5000);
     } else {
-      isToast.value = false
+      isToast.value = false;
     }
   }
-)
+);
 </script>

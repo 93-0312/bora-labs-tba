@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import icBoraLabs from '@/assets/ic-boralabs.svg'
-import icBora from '@/assets/ic-bora.svg'
-import icBorascope from '@/assets/ic-borascope.svg'
+import icBora from '@/assets/ic-bora.svg';
+import icBoraLabs from '@/assets/ic-boralabs.svg';
+import icBorascope from '@/assets/ic-borascope.svg';
 </script>

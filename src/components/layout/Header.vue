@@ -15,20 +15,20 @@
 </template>
 
 <script setup lang="ts">
-import SignBtn from '@/components/service/SignBtn.vue'
-import { setupAsset } from '@/setups/asset.composition'
-import { useAccountStore } from '@/stores/account.module'
-import { storeToRefs } from 'pinia'
-import { watch } from 'vue'
-import icTBA from '@/assets/ic-tba.svg'
-import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia';
+import { watch } from 'vue';
+import { useRouter } from 'vue-router';
+import SignBtn from '@/components/service/SignBtn.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { useAccountStore } from '@/stores/account.module';
+import icTBA from '@/assets/ic-tba.svg';
 
-const router = useRouter()
+const router = useRouter();
 
-const accountStore = useAccountStore()
+const accountStore = useAccountStore();
 
-const { checkAsset } = setupAsset()
-const { isSigned } = storeToRefs(accountStore)
+const { checkAsset } = setupAsset();
+const { isSigned } = storeToRefs(accountStore);
 
 watch(
   () => isSigned.value,
@@ -38,5 +38,5 @@ watch(
     }
   },
   { immediate: true }
-)
+);
 </script>
