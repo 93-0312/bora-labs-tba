@@ -88,7 +88,7 @@
               </svg>
             </button>
           </p>
-          <p class="text-base-100/70 text-sm md:mt-1 md:text-base">Bora Testnet</p>
+          <p class="text-base-100/70 text-sm md:mt-1 md:text-base">{{ chainName }}</p>
           <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
             <button
               class="min-h-0 h-9 col-span-4 btn btn-primary rounded-sm text-xs md:h-12 md:text-base"
@@ -133,7 +133,7 @@
           >
             {{ asset[1]?.metadata.name }}
           </a>
-          <p class="text-base-100/70 text-sm md:mt-8 md:text-base">Bora Testnet</p>
+          <p class="text-base-100/70 text-sm md:mt-8 md:text-base">{{ chainName }}</p>
           <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
             <button
               class="min-h-0 h-9 col-span-4 btn btn-accent rounded-sm text-xs md:h-12 md:text-base"
@@ -223,6 +223,8 @@ import { useAccountStore } from '@/stores/account.module.ts';
 import { useAssetStore } from '@/stores/asset.module.ts';
 import { copy, truncate } from '@/constant/utils';
 import icEmpty from '@/assets/ic-empty.svg';
+
+const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
 
 const accountStore = useAccountStore();
 const assetStore = useAssetStore();

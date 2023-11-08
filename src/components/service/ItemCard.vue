@@ -100,7 +100,7 @@
           props.isSmall ? 'mt-0.5 pl-[1px] text-[10px] md:text-[12px]' : 'text-xs md:text-sm'
         ]"
       >
-        Bora Testnet
+        {{ chainName }}
       </p>
 
       <slot />
@@ -113,6 +113,8 @@ import { storeToRefs } from 'pinia';
 import { ref } from 'vue';
 import { useAssetStore } from '@/stores/asset.module';
 import { copy, truncate } from '@/constant/utils';
+
+const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_ID;
 
 const assetStore = useAssetStore();
 const { addAsset } = storeToRefs(assetStore);
