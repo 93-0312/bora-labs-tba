@@ -2,7 +2,7 @@
   <footer
     class="grid grid-cols-[200px_1fr] gap-[10px] mt-auto pt-12 pb-7 px-5 border border-t-1 border-base-200 md:px-7 md:pt-16 md:pb-10"
   >
-    <a href="#" class="flex items-start">
+    <a href="https://www.boralabs.com" class="flex items-start">
       <img :src="icBoraLabs" width="224" height="40" alt="BORA Labs" class="w-auto h-8" />
     </a>
 

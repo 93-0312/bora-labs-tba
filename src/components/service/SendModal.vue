@@ -21,7 +21,6 @@
         :ercType="sendAsset?.[1]?.metadata.type"
       />
 
-      <!-- 카드 갯수 -->
       <span
         v-show="is1155"
         class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-medium"
@@ -39,7 +38,6 @@
         <span class="label-text md:text-base">How many NFTs are you sending?</span>
       </label>
       <div>
-        <!-- input error시 class에 input-error 추가  -->
         <input
           type="number"
           :class="['input input-bordered w-full h-10 md:h-12', { 'input-error': isAmountError }]"
@@ -47,7 +45,7 @@
           v-model="toAmounts"
         />
       </div>
-      <!-- input error시 노출 -->
+      <!-- input error -->
       <label class="label py-1.5">
         <span class="label-text-alt text-secondary-focus md:text-sm"
           >Balance: {{ amountsOf1155 }}</span
@@ -62,7 +60,7 @@
       <label class="label py-1.5">
         <span class="label-text md:text-base">Who are you sending the NFT to?</span>
       </label>
-      <!-- input error시 class에 input-error 추가  -->
+
       <input
         type="text"
         placeholder="ex. 0x1234..."
@@ -70,7 +68,7 @@
         maxlength="42"
         v-model="toAddress"
       />
-      <!-- input error시 노출 -->
+      <!-- input error -->
       <label v-if="isInputError" class="label py-1.5">
         <span class="label-text-alt text-error md:text-sm"
           >This is not a valid wallet address.</span

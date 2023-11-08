@@ -21,7 +21,7 @@
         >
           Max
         </button>
-        <!-- input error시 class에 input-error 추가 -->
+
         <input
           type="text"
           :class="[
@@ -35,7 +35,8 @@
           sendErc20Asset?.tknSymbol
         }}</span>
       </div>
-      <!-- input error시 노출 -->
+
+      <!-- input error -->
       <label class="label">
         <span class="label-text-alt text-secondary-focus md:text-sm"
           >Balance: {{ sendErc20Asset?.formatEtherAmount }} {{ sendErc20Asset?.tknSymbol }}</span
@@ -50,7 +51,7 @@
       <label class="label">
         <span class="label-text md:text-base">Who are you sending the NFT to?</span>
       </label>
-      <!-- input error시 class에 input-error 추가  -->
+
       <input
         type="text"
         placeholder="ex. 0x1234..."
@@ -58,7 +59,7 @@
         maxlength="42"
         v-model="toAddress"
       />
-      <!-- input error시 노출 -->
+      <!-- input error -->
       <label v-if="isInputError" class="label pb-1">
         <span class="label-text-alt text-error md:text-sm">
           This is not a valid wallet address.

@@ -1,5 +1,4 @@
 <template>
-  <!-- addNft -->
   <ModalLayout
     @modal-ref="(ref) => (addModalRef = ref.value)"
     title="Add NFT"
@@ -10,21 +9,6 @@
     <ul
       class="overflow-auto grid grid-cols-3 gap-2 max-h-76 py-1 md:grid-cols-4 md:gap-3 md:max-h-[360px]"
     >
-      <!-- <li
-        v-for="asset in asset721"
-        :key="Number(asset[0])"
-        class="overflow-hidden relative rounded"
-      >
-        <ItemCard
-          is721
-          :is-small="true"
-          :has-badge="false"
-          :has-checkbox="true"
-          :card-name="asset[1]?.metadata.name"
-          :img-src="asset[1]?.metadata.image"
-        />
-      </li> -->
-
       <li v-for="asset in asset1155" :key="Number(asset[0])">
         <ItemCard
           :is-small="true"
