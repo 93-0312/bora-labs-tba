@@ -1,18 +1,19 @@
 <template>
-  <template v-if="!detailAsset.size"></template>
+  <template v-if="!detailAsset.size" />
+
   <main
     v-else
     class="grid gap-6 items-start w-full max-w-[1200px] mx-auto px-4 pt-4 pb-16 align-top md:gap-10 md:px-7 md:pb-20 md:grid-cols-[4fr_5fr] md:pt-8"
   >
     <section
-      class="relative w-full max-w-lg mx-auto h-auto text-center md:sticky md:top-28 md:max-w-lg"
+      class="relative w-full max-w-[80%] mx-auto h-auto text-center md:sticky md:top-28 md:max-w-lg"
     >
       <img
-        width="100"
-        height="100"
         :src="detailAsset && detailAsset?.get(tokenId)?.metadata['image']"
-        class="w-full h-auto rounded-md"
+        class="w-full h-auto rounded-md border"
         alt="nft"
+        width="490"
+        height="490"
       />
 
       <!-- badge: 6551 -->
@@ -35,65 +36,62 @@
     </section>
 
     <section>
-      <div class="flex items-center justify-between">
-        <h2 class="text-3xl font-bold md:text-4xl">
-          {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
-        </h2>
-
-        <div class="tooltip tooltip-neutral tooltip-left" data-tip="Go to Bora Scope">
-          <a
-            v-if="is6551"
-            :href="`${scopeUrl}address/${tbaWalletAddress}`"
-            target="_blank"
-            class="flex items-center justify-center w-11 h-11 rounded-md bg-neutral-content"
-            aria-label="go to borascope"
-          >
-            <!-- prettier-ignore -->
-            <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
-              <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </a>
-        </div>
-      </div>
+      <h2 class="text-3xl font-bold md:text-4xl">
+        {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
+      </h2>
 
       <!-- erc-6551 -->
       <template v-if="is6551">
-        <p
-          class="inline-flex items-center h-11 mt-3 pl-4 bg-neutral-content rounded-md text-sm md:mt-4 md:text-base"
-        >
-          {{ truncate((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress) }}
-          <button
-            @click="
-              copy((detailAsset as Erc6551Asset).get(tokenId)!.metadata.walletAddress), changeIcon()
-            "
-            class="px-3 h-11 ml-1 rounded-r-sm hover:bg-secondary/20"
-            type="button"
-            aria-label="copy"
+        <div class="flex items-center justify-between mt-3 md:mt-4">
+          <p
+            class="inline-flex items-center h-10 pl-4 bg-neutral-content rounded-md text-sm md:h-11 md:text-base"
           >
-            <!-- prettier-ignore -->
-            <svg v-if="isCopy" width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
-              <path d="M4.79175 17.7502C4.37508 17.7502 4.02091 17.6043 3.72925 17.3127C3.43758 17.021 3.29175 16.6668 3.29175 16.2502V5.66683H4.54175V16.2502C4.54175 16.3196 4.56591 16.3785 4.61425 16.4268C4.66314 16.4757 4.7223 16.5002 4.79175 16.5002H12.8751V17.7502H4.79175ZM7.70841 14.8335C7.29175 14.8335 6.93758 14.6877 6.64591 14.396C6.35425 14.1043 6.20841 13.7502 6.20841 13.3335V3.85433C6.20841 3.42377 6.35425 3.06266 6.64591 2.771C6.93758 2.47933 7.29175 2.3335 7.70841 2.3335H14.6876C15.1181 2.3335 15.4792 2.47933 15.7709 2.771C16.0626 3.06266 16.2084 3.42377 16.2084 3.85433V13.3335C16.2084 13.7502 16.0626 14.1043 15.7709 14.396C15.4792 14.6877 15.1181 14.8335 14.6876 14.8335H7.70841ZM7.70841 13.5835H14.6876C14.757 13.5835 14.8195 13.5591 14.8751 13.5102C14.9306 13.4618 14.9584 13.4029 14.9584 13.3335V3.85433C14.9584 3.78488 14.9306 3.72239 14.8751 3.66683C14.8195 3.61127 14.757 3.5835 14.6876 3.5835H7.70841C7.63897 3.5835 7.58008 3.61127 7.53175 3.66683C7.48286 3.72239 7.45841 3.78488 7.45841 3.85433V13.3335C7.45841 13.4029 7.48286 13.4618 7.53175 13.5102C7.58008 13.5591 7.63897 13.5835 7.70841 13.5835Z" fill="currentColor" />
-            </svg>
-
-            <!-- prettier-ignore -->
-            <svg v-else xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" class="w-5 h-auto">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M464 128L240 384l-96-96"></path>
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M144 384l-96-96"></path>
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 128L232 284"></path>
-            </svg>
-          </button>
-        </p>
-
-        <Accordion :title="`NFT (${tbaAssetSize})`">
-          <p v-if="tbaAssetisEmpty" class="flex flex-col empty empty-sm py-2 text-sm text-center">
-            There is no NFT.
+            {{ truncate(tbaWalletAddress) }}
+            <button
+              @click="copy(tbaWalletAddress), changeIcon()"
+              class="px-3 h-11 ml-1 rounded-r-md hover:bg-secondary/20"
+              type="button"
+              aria-label="copy"
+            >
+              <img
+                v-if="isCopy"
+                :src="icCopy"
+                alt="copy"
+                width="20"
+                height="20"
+                class="w-5 h-auto"
+              />
+              <img v-else :src="icCheck" alt="check" width="20" height="20" class="w-5 h-auto" />
+            </button>
           </p>
 
+          <div class="tooltip tooltip-neutral tooltip-left" data-tip="Go to Bora Scope">
+            <a
+              :href="`${scopeUrl}address/${tbaWalletAddress}`"
+              target="_blank"
+              class="flex items-center justify-center w-10 h-10 rounded-md bg-neutral-content md:w-11 md:h-11"
+              aria-label="go to borascope"
+            >
+              <!-- prettier-ignore -->
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-5 h-5 md:w-6 md:h-6">
+                <mask id="open_in_new" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/></mask>
+                <g mask="url(#open_in_new)"><path d="M7.06669 27.3333C6.40002 27.3333 5.83335 27.1 5.36669 26.6333C4.90002 26.1666 4.66669 25.6 4.66669 24.9333V7.06663C4.66669 6.39996 4.90002 5.83329 5.36669 5.36663C5.83335 4.89996 6.40002 4.66663 7.06669 4.66663H15.5V6.66663H7.06669C6.9778 6.66663 6.88891 6.71107 6.80002 6.79996C6.71113 6.88885 6.66669 6.97774 6.66669 7.06663V24.9333C6.66669 25.0222 6.71113 25.1111 6.80002 25.2C6.88891 25.2888 6.9778 25.3333 7.06669 25.3333H24.9334C25.0222 25.3333 25.1111 25.2888 25.2 25.2C25.2889 25.1111 25.3334 25.0222 25.3334 24.9333V16.5H27.3334V24.9333C27.3334 25.6 27.1 26.1666 26.6334 26.6333C26.1667 27.1 25.6 27.3333 24.9334 27.3333H7.06669ZM12.9667 20.4333L11.5667 19.0333L23.9334 6.66663H18.6667V4.66663H27.3334V13.3333H25.3334V8.06663L12.9667 20.4333Z" fill="currentColor"/></g>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <Accordion :title="`NFT (${tbaAssetSize})`">
+          <div
+            v-if="tbaAssetisEmpty"
+            class="text-center flex flex-col justify-center items-center py-5"
+          >
+            <img :src="icEmpty" alt="empty" width="40" height="40" class="w-9 h-auto md:w-10" />
+            <span class="mt-2 font-medium text-sm md:text-md">There is no NFT</span>
+          </div>
+
           <template v-else>
-            <ul class="grid grid-cols-2 gap-6 md:grid-cols-3">
+            <ul class="grid grid-cols-2 gap-5 md:grid-cols-3 md:gap-4">
               <li v-for="asset in tbaAsset1155" :key="Number(asset[0])" class="relative">
                 <ItemCard
                   :is-small="true"
@@ -114,24 +112,15 @@
                   </div>
                 </ItemCard>
 
-                <!-- 카드 갯수 -->
                 <span
-                  class="absolute -top-2 -right-2 badge badge-warning px-1 rounded-sm text-xs font-bold"
+                  class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-medium"
                 >
                   <!-- prettier-ignore -->
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-3.5 h-auto">
-                    <path d="M8.28464 24.9001L6.90002 23.5155L14.5154 15.9001L6.90002 8.28476L8.28464 6.90015L15.9 14.5155L23.5154 6.90015L24.9 8.28476L17.2846 15.9001L24.9 23.5155L23.5154 24.9001L15.9 17.2848L8.28464 24.9001Z" fill="currentColor"/>
+                  <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-auto">
+                    <path d="M12 12L6 6M12 12L18 18M12 12L18 6M12 12L6 18" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
                   </svg>
                   {{ asset[1].amount }}
                 </span>
-
-                <!-- <button
-                  class="absolute bottom-[55px] right-5 z-10 btn btn-sm btn-circle btn-neutral"
-                  type="button"
-                  @click="showSendModal(asset, tokenId)"
-                >
-                  send
-                </button> -->
               </li>
               <li v-for="asset in tbaAsset721" :key="Number(asset[0])" class="relative">
                 <ItemCard
@@ -175,14 +164,14 @@
             <p class="ml-auto text-sm md:text-base">{{ asset.formatEtherAmount }}</p>
 
             <button
-              class="btn btn-neutral btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
+              class="btn btn-neutral btn-circle btn-sm ml-3 md:ml-4"
               type="button"
               @click="showTokenSendModal(asset, tokenId)"
               aria-label="send"
             >
               <!-- prettier-ignore -->
-              <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 translate-x-[1px]">
-                <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" class="w-[18px] h-auto -translate-x-[1px]">
+                <path d="M24.3375 38.75C23.8729 38.7544 23.4163 38.6293 23.0188 38.3886C22.6214 38.1479 22.2989 37.8013 22.0875 37.3875L17.0875 27.925C16.9425 27.6325 16.9176 27.295 17.0183 26.9844C17.1189 26.6739 17.337 26.415 17.626 26.2632C17.915 26.1113 18.2519 26.0786 18.5647 26.1719C18.8775 26.2652 19.1414 26.4772 19.3 26.7625L24.3 36.225L36.25 3.82501L3.75001 15.6125L16 22.1875L26.4 11.7875C26.6354 11.5521 26.9546 11.4199 27.2875 11.4199C27.6204 11.4199 27.9396 11.5521 28.175 11.7875C28.4104 12.0229 28.5426 12.3421 28.5426 12.675C28.5426 13.0079 28.4104 13.3271 28.175 13.5625L17.1125 24.6125C16.9244 24.8008 16.6812 24.9242 16.4181 24.9647C16.1551 25.0051 15.886 24.9606 15.65 24.8375L2.61251 17.9125C2.15617 17.6989 1.77501 17.3524 1.519 16.9185C1.26299 16.4845 1.14408 15.9833 1.17787 15.4806C1.21165 14.9779 1.39655 14.4971 1.70832 14.1013C2.0201 13.7055 2.44419 13.4131 2.92501 13.2625L35.3125 1.41251C35.7706 1.21931 36.2759 1.16709 36.7639 1.26252C37.2518 1.35796 37.7002 1.59671 38.0518 1.94827C38.4033 2.29983 38.6421 2.74822 38.7375 3.23616C38.8329 3.72409 38.7807 4.2294 38.5875 4.68751L26.7375 37.075C26.5746 37.5434 26.2761 37.9528 25.8799 38.251C25.4837 38.5493 25.0077 38.723 24.5125 38.75H24.3375Z" fill="white"/>
               </svg>
             </button>
           </div>
@@ -235,7 +224,7 @@
         </Accordion>
       </template>
 
-      <!-- 공통: info -->
+      <!-- info -->
       <Accordion
         :owner="assetOwner"
         :-contract-address="nftContractAddress"
@@ -244,7 +233,7 @@
       />
     </section>
 
-    <!-- <AddModal /> -->
+    <!-- modal -->
     <SendModal />
     <SendTokenModal
       @modal-ref="(ref) => (modalSendTokenRef = ref.value)"
@@ -262,95 +251,96 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUpdated, ref, watch, type ComputedRef } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
+import { storeToRefs } from 'pinia';
+import { computed, onMounted, onUpdated, ref, watch, type ComputedRef } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import ItemCard from '@/components/service/ItemCard.vue';
+import SendModal from '@/components/service/SendModal.vue';
+import SendTokenModal from '@/components/service/SendTokenModal.vue';
+import Accordion from '@/components/ui/Accordion.vue';
+import ModalLoading from '@/components/ui/ModalLoading.vue';
+import { setupAsset } from '@/setups/asset.composition';
+import { setupModal } from '@/setups/modal.composition';
+import { useAssetStore } from '@/stores/asset.module.ts';
+import { copy, truncate } from '@/constant/utils';
+import type { Erc6551Asset, ErcAsset } from '@/types/asset';
+import icCheck from '@/assets/ic-check.svg';
+import icCopy from '@/assets/ic-copy.svg';
+import icEmpty from '@/assets/ic-empty.svg';
 
-import { setupAsset } from '@/setups/asset.composition'
-import { setupModal } from '@/setups/modal.composition'
-import { useAssetStore } from '@/stores/asset.module.ts'
-import Accordion from '@/components/ui/Accordion.vue'
-import ItemCard from '@/components/service/ItemCard.vue'
-import SendModal from '@/components/service/SendModal.vue'
-import SendTokenModal from '@/components/service/SendTokenModal.vue'
-import ModalLoading from '@/components/ui/ModalLoading.vue'
-
-import { copy, truncate } from '@/constant/utils'
-import type { Erc6551Asset, ErcAsset } from '@/types/asset'
-
-// env로 이동
 const nftContractAddress = computed(() =>
   ercType.value === 721
     ? import.meta.env.VITE_BORALABS_NFT_CONTRACT
     : ercType.value === 6551
     ? import.meta.env.VITE_BORALABS_TACC_CONTRACT
     : import.meta.env.VITE_BORALABS_MTS_CONTRACT
-)
-const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL
-//
+);
+const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL;
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-const assetStore = useAssetStore()
+const assetStore = useAssetStore();
 
 const { asset6551, detail1155Asset, detail721Asset, tbaAsset20, tbaAsset721, tbaAsset1155 } =
-  storeToRefs(assetStore)
+  storeToRefs(assetStore);
 
-const { convert721to6551, checkOwner, checkDetailAsset, assetOwner } = setupAsset()
-const { showSendModal, showTokenSendModal } = setupModal()
+const { convert721to6551, checkOwner, checkDetailAsset, assetOwner } = setupAsset();
+const { showSendModal, showTokenSendModal } = setupModal();
 
-const ercType = ref<number>(0)
-const tokenId = ref<bigint>(0n)
-const notIncluded = ref(true)
-const isCopy = ref(true)
-const tbaWalletAddress = ref<string>('')
+const ercType = ref<number>(0);
+const tokenId = ref<bigint>(0n);
+const notIncluded = ref(true);
+const isCopy = ref(true);
 
-const modalSendTokenRef = ref<HTMLDialogElement>()
-const modalConvertRef = ref<HTMLDialogElement>()
+const modalSendTokenRef = ref<HTMLDialogElement>();
+const modalConvertRef = ref<HTMLDialogElement>();
 
 const changeIcon = () => {
-  isCopy.value = false
-  setTimeout(() => (isCopy.value = true), 3000)
-}
+  isCopy.value = false;
+  setTimeout(() => (isCopy.value = true), 3000);
+};
 
-const is6551 = computed(() => ercType.value === 6551)
-const is1155 = computed(() => ercType.value === 1155)
-const is721 = computed(() => ercType.value === 721)
+const is6551 = computed(() => ercType.value === 6551);
+const is1155 = computed(() => ercType.value === 1155);
+const is721 = computed(() => ercType.value === 721);
 
 const detailAsset: ComputedRef<Erc6551Asset | ErcAsset> = computed(() => {
   return ercType.value === 721
     ? detail721Asset.value
     : ercType.value === 6551
     ? asset6551.value
-    : detail1155Asset.value
-})
+    : detail1155Asset.value;
+});
 
 const tbaAssetisEmpty = computed(
   () =>
     (tbaAsset721.value && tbaAsset721.value.size) === 0 &&
     tbaAsset1155.value &&
     tbaAsset1155.value.size === 0
-)
+);
 
-const tbaAssetSize = computed(() => tbaAsset1155.value?.size + tbaAsset721.value?.size)
+const tbaAssetSize = computed(() => tbaAsset1155.value?.size + tbaAsset721.value?.size);
+const tbaWalletAddress = computed(
+  () => (detailAsset.value as Erc6551Asset).get(tokenId.value)!.metadata.walletAddress
+);
 
 onMounted(async () => {
-  ercType.value = route?.meta.type as number
-  tokenId.value = BigInt(route?.params.id as string)
+  ercType.value = route?.meta.type as number;
+  tokenId.value = BigInt(route?.params.id as string);
 
   // CHECK OWNER LOGIC
-  const isOwner = await checkOwner(tokenId.value, ercType.value)
-  !isOwner && router.replace('/')
-})
+  const isOwner = await checkOwner(tokenId.value, ercType.value);
+  !isOwner && router.replace('/');
+});
 
-onUpdated(() => (ercType.value = route?.meta.type as number))
+onUpdated(() => (ercType.value = route?.meta.type as number));
 
 watch(
   () => ercType.value,
   async (ercType: number) => {
-    await checkDetailAsset(ercType, tokenId.value)
+    await checkDetailAsset(ercType, tokenId.value);
   },
   { immediate: true }
-)
+);
 </script>

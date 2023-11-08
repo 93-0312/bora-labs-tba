@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
 
 const props = defineProps({
   title: String,
@@ -49,13 +49,13 @@ const props = defineProps({
   btnName: String,
   btnClick: Function,
   btnDisable: Boolean
-})
+});
 
-const modalRef = ref<HTMLDialogElement>()
+const modalRef = ref<HTMLDialogElement>();
 
-const emit = defineEmits(['modalRef'])
+const emit = defineEmits(['modalRef']);
 
 onMounted(() => {
-  emit('modalRef', modalRef)
-})
+  emit('modalRef', modalRef);
+});
 </script>

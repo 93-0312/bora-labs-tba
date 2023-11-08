@@ -31,32 +31,88 @@ main {
   content: '';
 }
 
-.empty::before {
-  display: block;
-  width: 344px;
-  height: 234px;
-  margin: 0 auto 10px;
-  background: url(./img-empty.webp);
-  background-size: cover;
-  content: '';
-}
-
-.empty.empty-sm::before {
-  width: 220px;
-  height: 150px;
-}
-
 .arrow {
   display: inline-block;
-  padding: 3px;
+  margin-top: -3px;
+  padding: 4px;
   border: solid hsl(var(--bc));
   border-width: 0 3px 3px 0;
-  border-radius: 2px;
+  border-radius: 1px;
   transform: rotate(45deg);
   transition: transform 0.2s;
 }
 .arrow.arrow-up {
+  margin-top: 2px;
   transform: rotate(-135deg);
+}
+
+/* highlight */
+.text-highlight,
+.text-404 {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.text-highlight::before,
+.text-404::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  bottom: 3px;
+  z-index: -1;
+  width: 100%;
+  height: 6px;
+  border-radius: 2px 0;
+  background-color: hsl(var(--wa));
+  transform: skew(40deg, 0);
+}
+
+.text-404::before {
+  height: 8px;
+}
+
+@media (min-width: 768px) {
+  .text-highlight::before {
+    left: 5px;
+    bottom: 4px;
+    height: 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-highlight::before {
+    left: 8px;
+    bottom: 4px;
+    height: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-404::before {
+    left: 5px;
+    bottom: 2px;
+    height: 14px;
+  }
+}
+
+.bg-highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background-color: hsl(var(--s));
+  border-radius: 2px 0;
+  opacity: 0.3;
+}
+
+@media (min-width: 768px) {
+  .bg-highlight::before {
+    top: 50%;
+    transform: skew(15deg, 0) translateY(-50%);
+  }
 }
 
 /* transition */
@@ -92,7 +148,6 @@ main {
   overflow: hidden;
   position: relative;
   margin: 0 auto;
-  z-index: 1;
 }
 
 .swiper-wrapper {
@@ -101,7 +156,6 @@ main {
   height: 100%;
   display: flex;
   transition-property: transform;
-  z-index: 1;
 }
 
 .swiper-slide {
@@ -115,19 +169,46 @@ main {
 .swiper-pagination {
   transition: all 0.3;
   transform: translate3d(0, 0, 0);
-  z-index: 10;
 }
 
 .swiper-pagination-bullet {
   display: block;
-  width: 36px;
-  height: 6px;
-  background-color: #d3dfec;
+  width: 30px;
+  height: 5px;
+  background-color: hsl(var(--nc));
   border-radius: 2px;
   margin: 0 4px;
   cursor: pointer;
 }
 
+@media (min-width: 768px) {
+  .swiper-pagination-bullet {
+    width: 40px;
+  }
+}
+
 .swiper-pagination-bullet-active {
-  background-color: #1c235d;
+  background-color: hsl(var(--n));
+}
+
+/* skeleton */
+.skeleton {
+  background-image: linear-gradient(
+    90deg,
+    rgba(237, 237, 237, 0.9) 18.87%,
+    rgba(245, 245, 245, 0.2) 48.65%,
+    rgba(237, 237, 237, 0.9) 100%
+  );
+  background-size: 200% 100%;
+  animation: gradient 2s infinite linear;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 200% 0;
+  }
+  60%,
+  100% {
+    background-position: 0 0;
+  }
 }

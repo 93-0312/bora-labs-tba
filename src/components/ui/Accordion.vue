@@ -15,6 +15,7 @@
       {{ props.isInfo ? 'Info' : props.title }}
       <span :class="['arrow', { 'arrow-up': showContents }]" />
     </button>
+
     <transition name="show-down">
       <div v-if="showContents" class="border-t border-secondary/10">
         <dl v-if="props.isInfo" class="p-4 grid grid-cols-7 text-sm md:text-base md:p-5">
@@ -43,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
 
 const props = defineProps({
   isInfo: {
@@ -55,10 +56,10 @@ const props = defineProps({
   Chain: String,
   ContractAddress: String,
   TokenId: Number
-})
+});
 
-const showContents = ref(false)
-const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME
+const showContents = ref(false);
+const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
 
-onMounted(() => (showContents.value = props.isInfo ? false : true))
+onMounted(() => (showContents.value = props.isInfo ? false : true));
 </script>

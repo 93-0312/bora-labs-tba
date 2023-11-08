@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isToast" class="toast toast-top toast-center top-[12%]">
+  <div v-if="isToast" class="toast toast-top toast-center top-[12%] z-[1]">
     <div class="alert alert-warning grid-flow-col">
       <!-- prettier-ignore -->
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" class="stroke-current shrink-0 h-6 w-6">
@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   showToast: {
@@ -19,21 +19,21 @@ const props = defineProps({
     default: false
   },
   msg: String
-})
+});
 
-const isToast = ref(false)
+const isToast = ref(false);
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close']);
 
 watch(
   () => props.showToast,
   () => {
     if (props.showToast) {
-      isToast.value = true
-      setTimeout(() => ((isToast.value = false), emit('close')), 5000)
+      isToast.value = true;
+      setTimeout(() => ((isToast.value = false), emit('close')), 5000);
     } else {
-      isToast.value = false
+      isToast.value = false;
     }
   }
-)
+);
 </script>

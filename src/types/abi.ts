@@ -11,7 +11,7 @@ export const IERC721 = [
   'function tbaMint(address to) public',
   'function tokenURI(uint256 tokenId) public view returns(string memory)',
   'function tokensOf(address owner_) external view returns (uint256[] memory tokenIds)'
-]
+];
 
 export const IERC1155 = [
   'function uri(uint256) public view returns (string memory)',
@@ -24,7 +24,7 @@ export const IERC1155 = [
   'function tbaMint(address to, uint256 amount, bytes memory data) public',
   'function tokenCountOf(address owner) external view returns (uint256)',
   'function tokensOf(address owner) external view returns (uint256[] memory tokenIds_, uint256[] memory balances_)'
-]
+];
 
 export const IERC20 = [
   'function balanceOf(address owner) view returns (uint256)',
@@ -32,17 +32,17 @@ export const IERC20 = [
   'function symbol() view returns (string)',
   'function transfer(address to, uint amount) returns (bool)',
   'function mint(address to, uint amount)'
-]
+];
 
 export const IREG = [
   'function createAccount(address implementation,uint256 chainId,address tokenContract,uint256 tokenId,uint256 salt,bytes calldata initData) external returns (address)',
   'function account(address implementation, uint256 chainId, address tokenContract, uint256 tokenId, uint256 salt) external view returns (address)',
   'function accountsOf(address tokenContract, uint256 tokenId) external view returns( address[] memory accounts )'
-]
+];
 
 export const ITBA = [
   'function token() external view returns (uint256 chainId, address tokenContract, uint256 tokenId)',
   'function state() external view returns (uint256)',
   'function isValidSigner(address signer, bytes calldata context) external view returns (bytes4 magicValue)',
   'function execute(address to, uint256 value, bytes calldata data, uint256 operation) external payable returns (bytes memory result)'
-]
+];
