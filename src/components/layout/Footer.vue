@@ -31,7 +31,7 @@
 
     <a
       class="btn btn-outline w-32 h-10 min-h-0 mt-0 rounded-sm text-md normal-case font-normal md:mt-4 md:text-base"
-      href="#"
+      href="https://github.com/boraecosystem/boralabs-tba"
       target="_blank"
     >
       <!-- prettier-ignore -->

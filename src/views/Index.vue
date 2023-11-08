@@ -14,7 +14,7 @@
             >?
           </h1>
           <p
-            class="bg-highlight relative z-10 inline-block max-w-[80%] mt-3 py-0.5 px-2 text-sm font-medium md:max-w-full md:text-base md:mt-6 lg:mt-8 lg:text-lg"
+            class="bg-highlight relative z-[1] inline-block max-w-[80%] mt-3 py-0.5 px-2 text-sm font-medium md:max-w-full md:text-base md:mt-6 lg:mt-8 lg:text-lg"
           >
             <a
               href="https://eips.ethereum.org/EIPS/eip-6551"
@@ -25,7 +25,7 @@
             or a token-bound account, allows you to use NFTs like wallets.
           </p>
           <ul
-            class="opacity-80 relative inline-block z-[1] mt-2 py-2 pr-2 text-xs leading-tight md:mt-6 md:py-0 md:pr-0 md:text-[14px] lg:mt-6 lg:text-base"
+            class="opacity-80 relative inline-block mt-2 py-2 pr-2 text-xs leading-tight md:mt-6 md:py-0 md:pr-0 md:text-[14px] lg:mt-6 lg:text-base"
           >
             <li>
               NFTs integrated with an ERC-6551 token can hold multiple tokens and NFTs, similar to
@@ -43,7 +43,7 @@
           alt="bg"
           width="300"
           height="298"
-          class="absolute top-3 right-3 w-[18%] h-auto md:block md:relative md:w-[95%] md:top-0 md:right-0"
+          class="absolute top-3 right-3 w-[18%] h-auto md:block md:relative md:w-[90%] md:top-0 md:right-0"
         />
       </div>
     </section>

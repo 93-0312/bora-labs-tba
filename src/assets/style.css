@@ -148,7 +148,6 @@ main {
   overflow: hidden;
   position: relative;
   margin: 0 auto;
-  z-index: 1;
 }
 
 .swiper-wrapper {
@@ -157,7 +156,6 @@ main {
   height: 100%;
   display: flex;
   transition-property: transform;
-  z-index: 1;
 }
 
 .swiper-slide {
@@ -171,7 +169,6 @@ main {
 .swiper-pagination {
   transition: all 0.3;
   transform: translate3d(0, 0, 0);
-  z-index: 10;
 }
 
 .swiper-pagination-bullet {
@@ -191,7 +188,7 @@ main {
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #1c235d;
+  background-color: hsl(var(--n));
 }
 
 /* skeleton */
