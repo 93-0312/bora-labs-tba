@@ -22,7 +22,7 @@
       />
 
       <span
-        v-show="is1155"
+        v-if="is1155"
         class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-medium"
       >
         <!-- prettier-ignore -->
@@ -33,7 +33,7 @@
       </span>
     </div>
 
-    <div v-show="is1155" class="form-control w-full mt-3 md:mt-4">
+    <div v-if="is1155" class="form-control w-full mt-3 md:mt-4">
       <label class="label py-1.5">
         <span class="label-text md:text-base">How many NFTs are you sending?</span>
       </label>
