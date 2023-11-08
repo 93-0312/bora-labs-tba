@@ -23,7 +23,7 @@
 
     <!-- badge -->
     <template v-if="props.hasBadge">
-      <!-- badge: 1155 -->
+      <!-- 1155 -->
       <p
         class="absolute left-3 top-3 badge badge-sm bg-base-100/90 border-none backdrop-blur-md md:base-base"
       >
@@ -70,10 +70,13 @@
           </svg>
 
           <!-- prettier-ignore -->
-          <svg v-else xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" class="w-4 h-auto md:w-5">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M464 128L240 384l-96-96"></path>
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M144 384l-96-96"></path>
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M368 128L232 284"></path>
+          <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="w-4 h-auto md:w-5">
+            <mask id="check" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+              <rect width="24" height="24" fill="currentColor" />
+            </mask>
+            <g mask="url(#check)">
+              <path d="M9.33333 18.5333L4 13.2L5.86667 11.3333L9.33333 14.8L18.1333 6L20 7.86667L9.33333 18.5333Z" fill="currentColor" />
+            </g>
           </svg>
         </button>
       </p>

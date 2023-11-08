@@ -1,15 +1,15 @@
 <template>
   <dialog class="modal" ref="modalRef">
     <div class="modal-box flex flex-col items-center px-5 py-8 md:px-6 md:py-10">
-      <!-- step, 진행된 step에 step-primary 추가 -->
+      <!-- step -->
       <ul v-if="props.isStep" class="steps mt-2">
         <li v-for="i in step" :key="i" :class="['step', currentStep >= i && 'step-primary']" />
       </ul>
 
-      <!-- step, 로딩중 -->
+      <!-- step-loading -->
       <span v-if="props.isStep" class="loading loading-dots w-9 mt-3 text-primary" />
 
-      <!-- radial progress, --value값으로 progress 조절 -->
+      <!-- radial progress -->
       <div
         v-if="props.isRadial"
         class="radial-progress text-primary mt-2 mb-1"
@@ -18,7 +18,7 @@
         <p class="text-sm font-medium text-center">{{ props.progressName }} in<br />progress</p>
       </div>
 
-      <!-- 공통 -->
+      <!-- common -->
       <p class="w-[90%] mt-5 text-center text-sm md:text-base">{{ props.desc }}</p>
 
       <p class="mt-5 text-xs text-secondary-focus text-center leading-relaxed md:text-sm">

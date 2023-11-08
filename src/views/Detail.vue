@@ -73,11 +73,9 @@
               aria-label="go to borascope"
             >
               <!-- prettier-ignore -->
-              <svg width="28px" height="28px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 md:w-6 md:h-6">
-                <path d="M8 21H20.4C20.7314 21 21 20.7314 21 20.4V3.6C21 3.26863 20.7314 3 20.4 3H3.6C3.26863 3 3 3.26863 3 3.6V16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M10 6L18 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 6H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M3.5 20.5L12 12M12 12V16M12 12H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" class="w-5 h-5 md:w-6 md:h-6">
+                <mask id="open_in_new" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32"><rect width="32" height="32" fill="#fff"/></mask>
+                <g mask="url(#open_in_new)"><path d="M7.06669 27.3333C6.40002 27.3333 5.83335 27.1 5.36669 26.6333C4.90002 26.1666 4.66669 25.6 4.66669 24.9333V7.06663C4.66669 6.39996 4.90002 5.83329 5.36669 5.36663C5.83335 4.89996 6.40002 4.66663 7.06669 4.66663H15.5V6.66663H7.06669C6.9778 6.66663 6.88891 6.71107 6.80002 6.79996C6.71113 6.88885 6.66669 6.97774 6.66669 7.06663V24.9333C6.66669 25.0222 6.71113 25.1111 6.80002 25.2C6.88891 25.2888 6.9778 25.3333 7.06669 25.3333H24.9334C25.0222 25.3333 25.1111 25.2888 25.2 25.2C25.2889 25.1111 25.3334 25.0222 25.3334 24.9333V16.5H27.3334V24.9333C27.3334 25.6 27.1 26.1666 26.6334 26.6333C26.1667 27.1 25.6 27.3333 24.9334 27.3333H7.06669ZM12.9667 20.4333L11.5667 19.0333L23.9334 6.66663H18.6667V4.66663H27.3334V13.3333H25.3334V8.06663L12.9667 20.4333Z" fill="currentColor"/></g>
               </svg>
             </a>
           </div>
@@ -114,7 +112,6 @@
                   </div>
                 </ItemCard>
 
-                <!-- 카드 갯수 -->
                 <span
                   class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-medium"
                 >
@@ -167,14 +164,14 @@
             <p class="ml-auto text-sm md:text-base">{{ asset.formatEtherAmount }}</p>
 
             <button
-              class="btn btn-neutral btn-circle btn-sm min-h-0 ml-3 text-right md:ml-4"
+              class="btn btn-neutral btn-circle btn-sm ml-3 md:ml-4"
               type="button"
               @click="showTokenSendModal(asset, tokenId)"
               aria-label="send"
             >
               <!-- prettier-ignore -->
-              <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 translate-x-[1px]">
-                <path d="M11.5003 12H5.41872M5.24634 12.7972L4.24158 15.7986C3.69128 17.4424 3.41613 18.2643 3.61359 18.7704C3.78506 19.21 4.15335 19.5432 4.6078 19.6701C5.13111 19.8161 5.92151 19.4604 7.50231 18.7491L17.6367 14.1886C19.1797 13.4942 19.9512 13.1471 20.1896 12.6648C20.3968 12.2458 20.3968 11.7541 20.1896 11.3351C19.9512 10.8529 19.1797 10.5057 17.6367 9.81135L7.48483 5.24303C5.90879 4.53382 5.12078 4.17921 4.59799 4.32468C4.14397 4.45101 3.77572 4.78336 3.60365 5.22209C3.40551 5.72728 3.67772 6.54741 4.22215 8.18767L5.24829 11.2793C5.34179 11.561 5.38855 11.7019 5.407 11.8459C5.42338 11.9738 5.42321 12.1032 5.40651 12.231C5.38768 12.375 5.34057 12.5157 5.24634 12.7972Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none" class="w-[18px] h-auto -translate-x-[1px]">
+                <path d="M24.3375 38.75C23.8729 38.7544 23.4163 38.6293 23.0188 38.3886C22.6214 38.1479 22.2989 37.8013 22.0875 37.3875L17.0875 27.925C16.9425 27.6325 16.9176 27.295 17.0183 26.9844C17.1189 26.6739 17.337 26.415 17.626 26.2632C17.915 26.1113 18.2519 26.0786 18.5647 26.1719C18.8775 26.2652 19.1414 26.4772 19.3 26.7625L24.3 36.225L36.25 3.82501L3.75001 15.6125L16 22.1875L26.4 11.7875C26.6354 11.5521 26.9546 11.4199 27.2875 11.4199C27.6204 11.4199 27.9396 11.5521 28.175 11.7875C28.4104 12.0229 28.5426 12.3421 28.5426 12.675C28.5426 13.0079 28.4104 13.3271 28.175 13.5625L17.1125 24.6125C16.9244 24.8008 16.6812 24.9242 16.4181 24.9647C16.1551 25.0051 15.886 24.9606 15.65 24.8375L2.61251 17.9125C2.15617 17.6989 1.77501 17.3524 1.519 16.9185C1.26299 16.4845 1.14408 15.9833 1.17787 15.4806C1.21165 14.9779 1.39655 14.4971 1.70832 14.1013C2.0201 13.7055 2.44419 13.4131 2.92501 13.2625L35.3125 1.41251C35.7706 1.21931 36.2759 1.16709 36.7639 1.26252C37.2518 1.35796 37.7002 1.59671 38.0518 1.94827C38.4033 2.29983 38.6421 2.74822 38.7375 3.23616C38.8329 3.72409 38.7807 4.2294 38.5875 4.68751L26.7375 37.075C26.5746 37.5434 26.2761 37.9528 25.8799 38.251C25.4837 38.5493 25.0077 38.723 24.5125 38.75H24.3375Z" fill="white"/>
               </svg>
             </button>
           </div>
@@ -227,7 +224,7 @@
         </Accordion>
       </template>
 
-      <!-- 공통: info -->
+      <!-- info -->
       <Accordion
         :owner="assetOwner"
         :-contract-address="nftContractAddress"
@@ -271,7 +268,6 @@ import icCheck from '@/assets/ic-check.svg';
 import icCopy from '@/assets/ic-copy.svg';
 import icEmpty from '@/assets/ic-empty.svg';
 
-// env로 이동
 const nftContractAddress = computed(() =>
   ercType.value === 721
     ? import.meta.env.VITE_BORALABS_NFT_CONTRACT
@@ -280,7 +276,6 @@ const nftContractAddress = computed(() =>
     : import.meta.env.VITE_BORALABS_MTS_CONTRACT
 );
 const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL;
-//
 
 const route = useRoute();
 const router = useRouter();
