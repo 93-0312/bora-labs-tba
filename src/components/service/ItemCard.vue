@@ -114,7 +114,7 @@ import { ref } from 'vue';
 import { useAssetStore } from '@/stores/asset.module';
 import { copy, truncate } from '@/constant/utils';
 
-const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_ID;
+const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
 
 const assetStore = useAssetStore();
 const { addAsset } = storeToRefs(assetStore);
