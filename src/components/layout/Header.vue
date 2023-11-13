@@ -53,16 +53,16 @@ watch(
 watch(
   () => walletAddress.value,
   async (walletAddress: string) => {
-    if (walletAddress === '') return;
+    if (walletAddress !== '') {
+      const wallet = new MetamaskService();
+      await wallet.init();
+      const currentWalletAddress = await wallet.getAddress();
 
-    const wallet = new MetamaskService();
-    await wallet.init();
-    const currentWalletAddress = await wallet.getAddress();
-
-    if (walletAddress !== currentWalletAddress) {
-      resetAsset();
-      setWalletAddress('');
-      setIsSigned(false);
+      if (walletAddress !== currentWalletAddress) {
+        resetAsset();
+        setWalletAddress('');
+        setIsSigned(false);
+      }
     }
   },
   { immediate: true }

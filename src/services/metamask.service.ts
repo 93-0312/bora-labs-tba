@@ -1,6 +1,6 @@
+import { getNetworkChainConfig } from '@/utils/wallet';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { ethers } from 'ethers';
-import { getNetworkChainConfig } from '@/constant/wallet';
 
 export default class MetamaskService {
   private metamask: any;

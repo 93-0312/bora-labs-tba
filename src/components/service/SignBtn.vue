@@ -60,24 +60,14 @@
 </template>
 
 <script setup lang="ts">
+import { copy, truncate, changeIcon, isCopy } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
 import { setupAccount } from '@/setups/account.composition';
 import { useAccountStore } from '@/stores/account.module.ts';
-import { copy, truncate } from '@/constant/utils';
 import icCheck from '@/assets/ic-check.svg';
 import icCopy from '@/assets/ic-copy.svg';
 
-const isCopy = ref(true);
-
 const accountStore = useAccountStore();
-
 const { isSigned, walletAddress } = storeToRefs(accountStore);
-
 const { connectWallet, disconnectWallet } = setupAccount();
-
-const changeIcon = () => {
-  isCopy.value = false;
-  setTimeout(() => (isCopy.value = true), 3000);
-};
 </script>

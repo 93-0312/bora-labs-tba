@@ -77,9 +77,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
 import { useAssetStore } from '@/stores/asset.module';
-import { copy, truncate } from '@/constant/utils';
 
 const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
 
@@ -125,21 +123,6 @@ const props = defineProps({
 
   imgSrc: String,
   badgeName: String,
-  cardName: String,
-  walletAddress: {
-    type: String,
-    default: ''
-  },
-  linkDisable: {
-    type: Boolean,
-    default: false
-  }
+  cardName: String
 });
-
-const isCopy = ref(true);
-
-const changeIcon = () => {
-  isCopy.value = false;
-  setTimeout(() => (isCopy.value = true), 3000);
-};
 </script>

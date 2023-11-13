@@ -1,22 +1,33 @@
+import axios from 'axios';
 import { useAccountStore } from '@/stores/account.module.ts';
 import { useAssetStore } from '@/stores/asset.module';
 import MetamaskService from '@/services/metamask.service';
 
 export const setupAccount = () => {
-  const assetStore = useAssetStore();
   const accountStore = useAccountStore();
-  const { setWalletAddress, setIsSigned } = accountStore;
+  const assetStore = useAssetStore();
 
+  const { setWalletAddress, setIsSigned } = accountStore;
   const { resetAsset } = assetStore;
+
+  const getBgas = async (cntWallet: string) => {
+    try {
+      await axios.get(`https://api.boralabs.net/bgas/${cntWallet}`);
+    } catch {
+      return;
+    }
+  };
+
   const connectWallet = async () => {
     try {
       const wallet = new MetamaskService();
       await wallet.init();
 
       await wallet.switchNetworkChain(Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID));
-
       const cntWallet = await wallet.getAddress();
       setWalletAddress(cntWallet);
+
+      await getBgas(cntWallet);
       setIsSigned(true);
     } catch (err) {
       console.error({ err });

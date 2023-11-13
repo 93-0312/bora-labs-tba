@@ -83,9 +83,10 @@
 </template>
 
 <script setup lang="ts">
-import ItemCard from './ItemCard.vue';
+import { isValidAddress } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
+import ItemCard from '@/components/service/ItemCard.vue';
 import ModalLayout from '@/components/ui/ModalLayout.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAssetStore } from '@/stores/asset.module';
@@ -95,8 +96,6 @@ import type { asset } from '@/types/asset';
 const modalStore = useModalStore();
 
 const { sendModalRef } = storeToRefs(modalStore);
-
-defineEmits(['modalRef']);
 
 const { sendNft, sendNftFrom6551 } = setupAsset();
 const assetStore = useAssetStore();
@@ -124,15 +123,6 @@ const isInputError = computed(() => {
 const isAmountError = computed(() => {
   return Number(toAmounts.value) > Number(amountsOf1155.value);
 });
-
-const isValidAddress = (address: string) => {
-  if (/^(0x)[0]{40}$/.test(address)) {
-    return false;
-  } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
-    return true;
-  }
-  return false;
-};
 
 const isSendBtnDisable = computed(() => {
   return is1155.value

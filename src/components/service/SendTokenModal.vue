@@ -74,8 +74,9 @@
 </template>
 
 <script setup lang="ts">
+import { isValidAddress } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import ModalLayout from '@/components/ui/ModalLayout.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAssetStore } from '@/stores/asset.module';
@@ -85,15 +86,7 @@ const modalStore = useModalStore();
 
 const { sendTokenModalRef } = storeToRefs(modalStore);
 
-const modalRef = ref<HTMLDialogElement>();
-
 const isSelected = ref(false);
-
-defineProps({
-  isDisabled: { type: Boolean }
-});
-
-const emit = defineEmits(['modalRef']);
 
 const { send20Token } = setupAsset();
 const assetStore = useAssetStore();
@@ -107,15 +100,6 @@ const confirmSendToken = async () => {
 const isInputError = computed(() => {
   return toAddress.value !== '' && !isValidAddress(toAddress.value);
 });
-
-const isValidAddress = (address: string) => {
-  if (/^(0x)[0]{40}$/.test(address)) {
-    return false;
-  } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
-    return true;
-  }
-  return false;
-};
 
 const isAmountError = computed(() => {
   return Number(toAmounts.value) > Number(sendErc20Asset.value?.formatEtherAmount);
@@ -143,8 +127,4 @@ watch(
     else isSelected.value = false;
   }
 );
-
-onMounted(() => {
-  emit('modalRef', modalRef);
-});
 </script>
