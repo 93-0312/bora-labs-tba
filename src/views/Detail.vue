@@ -158,7 +158,7 @@
                 :alt="asset.tknSymbol"
                 class="w-8 h-8 mr-2"
               />
-              <span @click="console.log(asset)">{{ asset.tknSymbol }}</span>
+              <span>{{ asset.tknSymbol }}</span>
             </div>
 
             <p class="ml-auto text-sm md:text-base">{{ asset.formatEtherAmount }}</p>

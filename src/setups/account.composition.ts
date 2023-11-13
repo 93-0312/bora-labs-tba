@@ -1,5 +1,3 @@
-import { storeToRefs } from 'pinia';
-import { watch } from 'vue';
 import { useAccountStore } from '@/stores/account.module.ts';
 import { useAssetStore } from '@/stores/asset.module';
 import MetamaskService from '@/services/metamask.service';
@@ -8,7 +6,6 @@ export const setupAccount = () => {
   const assetStore = useAssetStore();
   const accountStore = useAccountStore();
   const { setWalletAddress, setIsSigned } = accountStore;
-  const { walletAddress } = storeToRefs(accountStore);
 
   const { resetAsset } = assetStore;
   const connectWallet = async () => {
@@ -33,22 +30,6 @@ export const setupAccount = () => {
       setIsSigned(false);
     }
   };
-
-  watch(
-    () => walletAddress.value,
-    async (walletAddress: string) => {
-      const wallet = new MetamaskService();
-      await wallet.init();
-      const currentWalletAddress = await wallet.getAddress();
-
-      if (walletAddress !== currentWalletAddress) {
-        resetAsset();
-        setWalletAddress('');
-        setIsSigned(false);
-      }
-    },
-    { immediate: true }
-  );
 
   return {
     connectWallet,
