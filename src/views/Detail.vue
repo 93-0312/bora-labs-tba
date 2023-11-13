@@ -244,7 +244,7 @@
 </template>
 
 <script setup lang="ts">
-import { copy, truncate, changeIcon, isCopy } from '@/utils/utils';
+import { copy, truncate } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, onUpdated, ref, watch, type ComputedRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -254,6 +254,7 @@ import SendTokenModal from '@/components/service/SendTokenModal.vue';
 import Accordion from '@/components/ui/Accordion.vue';
 import ModalLoading from '@/components/ui/ModalLoading.vue';
 import { setupAsset } from '@/setups/asset.composition';
+import { setupCommon } from '@/setups/common.composition';
 import { setupModal } from '@/setups/modal.composition';
 import { useAssetStore } from '@/stores/asset.module.ts';
 import type { Erc6551Asset, ErcAsset } from '@/types/asset';
@@ -261,13 +262,6 @@ import icCheck from '@/assets/ic-check.svg';
 import icCopy from '@/assets/ic-copy.svg';
 import icEmpty from '@/assets/ic-empty.svg';
 
-const nftContractAddress = computed(() =>
-  ercType.value === 721
-    ? import.meta.env.VITE_BORALABS_NFT_CONTRACT
-    : ercType.value === 6551
-    ? import.meta.env.VITE_BORALABS_TACC_CONTRACT
-    : import.meta.env.VITE_BORALABS_MTS_CONTRACT
-);
 const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL;
 
 const route = useRoute();
@@ -278,6 +272,7 @@ const assetStore = useAssetStore();
 const { asset6551, detail1155Asset, detail721Asset, tbaAsset20, tbaAsset721, tbaAsset1155 } =
   storeToRefs(assetStore);
 
+const { changeIcon, isCopy } = setupCommon();
 const { convert721to6551, checkOwner, checkDetailAsset, assetOwner } = setupAsset();
 const { showSendModal, showTokenSendModal } = setupModal();
 
@@ -289,6 +284,14 @@ const modalConvertRef = ref<HTMLDialogElement>();
 const is6551 = computed(() => ercType.value === 6551);
 const is1155 = computed(() => ercType.value === 1155);
 const is721 = computed(() => ercType.value === 721);
+
+const nftContractAddress = computed(() =>
+  ercType.value === 721
+    ? import.meta.env.VITE_BORALABS_NFT_CONTRACT
+    : ercType.value === 6551
+    ? import.meta.env.VITE_BORALABS_TACC_CONTRACT
+    : import.meta.env.VITE_BORALABS_MTS_CONTRACT
+);
 
 const detailAsset: ComputedRef<Erc6551Asset | ErcAsset> = computed(() => {
   return ercType.value === 721

@@ -1,11 +1,3 @@
-import { ref } from 'vue';
-
-export const isCopy = ref(true);
-export const changeIcon = () => {
-  isCopy.value = false;
-  setTimeout(() => (isCopy.value = true), 3000);
-};
-
 export const truncate = (text: string, num = 6): string => {
   const characters: number = text.length;
   if (characters >= 42) {
