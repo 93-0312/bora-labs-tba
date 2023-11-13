@@ -118,8 +118,6 @@ const isValidAddress = (address: string) => {
 };
 
 const isAmountError = computed(() => {
-  console.log(toAmounts.value);
-  console.log(sendErc20Asset.value?.formatEtherAmount);
   return Number(toAmounts.value) > Number(sendErc20Asset.value?.formatEtherAmount);
 });
 
