@@ -22,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+import router from '@/router';
 import { storeToRefs } from 'pinia';
 import { watch } from 'vue';
 import SignBtn from '@/components/service/SignBtn.vue';
@@ -65,6 +66,8 @@ watch(
         setWalletAddress('');
         setIsSigned(false);
       }
+    } else if (walletAddress === '') {
+      router.replace('/');
     }
   },
   { immediate: true }

@@ -8,7 +8,7 @@ import { useAssetStore } from '@/stores/asset.module.ts';
 import { useModalStore } from '@/stores/modal.module';
 import MetamaskService from '@/services/metamask.service';
 import { IERC1155, IERC20, IERC721, IREG, ITBA } from '@/types/abi';
-import type { Erc6551Asset, ErcAsset, Metadata, Metadata6551, asset } from '@/types/asset';
+import type { Erc6551Asset, ErcAsset, Metadata, Metadata6551, Asset } from '@/types/asset';
 
 export const setupAsset = () => {
   const assetStore = useAssetStore();
@@ -322,7 +322,7 @@ export const setupAsset = () => {
     setToastMsg('Send Completed!');
   };
 
-  const sendNft = async (toAddress: string, asset: asset, upperModalRef: any) => {
+  const sendNft = async (toAddress: string, asset: Asset, upperModalRef: any) => {
     const assetType = asset[1].metadata.type;
 
     const wallet = new MetamaskService();
@@ -402,7 +402,7 @@ export const setupAsset = () => {
     setToastMsg('Send Completed!');
   };
 
-  const sendNftFrom6551 = async (asset: asset, upperModalRef: any) => {
+  const sendNftFrom6551 = async (asset: Asset, upperModalRef: any) => {
     const assetType = asset[1].metadata.type;
 
     const wallet = new MetamaskService();

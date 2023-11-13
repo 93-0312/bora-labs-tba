@@ -1,7 +1,7 @@
 import { storeToRefs } from 'pinia';
 import { useAssetStore } from '@/stores/asset.module';
 import { useModalStore } from '@/stores/modal.module';
-import type { Erc20, asset } from '@/types/asset';
+import type { Erc20, Asset } from '@/types/asset';
 
 export const setupModal = () => {
   const assetStore = useAssetStore();
@@ -12,7 +12,7 @@ export const setupModal = () => {
 
   const { toAddress, toAmounts, addAsset } = storeToRefs(assetStore);
 
-  const showSendModal = (sendAsset: asset, tokenId?: bigint) => {
+  const showSendModal = (sendAsset: Asset, tokenId?: bigint) => {
     toAddress.value = '';
     toAmounts.value = '';
     setSendAsset(sendAsset);

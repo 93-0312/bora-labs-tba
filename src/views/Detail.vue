@@ -313,7 +313,6 @@ const tbaWalletAddress = computed(
 onMounted(async () => {
   ercType.value = route?.meta.type as number;
   tokenId.value = BigInt(route?.params.id as string);
-
   // CHECK OWNER LOGIC
   const isOwner = await checkOwner(tokenId.value, ercType.value);
   !isOwner && router.replace('/');

@@ -91,7 +91,7 @@ import ModalLayout from '@/components/ui/ModalLayout.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAssetStore } from '@/stores/asset.module';
 import { useModalStore } from '@/stores/modal.module';
-import type { asset } from '@/types/asset';
+import type { Asset } from '@/types/asset';
 
 const modalStore = useModalStore();
 
@@ -102,7 +102,7 @@ const assetStore = useAssetStore();
 
 const { sendAsset, toAddress, toAmounts, from6551 } = storeToRefs(assetStore);
 
-const confirmSend = async (sendToAddress: string, sendAsset: asset) => {
+const confirmSend = async (sendToAddress: string, sendAsset: Asset) => {
   if (!from6551.value.from6551) await sendNft(sendToAddress, sendAsset, sendModalRef);
   else await sendNftFrom6551(sendAsset, sendModalRef);
   toAddress.value = '';

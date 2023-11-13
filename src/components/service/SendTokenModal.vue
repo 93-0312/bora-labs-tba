@@ -17,7 +17,7 @@
             'btn btn-outline btn-xs absolute w-12 top-2 left-2 rounded-lg md:top-3 md:left-3',
             { 'bg-base-content text-base-300 border-base-content': isSelected }
           ]"
-          @click="isSelected = !isSelected"
+          @click="clickMax"
         >
           Max
         </button>
@@ -86,8 +86,6 @@ const modalStore = useModalStore();
 
 const { sendTokenModalRef } = storeToRefs(modalStore);
 
-const isSelected = ref(false);
-
 const { send20Token } = setupAsset();
 const assetStore = useAssetStore();
 
@@ -95,6 +93,14 @@ const { toAmounts, toAddress, sendErc20Asset } = storeToRefs(assetStore);
 
 const confirmSendToken = async () => {
   await send20Token(sendTokenModalRef.value!);
+};
+
+const clickMax = () => {
+  if (toAmounts.value === sendErc20Asset.value?.formatEtherAmount!) {
+    toAmounts.value = '';
+    return;
+  }
+  toAmounts.value = sendErc20Asset.value?.formatEtherAmount!;
 };
 
 const isInputError = computed(() => {
@@ -111,20 +117,15 @@ const isSendBtnDisable = computed(() => {
   );
 });
 
+const isSelected = computed(
+  () => Number(toAmounts.value) === Number(sendErc20Asset.value?.formatEtherAmount!)
+);
 watch(
   () => isSelected.value,
   (isSelected: boolean) => {
     if (isSelected) {
       toAmounts.value = sendErc20Asset.value?.formatEtherAmount!;
     }
-  }
-);
-
-watch(
-  () => toAmounts.value,
-  (toAmounts: string) => {
-    if (toAmounts === sendErc20Asset.value?.formatEtherAmount) isSelected.value = true;
-    else isSelected.value = false;
   }
 );
 </script>

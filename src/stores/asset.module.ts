@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import type { Erc20, Erc6551Asset, ErcAsset, asset } from '@/types/asset';
+import type { Erc20, Erc6551Asset, ErcAsset, Asset } from '@/types/asset';
 
 export const setupAssetStore = () => {
   const asset721 = ref<ErcAsset>(new Map());
@@ -55,7 +55,7 @@ export const setupAssetStore = () => {
     asset20.value = data;
   };
 
-  const setSendAsset = (data: asset) => {
+  const setSendAsset = (data: Asset) => {
     sendAsset.value = data;
   };
 
