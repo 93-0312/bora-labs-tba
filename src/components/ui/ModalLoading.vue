@@ -1,5 +1,5 @@
 <template>
-  <dialog class="modal" ref="modalRef">
+  <dialog class="modal" ref="modalRef" @keydown="(e) => e.preventDefault()">
     <div class="modal-box flex flex-col items-center px-5 py-8 md:px-6 md:py-10">
       <!-- step -->
       <ul v-if="props.isStep" class="steps mt-2">

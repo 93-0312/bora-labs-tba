@@ -232,7 +232,7 @@
 
     <!-- modal -->
     <SendModal />
-    <SendTokenModal :modalSendTokenRef="modalSendTokenRef" :isDisabled="false" />
+    <SendTokenModal />
 
     <ModalLoading
       @modal-ref="(ref) => (modalConvertRef = ref.value)"
@@ -284,7 +284,6 @@ const { showSendModal, showTokenSendModal } = setupModal();
 const ercType = ref<number>(0);
 const tokenId = ref<bigint>(0n);
 
-const modalSendTokenRef = ref<HTMLDialogElement>();
 const modalConvertRef = ref<HTMLDialogElement>();
 
 const is6551 = computed(() => ercType.value === 6551);
