@@ -35,7 +35,7 @@
     <input
       v-if="props.hasCheckbox"
       type="checkbox"
-      class="checkbox checkbox-warning absolute top-2 right-2 rounded-full border border-base-300/70 bg-neutral/70 transition hover:bg-neutral/90"
+      class="checkbox checkbox-warning absolute top-2 right-2 rounded-full border border-base-300/70 bg-neutral/70 transition hover:bg-neutral/90 md:w-7 md:h-7"
       aria-label="checkbox"
       :checked="addAsset.has(props.asset?.[0])"
       @click="selectAddAsset"
@@ -64,7 +64,9 @@
         v-if="showNetwork"
         :class="[
           'flex items-center text-neutral/60 font-medium',
-          props.isSmall ? 'mt-0.5 pl-[1px] text-[10px] md:text-[12px]' : 'text-xs md:text-sm'
+          props.isSmall
+            ? 'mt-0.5 pl-[1px] text-[10px] leading-tight md:text-[12px] md:leading-normal'
+            : 'text-xs md:text-sm'
         ]"
       >
         {{ chainName }}
