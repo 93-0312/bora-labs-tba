@@ -16,7 +16,6 @@
           :has-checkbox="true"
           :card-name="asset[1]?.metadata.name"
           :img-src="asset[1]?.metadata.image"
-          :linkDisable="true"
           :asset="asset"
         />
       </li>
@@ -25,9 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import ItemCard from './ItemCard.vue';
 import { storeToRefs } from 'pinia';
-import { onMounted, ref } from 'vue';
+import ItemCard from '@/components/service/ItemCard.vue';
 import ModalLayout from '@/components/ui/ModalLayout.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAssetStore } from '@/stores/asset.module';
@@ -46,15 +44,4 @@ const { addModalRef } = storeToRefs(modalStore);
 const confirmSend = async (addToAddress: string) => {
   await addNft(addToAddress, addModalRef);
 };
-
-defineProps({
-  isDisabled: { type: Boolean }
-});
-const modalRef = ref<HTMLDialogElement>();
-
-const emit = defineEmits(['modalRef']);
-
-onMounted(() => {
-  emit('modalRef', modalRef);
-});
 </script>

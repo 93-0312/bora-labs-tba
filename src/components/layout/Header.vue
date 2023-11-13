@@ -26,19 +26,43 @@ import { watch } from 'vue';
 import SignBtn from '@/components/service/SignBtn.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAccountStore } from '@/stores/account.module';
+import { useAssetStore } from '@/stores/asset.module';
+import MetamaskService from '@/services/metamask.service';
 import icB from '@/assets/ic-b.svg';
 import icBoralabs from '@/assets/ic-boralabs.svg';
 
 const accountStore = useAccountStore();
+const assetStore = useAssetStore();
 
 const { checkAsset } = setupAsset();
-const { isSigned } = storeToRefs(accountStore);
+const { resetAsset } = assetStore;
+
+const { setWalletAddress, setIsSigned } = accountStore;
+const { isSigned, walletAddress } = storeToRefs(accountStore);
 
 watch(
   () => isSigned.value,
   async (isSigned: boolean) => {
     if (isSigned) {
       await checkAsset();
+    }
+  },
+  { immediate: true }
+);
+
+watch(
+  () => walletAddress.value,
+  async (walletAddress: string) => {
+    if (walletAddress !== '') {
+      const wallet = new MetamaskService();
+      await wallet.init();
+      const currentWalletAddress = await wallet.getAddress();
+
+      if (walletAddress !== currentWalletAddress) {
+        resetAsset();
+        setWalletAddress('');
+        setIsSigned(false);
+      }
     }
   },
   { immediate: true }

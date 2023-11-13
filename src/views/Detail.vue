@@ -158,7 +158,7 @@
                 :alt="asset.tknSymbol"
                 class="w-8 h-8 mr-2"
               />
-              <span @click="console.log(asset)">{{ asset.tknSymbol }}</span>
+              <span>{{ asset.tknSymbol }}</span>
             </div>
 
             <p class="ml-auto text-sm md:text-base">{{ asset.formatEtherAmount }}</p>
@@ -182,7 +182,7 @@
       <template v-else>
         <div class="overflow-hidden grid grid-cols-6 gap-3 mt-7 md:gap-4">
           <button
-            v-if="notIncluded && is721"
+            v-if="is721"
             class="col-span-4 btn btn-accent rounded-sm md:btn-lg"
             type="button"
             @click="
@@ -192,10 +192,7 @@
             Convert to TBA
           </button>
           <button
-            :class="[
-              'btn btn-neutral rounded-sm md:btn-lg',
-              notIncluded && is721 ? 'col-span-2' : 'col-span-6'
-            ]"
+            :class="['btn btn-neutral rounded-sm md:btn-lg', is721 ? 'col-span-2' : 'col-span-6']"
             type="button"
             :disabled="detailAsset?.get(tokenId)?.['amount'] === 0n"
             @click="showSendModal([tokenId, detailAsset.get(tokenId)!])"
@@ -235,11 +232,7 @@
 
     <!-- modal -->
     <SendModal />
-    <SendTokenModal
-      @modal-ref="(ref) => (modalSendTokenRef = ref.value)"
-      :modalSendTokenRef="modalSendTokenRef"
-      :isDisabled="false"
-    />
+    <SendTokenModal :modalSendTokenRef="modalSendTokenRef" :isDisabled="false" />
 
     <ModalLoading
       @modal-ref="(ref) => (modalConvertRef = ref.value)"
@@ -251,6 +244,7 @@
 </template>
 
 <script setup lang="ts">
+import { copy, truncate, changeIcon, isCopy } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
 import { computed, onMounted, onUpdated, ref, watch, type ComputedRef } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
@@ -262,7 +256,6 @@ import ModalLoading from '@/components/ui/ModalLoading.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { setupModal } from '@/setups/modal.composition';
 import { useAssetStore } from '@/stores/asset.module.ts';
-import { copy, truncate } from '@/constant/utils';
 import type { Erc6551Asset, ErcAsset } from '@/types/asset';
 import icCheck from '@/assets/ic-check.svg';
 import icCopy from '@/assets/ic-copy.svg';
@@ -290,16 +283,9 @@ const { showSendModal, showTokenSendModal } = setupModal();
 
 const ercType = ref<number>(0);
 const tokenId = ref<bigint>(0n);
-const notIncluded = ref(true);
-const isCopy = ref(true);
 
 const modalSendTokenRef = ref<HTMLDialogElement>();
 const modalConvertRef = ref<HTMLDialogElement>();
-
-const changeIcon = () => {
-  isCopy.value = false;
-  setTimeout(() => (isCopy.value = true), 3000);
-};
 
 const is6551 = computed(() => ercType.value === 6551);
 const is1155 = computed(() => ercType.value === 1155);

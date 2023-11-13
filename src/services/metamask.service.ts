@@ -1,4 +1,4 @@
-import { getNetworkChainConfig } from '../constant/wallet';
+import { getNetworkChainConfig } from '@/utils/wallet';
 import detectEthereumProvider from '@metamask/detect-provider';
 import { ethers } from 'ethers';
 
@@ -21,7 +21,6 @@ export default class MetamaskService {
   }
 
   async switchNetworkChain(chainId: number) {
-    console.log(chainId, 'chainId');
     await this.metamask.request({
       method: 'wallet_addEthereumChain',
       params: [getNetworkChainConfig(chainId)]

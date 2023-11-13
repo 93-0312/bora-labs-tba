@@ -211,17 +211,16 @@
 <script setup lang="ts">
 import AddModal from './AddModal.vue';
 import SendModal from './SendModal.vue';
+import { copy, truncate, changeIcon, isCopy } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
 import { Pagination, Navigation, Mousewheel } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { ref } from 'vue';
 import ItemCard from '@/components/service/ItemCard.vue';
 import SItemList from '@/components/ui/SItemList.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { setupModal } from '@/setups/modal.composition';
 import { useAccountStore } from '@/stores/account.module.ts';
 import { useAssetStore } from '@/stores/asset.module.ts';
-import { copy, truncate } from '@/constant/utils';
 import icEmpty from '@/assets/ic-empty.svg';
 
 const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
@@ -234,11 +233,4 @@ const { isSigned } = storeToRefs(accountStore);
 const { hasAsset, asset721, asset1155, asset6551, isAssetLoading } = storeToRefs(assetStore);
 const { showSendModal, showAddModal } = setupModal();
 const modules = [Pagination, Navigation, Mousewheel];
-
-const isCopy = ref(true);
-
-const changeIcon = () => {
-  isCopy.value = false;
-  setTimeout(() => (isCopy.value = true), 3000);
-};
 </script>
