@@ -28,17 +28,17 @@ export default class MetamaskService {
   }
 
   async getAddress(): Promise<string> {
-    const wallet = this.provider.getSigner();
-    return await (await wallet).getAddress();
+    const wallet = await this.provider.getSigner();
+    return await wallet.getAddress();
   }
 
   async signMessage(msg: string): Promise<string> {
-    const wallet = this.provider.getSigner();
-    return await (await wallet).signMessage(msg);
+    const wallet = await this.provider.getSigner();
+    return await wallet.signMessage(msg);
   }
 
   async getNetworkChainId(): Promise<number> {
-    const chainId = await (await this.provider.getNetwork()).chainId;
+    const chainId = (await this.provider.getNetwork()).chainId;
     return Number(chainId);
   }
 

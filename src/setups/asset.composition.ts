@@ -91,7 +91,7 @@ export const setupAsset = () => {
       const txErc20Response = await provider.getTransaction(txErc20.hash);
       txErc20Response && (await txErc20Response.wait());
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return;
     }
 
@@ -102,7 +102,7 @@ export const setupAsset = () => {
       const txResponse = await provider.getTransaction(tx.hash);
       txResponse && (await txResponse.wait());
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return;
     }
 
@@ -130,7 +130,7 @@ export const setupAsset = () => {
         return tokensOf1155[0].includes(id);
       }
     } catch (e) {
-      console.log(e);
+      console.error(e);
       return false;
     }
   };
@@ -206,8 +206,6 @@ export const setupAsset = () => {
 
     const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer);
     const tokensOf1155: [bigint[], bigint[]] = await mts.tokensOf(address);
-
-    console.log({ tokensOf1155 });
 
     const asset1155: ErcAsset = new Map();
 
