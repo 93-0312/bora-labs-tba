@@ -53,6 +53,8 @@ watch(
 watch(
   () => walletAddress.value,
   async (walletAddress: string) => {
+    if (walletAddress === '') return;
+
     const wallet = new MetamaskService();
     await wallet.init();
     const currentWalletAddress = await wallet.getAddress();
