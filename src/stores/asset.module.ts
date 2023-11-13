@@ -25,7 +25,7 @@ export const setupAssetStore = () => {
   );
 
   const addAsset = ref<ErcAsset>(new Map());
-  const sendAsset = ref<asset>();
+  const sendAsset = ref<Asset>();
 
   const sendErc20Asset = ref<Erc20>();
   const selectedAsset = ref<Map<bigint, any>>(new Map());
