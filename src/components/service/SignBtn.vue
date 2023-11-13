@@ -60,12 +60,15 @@
 </template>
 
 <script setup lang="ts">
-import { copy, truncate, changeIcon, isCopy } from '@/utils/utils';
+import { copy, truncate } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
 import { setupAccount } from '@/setups/account.composition';
+import { setupCommon } from '@/setups/common.composition';
 import { useAccountStore } from '@/stores/account.module.ts';
 import icCheck from '@/assets/ic-check.svg';
 import icCopy from '@/assets/ic-copy.svg';
+
+const { changeIcon, isCopy } = setupCommon();
 
 const accountStore = useAccountStore();
 const { isSigned, walletAddress } = storeToRefs(accountStore);
