@@ -1,5 +1,5 @@
 import { Contract, ethers } from 'ethers';
-import { IERC20 } from '@/types/abi';
+import { IERC20 } from '@/constant/abi';
 
 export default class ERC20 {
   private tokenAddr: string;

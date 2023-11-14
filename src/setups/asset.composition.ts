@@ -7,7 +7,7 @@ import { useAccountStore } from '@/stores/account.module.ts';
 import { useAssetStore } from '@/stores/asset.module.ts';
 import { useModalStore } from '@/stores/modal.module';
 import MetamaskService from '@/services/metamask.service';
-import { IERC1155, IERC20, IERC721, IREG, ITBA } from '@/types/abi';
+import { IERC1155, IERC20, IERC721, IREG, ITBA } from '@/constant/abi';
 import type { Erc6551Asset, ErcAsset, Metadata, Metadata6551, Asset } from '@/types/asset';
 
 export const setupAsset = () => {
