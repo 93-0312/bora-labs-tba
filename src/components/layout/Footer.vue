@@ -2,23 +2,15 @@
   <footer
     class="grid grid-cols-[200px_1fr] gap-[10px] mt-auto pt-12 pb-7 px-5 border border-t-1 border-base-200 md:px-7 md:pt-16 md:pb-10"
   >
-    <a href="https://www.boralabs.com" class="flex items-start">
+    <a :href="boraLabs" class="flex items-start">
       <img :src="icBoraLabs" width="224" height="40" alt="BORA Labs" class="w-auto h-8" />
     </a>
 
     <div class="flex flex-col items-end justify-end md:flex-row">
-      <a
-        class="mb-2 text-sm transition hover:opacity-80"
-        target="_blank"
-        href="https://boraportal.com"
-      >
+      <a class="mb-2 text-sm transition hover:opacity-80" target="_blank" :href="boraPortal">
         <img :src="icBora" width="96" height="16" alt="bora portal" class="w-24 h-auto md:w-32" />
       </a>
-      <a
-        class="mb-2 text-sm transition hover:opacity-80"
-        target="_blank"
-        href="https://scope.boraportal.cc"
-      >
+      <a class="mb-2 text-sm transition hover:opacity-80" target="_blank" :href="boraScope">
         <img
           :src="icBorascope"
           width="96"
@@ -51,4 +43,8 @@
 import icBora from '@/assets/ic-bora.svg';
 import icBoraLabs from '@/assets/ic-boralabs.svg';
 import icBorascope from '@/assets/ic-borascope.svg';
+
+const boraLabs = import.meta.env.VITE_BORALABS_MAINPAGE_URL;
+const boraScope = import.meta.env.VITE_BORACHAIN_EXPLORER_URL;
+const boraPortal = import.meta.env.VITE_BORAPORTAL_MAIN_URL;
 </script>

@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import { isValidAddress } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import ModalLayout from '@/components/ui/ModalLayout.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAssetStore } from '@/stores/asset.module';

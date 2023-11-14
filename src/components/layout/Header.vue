@@ -3,7 +3,7 @@
     class="flex items-center justify-between sticky top-0 z-10 h-16 px-5 bg-base-100/50 backdrop-blur-md md:h-20 md:px-7"
   >
     <div class="flex items-center">
-      <a :href="boralabsURL" target="_blank" class="flex items-center">
+      <a :href="boralabsURL" class="flex items-center">
         <img :src="icBoralabs" alt="boralabs" width="130" height="23" class="hidden md:block" />
         <img :src="icB" alt="bora" width="15" height="20" class="shrink-0 md:hidden" />
       </a>
@@ -16,7 +16,6 @@
         </span>
       </RouterLink>
     </div>
-
     <SignBtn />
   </header>
 </template>
