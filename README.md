@@ -34,8 +34,10 @@ real-world applications, and reshape the landscape of blockchain asset ownership
 - 🟩 **Node v18.17** (latest)
 - 🐱 **Yarn v1.22.19**
 - 🌐 **Chrome Web Browser / with Metamask Extension** 🦊
+- 📝 **Visual Studio Code** (Or any text editors of your choice ❤️)
 - **git** (latest)
 - **WSL 2** (for windows only)
+
 ---
 
 ## Quick Start
@@ -45,40 +47,55 @@ real-world applications, and reshape the landscape of blockchain asset ownership
 ### Local Environment Setup
 
 **Step 1. Install required packages via Yarn**</br>
+
 ```shell
 git clone https://github.com/boraecosystem/boralabs-tba
 cd ./boralabs-tba
 yarn
+code . // open your text editor (optional)
 ```
+
 **NOTE:** current directory is your <project_root_dir>
 
 **Step 2. Open Ganache GUI** </br>
 
 - Refer to 👉 [Ganache Quick Start](https://trufflesuite.com/docs/ganache/quickstart/)
 - Open Ganache > Click Quick start
-- Get the Private Key for the first account
+- Get the Private Key for the first account (Use it for Step 3 and import it to your Metamask)
 - Import your private key to your Metamask (Latest version of Chrome Recommended)
 
+[How to import a private key to
+Metamask](https://support.metamask.io/hc/en-us/articles/360015489331-How-to-import-an-account)
 
 **Step 3. Deploy Contracts** </br>
+
 ```shell
 cd <project_root_dir>
 git clone https://github.com/boraecosystem/boralabs-tba-contract ./chain && cd ./chain
 yarn
-hardhat compile
-hardhat run --network ganache scripts/deploy.ts
+echo DEPLOYER_KEY=<your_private_key> > .env
+yarn hardhat compile
+yarn hardhat run --network ganache_network --tags TBA // press 'Y' to each deployment prompt
+cp .env.export ../.env
 ```
 
+**NOTE:** <your_private_key> is the private key you got from Ganache GUI (see step 2)
+
+**Also NOTE:** By the end of step 3, you will have a .env file contains chain information and contract addresses in
+your <project_root_dir> directory. Check the result with your text editor.
+
 **step 4. Build & Run Application**
+
 ```shell
 cd <project_root_dir>
 docker-compose up -d
 ```
 
-- open http://localhost:8080 on Chrome
+- open [http://localhost:8080](http://localhost:8080) on Chrome
 - Login with Metamask
 
 ---
+
 ## Features
 
 1. **Mint Various Assets:**
@@ -115,3 +132,5 @@ docker-compose up -d
 
 ## References & Docs
 
+- ERC-6551 Protocols: [https://eips.ethereum.org/EIPS/eip-6551](https://eips.ethereum.org/EIPS/eip-6551)
+- ERC-1155 Protocols: [https://eips.ethereum.org/EIPS/eip-1155](https://eips.ethereum.org/EIPS/eip-1155)

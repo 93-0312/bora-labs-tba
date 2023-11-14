@@ -14,6 +14,9 @@ out/
 dist
 *.local
 
+# Outer Resource
+chain
+
 #infrastructure
 .k8s*
 skaffold.yaml
