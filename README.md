@@ -1,4 +1,12 @@
-# Boralabs - TBA Project
+<h1 align="center">Boralabs - TBA Project</h1>
+<p align="center">
+<img alt="Version Badge" src="https://img.shields.io/badge/version-1.0-teal">
+<img alt="Node Badge" src="https://img.shields.io/badge/node-%5E18.17-blue?logo=nodedotjs">
+<img alt="Yarn Badge" src="https://img.shields.io/badge/yarn-1.22-blue?logo=yarn">
+<img alt="License Badge" src="https://img.shields.io/badge/license-MIT-greenyellow">
+<a href="https://medium.com/boraecosystem" target="_blank"><img alt="Medium Badge" src="https://img.shields.io/badge/read_more-gray?logo=medium"></a>
+<a href="https://twitter.com/bora_ecosystem" target="_blank"><img alt="Twitter Badge" src="https://img.shields.io/badge/follow-white?logo=x&logoColor=black"></a>
+</p>
 
 ## Introduction
 
