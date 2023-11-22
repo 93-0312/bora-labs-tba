@@ -2,6 +2,13 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const setupModalStore = () => {
+  const tbaMintDescObj = {
+    1: 'ERC-721 is currently being minted.',
+    2: 'TBA is currently being minted.',
+    3: 'ERC-20 is currently being minted.',
+    4: 'ERC-1155 is currently being minted.'
+  };
+
   const addModalRef = ref<HTMLDialogElement>();
   const sendModalRef = ref<HTMLDialogElement>();
   const sendTokenModalRef = ref<HTMLDialogElement>();
@@ -41,6 +48,8 @@ export const setupModalStore = () => {
 
   return {
     // references
+    tbaMintDescObj,
+
     addModalRef,
     sendModalRef,
     sendTokenModalRef,

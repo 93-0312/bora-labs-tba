@@ -46,9 +46,9 @@
           <p
             class="inline-flex items-center h-10 pl-4 bg-neutral-content rounded-md text-sm md:h-11 md:text-base"
           >
-            {{ truncate(tbaWalletAddress) }}
+            {{ truncate(tbaAddress) }}
             <button
-              @click="copy(tbaWalletAddress), changeIcon()"
+              @click="copy(tbaAddress), changeIcon()"
               class="px-3 h-11 ml-1 rounded-r-md hover:bg-secondary/20"
               type="button"
               aria-label="copy"
@@ -67,7 +67,7 @@
 
           <div class="tooltip tooltip-neutral tooltip-left" data-tip="Go to Bora Scope">
             <a
-              :href="`${scopeUrl}address/${tbaWalletAddress}`"
+              :href="`${boraScope}address/${tbaAddress}`"
               target="_blank"
               class="flex items-center justify-center w-10 h-10 rounded-md bg-neutral-content md:w-11 md:h-11"
               aria-label="go to borascope"
@@ -262,7 +262,7 @@ import icCheck from '@/assets/ic-check.svg';
 import icCopy from '@/assets/ic-copy.svg';
 import icEmpty from '@/assets/ic-empty.svg';
 
-const scopeUrl = import.meta.env.VITE_BORACHAIN_EXPLORER_URL;
+const boraScope = import.meta.env.VITE_BORACHAIN_EXPLORER_URL;
 
 const route = useRoute();
 const router = useRouter();
@@ -309,7 +309,7 @@ const tbaAssetisEmpty = computed(
 );
 
 const tbaAssetSize = computed(() => tbaAsset1155.value?.size + tbaAsset721.value?.size);
-const tbaWalletAddress = computed(
+const tbaAddress = computed(
   () => (detailAsset.value as Erc6551Asset).get(tokenId.value)!.metadata.walletAddress
 );
 
