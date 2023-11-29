@@ -42,11 +42,12 @@
       </p>
     </button>
 
-    <span class="divide-line absolute right-11 w-[1px] h-4 bg-base-100/30" />
+    <span class="divide-line absolute right-7 w-[1px] h-4 bg-base-100/30 md:right-11" />
 
     <button
       type="button"
       class="btn-wallet h-8 px-1.5 rounded-r-lg transition md:h-12 md:px-3 hover:bg-[#939094]/30"
+      aria-label="copy"
       @click="copy(walletAddress), changeIcon()"
     >
       <!-- prettier-ignore -->

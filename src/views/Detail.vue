@@ -119,7 +119,7 @@
               </ItemCard>
 
               <span
-                class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-medium"
+                class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-PM"
               >
                 <!-- prettier-ignore -->
                 <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-auto">
@@ -157,7 +157,7 @@
             :key="i"
             class="flex justify-between items-center mb-5 last:mb-0"
           >
-            <div class="flex items-center mr-4 font-medium text-md">
+            <div class="flex items-center mr-4 font-PM text-md">
               <img
                 src="https://static.boraportal.com/logo/coins/mainnet/token-ic-bid.svg"
                 :alt="asset.tknSymbol"
@@ -214,7 +214,7 @@
               <p class="text-md">
                 {{ detailAsset && detailAsset?.get(tokenId)?.metadata['name'] }}
               </p>
-              <p class="flex-none w-16 ml-auto text-right font-medium">
+              <p class="flex-none w-16 ml-auto text-right font-PM">
                 <span class="text-xs mr-1">✕</span>
                 {{ detailAsset && detailAsset?.get(tokenId)?.['amount'] }}
               </p>

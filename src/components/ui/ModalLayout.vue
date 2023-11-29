@@ -1,7 +1,7 @@
 <template>
   <dialog class="modal" ref="modalRef">
     <div class="modal-box p-5 md:p-6">
-      <p class="mb-4 text-lg font-bold md:text-2xl">{{ props.title }}</p>
+      <p class="mb-4 text-lg font-PB md:text-2xl">{{ props.title }}</p>
       <slot />
 
       <!-- bottom button -->
