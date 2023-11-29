@@ -718,6 +718,7 @@ export const setupAsset = () => {
       const provider = await wallet.getWeb3Provider();
       const signer = await provider.getSigner();
 
+      assetOwner.value = await wallet.getAddress();
       const mts = new Contract(import.meta.env.VITE_BORALABS_MTS_CONTRACT, IERC1155, signer);
 
       const uri = await mts.uri(BigInt(tokenId));

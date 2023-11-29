@@ -259,6 +259,7 @@ import { setupAsset } from '@/setups/asset.composition';
 import { setupCommon } from '@/setups/common.composition';
 import { setupModal } from '@/setups/modal.composition';
 import { useAssetStore } from '@/stores/asset.module.ts';
+import type { Erc6551Asset, ErcAsset } from '@/types/asset';
 
 const boraScope = import.meta.env.VITE_BORACHAIN_EXPLORER_URL;
 
