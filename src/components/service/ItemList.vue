@@ -1,31 +1,49 @@
 <template>
   <!-- skeleton -->
-  <SItemList v-if="isAssetLoading" />
+  <SItemList v-if="isAssetLoading" class="max-w-content mx-auto my-20 md:my-36" />
 
   <section
     v-else-if="!isSigned || !hasAsset"
-    class="flex flex-col justify-center items-center w-full aspect-[2/1] text-center text-sm whitespace-nowrap md:top-1/3 md:aspect-[3/1] md:text-lg"
+    class="relative flex items-end w-full h-full md:h-[912px]"
   >
-    <img :src="icEmpty" alt="empty" width="64" height="64" class="w-10 h-auto md:w-16" />
-    <p class="mt-2">
-      You do not have any NFTs yet.<br /><strong>Create Wallet</strong> and then mint NFTs!
-    </p>
+    <swiper
+      :modules="emptyModules"
+      :slides-per-view="'auto'"
+      :space-between="24"
+      :loop="true"
+      :autoplay="{
+        delay: 1,
+        disableOnInteraction: false
+      }"
+      :speed="5000"
+      :allow-touch-move="false"
+      class="pt-24 after:content-[''] after:absolute after:top-24 after:w-full after:h-[100px] after:bg-gradient-to-b after:from-base-100 after:to-base-100/0 md:pt-0 md:after:top-0 md:after:h-[200px]"
+    >
+      <swiper-slide v-for="i in 8" :key="i" class="max-w-[60vw] md:max-w-[740px]">
+        <img
+          src="@/assets/example.jpg"
+          alt=""
+          width="740"
+          height="740"
+          class="opacity-10 rounded-2xl w-[60vw] h-auto md:w-[740px] md:h-[740px]"
+        />
+      </swiper-slide>
+    </swiper>
+
     <button
-      class="btn btn-sm btn-primary mt-5 rounded-sm text-xs text-base-100 md:btn-md md:mt-8 md:text-base"
       type="button"
+      class="btn btn-primary absolute top-1/2 left-1/2 -mt-6 -ml-[110px] w-full max-w-[220px] h-12 rounded-lg text-lg md:max-w-[480px] md:h-[140px] md:-mt-[70px] md:-ml-[240px] md:rounded-2xl md:text-5xl"
       @click="createWallet()"
     >
-      Create Wallet
-      <!-- prettier-ignore -->
-      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" class="w-4 h-auto md:w-5" >
-        <path d="M24 40.0001L21.9 37.8501L34.25 25.5001H8V22.5001H34.25L21.9 10.1501L24 8.00012L40 24.0001L24 40.0001Z" fill="white" />
-      </svg>
+      Create Account
     </button>
   </section>
 
-  <section v-else class="relative">
+  <section v-else class="relative max-w-content mx-auto my-10 md:my-20">
+    <h2 class="mb-4 text-3xl font-PB md:mb-6 md:text-4xl">My NFT</h2>
+
     <swiper
-      :modules="modules"
+      :modules="myModules"
       :slides-per-view="1.1"
       :space-between="15"
       :pagination="{ clickable: true, el: '.swiper-custom-pagination' }"
@@ -43,20 +61,23 @@
       <swiper-slide
         v-for="asset in asset6551"
         :key="Number(asset[0])"
-        class="grid grid-cols-1 gap-4 p-6 bg-[#1c235d] rounded-md md:grid-cols-2 md:gap-10 md:p-7"
+        class="grid grid-cols-1 gap-3 p-6 bg-cover bg-center bg-no-repeat rounded-xl md:grid-cols-2 md:gap-5 md:py-16 md:px-10 md:rounded-xl before:content-[''] before:absolute before:w-full before:h-full before:bg-base-content/50 before:rounded-xl"
+        :style="{
+          backgroundImage: `url(${bg})`
+        }"
       >
-        <a :href="`/tba/6551/${Number(asset[0])}`">
+        <a :href="`/tba/6551/${Number(asset[0])}`" class="relative w-full mx-auto md:w-[90%]">
           <img
             :src="asset[1]?.metadata.image"
             :alt="asset[1]?.metadata.name"
             width="441"
             height="441"
-            class="w-full h-auto rounded-sm border border-base-300/10"
+            class="w-full h-auto border border-base-300/10 rounded-lg"
           />
         </a>
-        <div class="flex flex-col justify-center items-start text-base-100">
+        <div class="z-[1] flex flex-col justify-center items-start text-base-100">
           <span
-            class="absolute top-8 left-8 badge badge-warning badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md"
+            class="absolute top-9 left-9 badge badge-outline badge-sm bg-base-100/10 backdrop-blur-md font-medium md:relative md:top-0 md:left-0 md:badge-md"
             >ERC-6551</span
           >
           <a
@@ -65,10 +86,10 @@
           >
             {{ asset[1]?.metadata.name }}
           </a>
-          <p class="flex items-center h-7 text-xs md:mt-8 md:text-base">
+          <p class="flex items-center h-7 text-xs md:mt-6 md:text-base">
             {{ truncate(asset[1]?.metadata.walletAddress) }}
             <button
-              class="p-1.5 rounded-md md:ml-1.5 md:p-2 hover:bg-base-100/20"
+              class="ml-1 p-2 rounded-md hover:bg-base-100/20"
               type="button"
               aria-label="copy"
               @click="copy(asset[1]?.metadata.walletAddress), changeIcon()"
@@ -91,14 +112,14 @@
           <p class="text-base-100/70 text-sm md:mt-1 md:text-base">{{ chainName }}</p>
           <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
             <button
-              class="min-h-0 h-9 col-span-4 btn btn-primary rounded-sm text-xs md:h-12 md:text-base"
+              class="col-span-4 btn btn-sm btn-primary text-xs md:btn-md md:text-base"
               type="button"
               @click="showAddModal(asset[1]?.metadata.walletAddress)"
             >
               Add NFT
             </button>
             <button
-              class="min-h-0 h-9 col-span-3 btn rounded-sm text-xs md:h-12 md:text-base"
+              class="col-span-3 btn btn-sm btn-white border-base-100 text-xs text-base-100 md:btn-md md:text-base"
               type="button"
               @click="showSendModal(asset)"
             >
@@ -111,20 +132,23 @@
       <swiper-slide
         v-for="asset in asset721"
         :key="Number(asset[0])"
-        class="grid grid-cols-1 gap-4 p-6 bg-[#1c235d] rounded-md md:grid-cols-2 md:gap-10 md:p-7"
+        class="grid grid-cols-1 gap-3 p-6 bg-cover bg-center bg-no-repeat rounded-xl md:grid-cols-2 md:gap-5 md:py-16 md:px-10 md:rounded-xl before:content-[''] before:absolute before:w-full before:h-full before:bg-base-content/50 before:rounded-xl"
+        :style="{
+          backgroundImage: `url(${bg})`
+        }"
       >
-        <a :href="`/tba/721/${Number(asset[0])}`">
+        <a :href="`/tba/721/${Number(asset[0])}`" class="relative w-full mx-auto md:w-[90%]">
           <img
             :src="asset[1]?.metadata.image"
             :alt="asset[1]?.metadata.name"
             width="441"
             height="441"
-            class="w-full h-auto rounded-sm border border-base-300/10"
+            class="w-full h-auto border border-base-300/10 rounded-lg"
           />
         </a>
-        <div class="flex flex-col justify-center items-start text-base-100">
+        <div class="z-[1] flex flex-col justify-center items-start text-base-100">
           <span
-            class="absolute top-8 left-8 badge badge-info badge-sm font-medium md:relative md:top-0 md:left-0 md:badge-md"
+            class="absolute top-9 left-9 badge badge-outline badge-sm bg-base-100/10 backdrop-blur-md font-medium md:relative md:top-0 md:left-0 md:badge-md"
             >ERC-721</span
           >
           <a
@@ -136,14 +160,14 @@
           <p class="text-base-100/70 text-sm md:mt-8 md:text-base">{{ chainName }}</p>
           <div class="grid grid-cols-7 gap-2 w-full mt-5 md:mt-8">
             <button
-              class="min-h-0 h-9 col-span-4 btn btn-accent rounded-sm text-xs md:h-12 md:text-base"
+              class="col-span-4 btn btn-sm btn-secondary text-xs md:btn-md md:text-base"
               type="button"
               @click="convert721to6551(asset[0])"
             >
               Convert to TBA
             </button>
             <button
-              class="min-h-0 h-9 col-span-3 btn rounded-sm text-xs md:h-12 md:text-base"
+              class="col-span-3 btn btn-white btn-sm text-xs md:btn-md md:text-base"
               type="button"
               @click="showSendModal(asset)"
             >
@@ -154,10 +178,10 @@
       </swiper-slide>
     </swiper>
 
-    <div class="absolute -top-[50px] right-0 md:-top-[68px]">
+    <div class="absolute top-0 right-5 lg:right-24">
       <button
         type="button"
-        class="button-prev btn btn-circle btn-ghost btn-sm mr-0.5 bg-base-100/60 border-none text-2xl md:btn-md hover:bg-neutral-content disabled:bg-transparent"
+        class="button-prev btn btn-circle btn-ghost btn-sm mr-0.5 bg-base-100/60 border-none text-2xl md:btn-md hover:bg-base-content/10 disabled:bg-transparent"
         aria-label="previous"
       >
         <!-- prettier-ignore -->
@@ -167,7 +191,7 @@
       </button>
       <button
         type="button"
-        class="button-next btn btn-circle btn-ghost btn-sm bg-base-100/60 border-none md:btn-md hover:bg-neutral-content disabled:bg-transparent"
+        class="button-next btn btn-circle btn-ghost btn-sm bg-base-100/60 border-none md:btn-md hover:bg-base-content/10 disabled:bg-transparent"
         aria-label="next"
       >
         <!-- prettier-ignore -->
@@ -191,7 +215,7 @@
         >
           <div class="border-t mt-1.5 md:mt-3">
             <button
-              class="btn btn-ghost btn-block min-h-0 h-7 mx-auto mt-1.5 rounded-sm hover:bg-neutral hover:text-base-100 md:h-10 md:mt-2 md:text-base"
+              class="btn btn-ghost btn-block min-h-0 h-7 mx-auto mt-1.5 hover:bg-transparent hover:border hover:border-base-content md:h-10 md:mt-2 md:text-base"
               type="button"
               @click="showSendModal(asset)"
             >
@@ -213,7 +237,7 @@ import AddModal from './AddModal.vue';
 import SendModal from './SendModal.vue';
 import { copy, truncate } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
-import { Pagination, Navigation, Mousewheel } from 'swiper/modules';
+import { Pagination, Navigation, Mousewheel, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import ItemCard from '@/components/service/ItemCard.vue';
 import SItemList from '@/components/ui/SItemList.vue';
@@ -222,7 +246,7 @@ import { setupCommon } from '@/setups/common.composition';
 import { setupModal } from '@/setups/modal.composition';
 import { useAccountStore } from '@/stores/account.module.ts';
 import { useAssetStore } from '@/stores/asset.module.ts';
-import icEmpty from '@/assets/ic-empty.svg';
+import bg from '@/assets/bg-item.webp';
 
 const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
 const accountStore = useAccountStore();
@@ -233,5 +257,6 @@ const { convert721to6551, createWallet } = setupAsset();
 const { isSigned } = storeToRefs(accountStore);
 const { hasAsset, asset721, asset1155, asset6551, isAssetLoading } = storeToRefs(assetStore);
 const { showSendModal, showAddModal } = setupModal();
-const modules = [Pagination, Navigation, Mousewheel];
+const myModules = [Pagination, Navigation, Mousewheel];
+const emptyModules = [Autoplay];
 </script>

@@ -1,3 +1,36 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'PR';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src:
+      local('Pretendard Regular'),
+      url('@/assets/fonts/Pretendard-Regular.woff2') format('woff2'),
+      url('@/assets/fonts/Pretendard-Regular.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'PM';
+    font-weight: 500;
+    font-display: swap;
+    src:
+      local('Pretendard Medium'),
+      url('@/assets/fonts/Pretendard-Medium.woff2') format('woff2'),
+      url('@/assets/fonts/Pretendard-Medium.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: 'PB';
+    font-weight: 700;
+    font-display: swap;
+    src:
+      local('Pretendard Bold'),
+      url('@/assets/fonts/Pretendard-Bold.woff2') format('woff2'),
+      url('@/assets/fonts/Pretendard-Bold.woff') format('woff');
+  }
+}
