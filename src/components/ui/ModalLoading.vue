@@ -15,7 +15,7 @@
         class="radial-progress text-primary mt-2 mb-1"
         :style="`--value: ${progressTime}; --size: 100px; --thickness: 6px`"
       >
-        <p class="text-sm font-medium text-center">{{ props.progressName }} in<br />progress</p>
+        <p class="text-sm font-PM text-center">{{ props.progressName }} in<br />progress</p>
       </div>
 
       <!-- common -->

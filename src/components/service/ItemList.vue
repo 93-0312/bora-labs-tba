@@ -77,12 +77,12 @@
         </a>
         <div class="z-[1] flex flex-col justify-center items-start text-base-100">
           <span
-            class="absolute top-9 left-9 badge badge-outline badge-sm bg-base-100/10 backdrop-blur-md font-medium md:relative md:top-0 md:left-0 md:badge-md"
+            class="absolute top-9 left-9 badge badge-outline badge-sm bg-base-100/10 backdrop-blur-md md:relative md:top-0 md:left-0 md:badge-md"
             >ERC-6551</span
           >
           <a
             :href="`/tba/6551/${Number(asset[0])}`"
-            class="hidden h-7 font-bold text-lg md:h-9 md:mt-2 md:text-4xl md:block"
+            class="hidden h-7 font-PB text-lg md:h-9 md:mt-2 md:text-4xl md:block"
           >
             {{ asset[1]?.metadata.name }}
           </a>
@@ -148,12 +148,12 @@
         </a>
         <div class="z-[1] flex flex-col justify-center items-start text-base-100">
           <span
-            class="absolute top-9 left-9 badge badge-outline badge-sm bg-base-100/10 backdrop-blur-md font-medium md:relative md:top-0 md:left-0 md:badge-md"
+            class="absolute top-9 left-9 badge badge-outline badge-sm bg-base-100/10 backdrop-blur-md md:relative md:top-0 md:left-0 md:badge-md"
             >ERC-721</span
           >
           <a
             :href="`/tba/721/${Number(asset[0])}`"
-            class="h-7 font-bold text-lg md:h-9 md:mt-2 md:text-4xl"
+            class="h-7 font-PB text-lg md:h-9 md:mt-2 md:text-4xl"
           >
             {{ asset[1]?.metadata.name }}
           </a>

@@ -63,7 +63,7 @@
       <p
         v-if="showNetwork"
         :class="[
-          'flex items-center text-base-content/70 font-medium',
+          'flex items-center text-base-content/70 font-PM',
           props.isSmall
             ? 'mt-0.5 pl-[1px] text-[10px] leading-tight md:text-[12px] md:leading-normal'
             : 'text-xs md:text-sm'
