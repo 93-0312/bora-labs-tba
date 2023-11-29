@@ -8,7 +8,7 @@
       <div class="flex justify-center mt-6 md:mt-8">
         <button
           type="button"
-          class="btn btn-neutral btn-wide rounded-lg"
+          class="btn btn-primary btn-wide rounded-lg"
           :disabled="btnDisable"
           @click="() => btnClick && btnClick()"
         >

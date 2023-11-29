@@ -15,7 +15,7 @@
           type="button"
           :class="[
             'btn btn-outline btn-xs absolute w-12 top-2 left-2 rounded-lg md:top-3 md:left-3',
-            { 'bg-base-content text-base-300 border-base-content': isSelected }
+            { 'bg-base-content text-base-100 border-base-content': isSelected }
           ]"
           @click="clickMax"
         >
@@ -38,7 +38,7 @@
 
       <!-- input error -->
       <label class="label">
-        <span class="label-text-alt text-secondary-focus md:text-sm"
+        <span class="label-text-alt text-neutral md:text-sm"
           >Balance: {{ sendErc20Asset?.formatEtherAmount }} {{ sendErc20Asset?.tknSymbol }}</span
         >
         <span v-if="isAmountError" class="label-text-alt text-error md:text-sm">
@@ -67,7 +67,7 @@
       </label>
     </div>
 
-    <p class="mt-2 text-xs text-secondary-focus md:text-sm">
+    <p class="mt-2 text-xs text-neutral md:text-sm">
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>

@@ -47,9 +47,7 @@
       </div>
       <!-- input error -->
       <label class="label py-1.5">
-        <span class="label-text-alt text-secondary-focus md:text-sm"
-          >Balance: {{ amountsOf1155 }}</span
-        >
+        <span class="label-text-alt text-neutral md:text-sm">Balance: {{ amountsOf1155 }}</span>
         <span v-if="isAmountError" class="label-text-alt text-error md:text-sm">
           Exceed balance
         </span>
@@ -76,7 +74,7 @@
       </label>
     </div>
 
-    <p class="mt-2 text-xs text-secondary-focus md:mt-4 md:text-sm">
+    <p class="mt-2 text-xs text-neutral md:mt-4 md:text-sm">
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>
