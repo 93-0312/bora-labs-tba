@@ -232,7 +232,7 @@ strong {
 }
 
 .slide-bg {
-  background: url('@/assets/ic-b.png'), linear-gradient(90deg, #5b33e0 0%, #1e232a 100%);
+  background: url('@/assets/ic-b.webp'), linear-gradient(90deg, #5b33e0 0%, #1e232a 100%);
   background-size:
     700px auto,
     auto 100%;
