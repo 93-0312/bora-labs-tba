@@ -32,7 +32,7 @@
 
     <button
       type="button"
-      class="btn btn-primary absolute top-1/2 left-1/2 -mt-6 -ml-[110px] w-full max-w-[220px] h-12 rounded-lg text-lg md:max-w-[480px] md:h-[140px] md:-mt-[70px] md:-ml-[240px] md:rounded-2xl md:text-5xl"
+      class="btn btn-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[220px] h-12 rounded-lg text-lg md:max-w-[480px] md:h-[140px] md:rounded-2xl md:text-5xl"
       @click="createWallet()"
     >
       Create Account
@@ -61,10 +61,7 @@
       <swiper-slide
         v-for="asset in asset6551"
         :key="Number(asset[0])"
-        class="grid grid-cols-1 gap-3 p-6 bg-cover bg-center bg-no-repeat rounded-xl md:grid-cols-2 md:gap-5 md:py-16 md:px-10 md:rounded-xl before:content-[''] before:absolute before:w-full before:h-full before:bg-base-content/50 before:rounded-xl"
-        :style="{
-          backgroundImage: `url(${bg})`
-        }"
+        class="slide-bg grid grid-cols-1 gap-3 p-6 bg-cover bg-center bg-no-repeat rounded-xl md:grid-cols-2 md:gap-5 md:py-16 md:px-10 md:rounded-xl before:content-[''] before:absolute before:w-full before:h-full before:bg-base-content/40 before:rounded-xl"
       >
         <a :href="`/tba/6551/${Number(asset[0])}`" class="relative w-full mx-auto md:w-[90%]">
           <img
@@ -132,10 +129,7 @@
       <swiper-slide
         v-for="asset in asset721"
         :key="Number(asset[0])"
-        class="grid grid-cols-1 gap-3 p-6 bg-cover bg-center bg-no-repeat rounded-xl md:grid-cols-2 md:gap-5 md:py-16 md:px-10 md:rounded-xl before:content-[''] before:absolute before:w-full before:h-full before:bg-base-content/50 before:rounded-xl"
-        :style="{
-          backgroundImage: `url(${bg})`
-        }"
+        class="slide-bg grid grid-cols-1 gap-3 p-6 bg-cover bg-center bg-no-repeat rounded-xl md:grid-cols-2 md:gap-5 md:py-16 md:px-10 md:rounded-xl before:content-[''] before:absolute before:w-full before:h-full before:bg-base-content/40 before:rounded-xl"
       >
         <a :href="`/tba/721/${Number(asset[0])}`" class="relative w-full mx-auto md:w-[90%]">
           <img
@@ -246,7 +240,6 @@ import { setupCommon } from '@/setups/common.composition';
 import { setupModal } from '@/setups/modal.composition';
 import { useAccountStore } from '@/stores/account.module.ts';
 import { useAssetStore } from '@/stores/asset.module.ts';
-import bg from '@/assets/bg-item.webp';
 
 const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
 const accountStore = useAccountStore();
