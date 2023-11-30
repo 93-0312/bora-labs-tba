@@ -29,17 +29,6 @@ strong {
   background-color: #c5c5c5;
 }
 
-.btn.btn-disabled {
-  background-color: hsl(var(--b1) / 0.1);
-  color: hsl(var(--b1) / 0.4);
-}
-
-.btn-outline.btn.btn-disabled {
-  background-color: transparent;
-  border-color: hsl(var(--b1) / 0.2);
-  color: hsl(var(--b1) / 0.3);
-}
-
 /* max width */
 .max-w-content {
   max-width: 1440px;
@@ -239,5 +228,16 @@ strong {
   background: url('@/assets/bg-tba.webp'), linear-gradient(180deg, #5935d5 0%, #211f52 100%);
   background-size: auto 100%;
   background-position: 50%;
+  background-repeat: no-repeat;
+}
+
+.slide-bg {
+  background: url('@/assets/ic-b.webp'), linear-gradient(90deg, #5b33e0 0%, #1e232a 100%);
+  background-size:
+    700px auto,
+    auto 100%;
+  background-position:
+    calc(50% + 150px) -200px,
+    50%;
   background-repeat: no-repeat;
 }

@@ -34,3 +34,12 @@
       url('@/assets/fonts/Pretendard-Bold.woff') format('woff');
   }
 }
+
+.btn {
+  @apply no-animation transition-none;
+}
+
+.btn:active:focus,
+.btn:active:hover {
+  @apply no-animation transition-none scale-100;
+}

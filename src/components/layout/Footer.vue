@@ -38,14 +38,14 @@
           target="_blank"
           :href="boraScope"
         >
-          <img :src="icBorascope" width="96" height="16" alt="bora scope" class="w-24 h-auto" />
+          <img :src="icBorascope" width="96" height="16" alt="bora scope" class="w-auto h-4" />
         </a>
         <a
           class="shrink-0 p-[10px] md:ml-[50px] transition hover:opacity-80"
           target="_blank"
           :href="boraLabs"
         >
-          <img :src="icBoraLabsColor" width="96" height="16" alt="boralabs" class="w-24 h-auto" />
+          <img :src="icBoraLabsColor" width="96" height="16" alt="boralabs" class="w-auto h-4" />
         </a>
       </div>
     </div>
