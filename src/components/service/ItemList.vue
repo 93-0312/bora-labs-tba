@@ -111,7 +111,7 @@
             <button
               class="col-span-4 btn btn-sm btn-primary text-xs md:btn-md md:text-base"
               type="button"
-              @click="showAddModal(asset[1]?.metadata.walletAddress)"
+              @click="showAddModal(asset[1])"
             >
               Add NFT
             </button>

@@ -10,19 +10,20 @@ export const setupModal = () => {
   const { setSendAsset, setSendErc20Asset, setFrom6551 } = assetStore;
   const { addModalRef, sendModalRef, sendTokenModalRef } = storeToRefs(modalStore);
 
-  const { toAddress, toAmounts, addAsset } = storeToRefs(assetStore);
+  const { toAddress, toAmounts, addAsset, addTo6551 } = storeToRefs(assetStore);
 
   const showSendModal = (sendAsset: Asset, tokenId?: bigint) => {
     toAddress.value = '';
     toAmounts.value = '';
     setSendAsset(sendAsset);
-    // :CHECKLIST
     setFrom6551({ from6551: tokenId !== undefined, tokenId: tokenId });
     sendModalRef.value?.showModal();
     return;
   };
-  const showAddModal = (addToAddress: string) => {
-    toAddress.value = addToAddress;
+
+  const showAddModal = (targetAsset: any) => {
+    addTo6551.value = targetAsset;
+    toAddress.value = targetAsset?.metadata.walletAddress;
     toAmounts.value = '';
     addAsset.value = new Map();
     addModalRef.value?.showModal();

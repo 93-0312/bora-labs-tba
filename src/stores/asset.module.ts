@@ -15,6 +15,8 @@ export const setupAssetStore = () => {
   const detail1155Asset = ref<ErcAsset>(new Map());
   const detail721Asset = ref<ErcAsset>(new Map());
 
+  const addTo6551 = ref<ErcAsset>(new Map());
+
   const toAddress = ref<string>('');
   const toAmounts = ref<string>('');
 
@@ -106,6 +108,8 @@ export const setupAssetStore = () => {
 
     detail1155Asset,
     detail721Asset,
+
+    addTo6551,
 
     addAsset,
     sendAsset,
