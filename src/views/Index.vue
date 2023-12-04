@@ -66,10 +66,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { ref, watch } from 'vue';
 import AddModal from '@/components/service/AddModal.vue';
 import ItemList from '@/components/service/ItemList.vue';
 import SendModal from '@/components/service/SendModal.vue';
+import { useAccountStore } from '@/stores/account.module';
 
+const accountStore = useAccountStore();
+
+const { isSigned } = storeToRefs(accountStore);
 const isAbout = ref(true);
+
+watch(
+  () => isSigned.value,
+  async (isSigned: boolean) => {
+    if (isSigned) {
+      isAbout.value = false;
+    } else {
+      isAbout.value = true;
+    }
+  },
+  { immediate: true }
+);
 </script>

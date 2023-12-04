@@ -21,7 +21,7 @@
     >
       <swiper-slide v-for="i in 8" :key="i" class="max-w-[60vw] md:max-w-[740px]">
         <img
-          src="@/assets/example.jpg"
+          :src="`src/assets/swipe/img-${i}.webp`"
           alt=""
           width="740"
           height="740"
