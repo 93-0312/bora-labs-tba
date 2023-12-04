@@ -23,6 +23,10 @@ export const setupAccount = () => {
       const wallet = new MetamaskService();
       await wallet.init();
 
+      if (!wallet.hasWallet()) {
+        window.open('https://metamask.io/download/', '_blank');
+        return;
+      }
       await wallet.switchNetworkChain(Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID));
       const cntWallet = await wallet.getAddress();
       setWalletAddress(cntWallet);
