@@ -1,9 +1,9 @@
 <template>
   <div
     :class="[
-      'mt-4 border rounded-md transition md:mt-6',
+      'mt-4 bg-base-100/80 border rounded-md transition md:mt-6',
       showContents
-        ? 'bg-base-content bg-opacity-[3%] border-base-content/10'
+        ? 'border-base-content/10'
         : 'border-base-content/20 hover:border-base-content/40'
     ]"
   >

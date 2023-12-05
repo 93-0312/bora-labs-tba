@@ -1,5 +1,7 @@
 <template>
-  <main class="flex flex-col items-start justify-center w-full mx-auto py-10 text-center md:py-20">
+  <main
+    class="bg-detail flex flex-col items-start justify-center w-full mx-auto py-10 text-center md:py-32"
+  >
     <strong class="mx-auto text-404 text-6xl md:text-8xl">404</strong>
     <strong class="flex justify-center items-center mt-8 mx-auto text-2xl md:text-4xl md:mt-16"
       >Page not found

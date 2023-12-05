@@ -4,7 +4,7 @@
 
   <section
     v-else-if="!isSigned || !hasAsset"
-    class="relative flex items-end w-full h-full md:h-[912px]"
+    class="relative flex items-end w-full h-full md:h-[700px]"
   >
     <swiper
       :modules="emptyModules"
@@ -17,22 +17,22 @@
       }"
       :speed="5000"
       :allow-touch-move="false"
-      class="pt-24 after:content-[''] after:absolute after:top-24 after:w-full after:h-[100px] after:bg-gradient-to-b after:from-base-100 after:to-base-100/0 md:pt-0 md:after:top-0 md:after:h-[200px]"
+      class="pt-12 after:content-[''] after:absolute after:top-12 after:w-full after:h-24 after:bg-gradient-to-b after:from-base-100 after:to-base-100/0 md:pt-0 md:after:top-0 md:after:h-[250px]"
     >
-      <swiper-slide v-for="i in 8" :key="i" class="max-w-[60vw] md:max-w-[740px]">
+      <swiper-slide v-for="i in 8" :key="i" class="max-w-[60vw] md:max-w-[600px]">
         <img
           :src="`src/assets/swipe/img-${i}.webp`"
           alt=""
-          width="740"
-          height="740"
-          class="opacity-10 rounded-2xl w-[60vw] h-auto md:w-[740px] md:h-[740px]"
+          width="600"
+          height="600"
+          class="opacity-30 rounded-2xl w-[60vw] h-auto md:w-[600px] md:h-[600px]"
         />
       </swiper-slide>
     </swiper>
 
     <button
       type="button"
-      class="btn btn-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[220px] h-12 rounded-lg text-lg md:max-w-[480px] md:h-[140px] md:rounded-2xl md:text-5xl"
+      class="btn btn-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-12 rounded-lg text-lg md:w-72 md:h-20 md:rounded-2xl md:text-2xl"
       @click="createWallet()"
     >
       Create Account
