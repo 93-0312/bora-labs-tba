@@ -24,8 +24,6 @@ import { useAssetStore } from '@/stores/asset.module';
 import MetamaskService from '@/services/metamask.service';
 import icBoralabs from '@/assets/ic-boralabs.svg';
 
-// const boralabsURL = import.meta.env.VITE_BORALABS_MAINPAGE_URL;
-
 const accountStore = useAccountStore();
 const assetStore = useAssetStore();
 

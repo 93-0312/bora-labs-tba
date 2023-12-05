@@ -194,7 +194,10 @@
               Convert to TBA
             </button>
             <button
-              :class="['btn btn-accent md:btn-lg', is721 ? 'col-span-2' : 'col-span-6']"
+              :class="[
+                'btn bg-base-content/80 border-none text-base-100 transition hover:bg-base-content/100 md:btn-lg',
+                is721 ? 'col-span-2' : 'col-span-6'
+              ]"
               type="button"
               :disabled="detailAsset?.get(tokenId)?.['amount'] === 0n"
               @click="showSendModal([tokenId, detailAsset.get(tokenId)!])"

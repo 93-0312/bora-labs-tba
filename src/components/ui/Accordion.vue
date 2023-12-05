@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 const props = defineProps({
   isInfo: {
@@ -58,8 +58,6 @@ const props = defineProps({
   TokenId: Number
 });
 
-const showContents = ref(false);
+const showContents = ref(true);
 const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
-
-onMounted(() => (showContents.value = props.isInfo ? false : true));
 </script>

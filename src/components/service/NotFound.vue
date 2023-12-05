@@ -1,6 +1,6 @@
 <template>
   <main
-    class="bg-detail flex flex-col items-start justify-center w-full mx-auto py-10 text-center md:py-32"
+    class="bg-detail flex flex-col items-start justify-center w-full mx-auto pb-10 pt-20 text-center md:pb-48 md:pt-60"
   >
     <strong class="mx-auto text-404 text-6xl md:text-8xl">404</strong>
     <strong class="flex justify-center items-center mt-8 mx-auto text-2xl md:text-4xl md:mt-16"

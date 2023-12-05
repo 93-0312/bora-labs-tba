@@ -25,7 +25,6 @@ module.exports = {
           primary: '#5b33e0',
           secondary: '#5ebdf5',
           neutral: '#9790be',
-          accent: '#1e232a',
           'base-content': '#1e232a',
           'base-100': '#ffffff',
 
@@ -35,8 +34,7 @@ module.exports = {
 
           // text color
           'primary-content': '#ffffff',
-          'secondary-content': '#1e232a',
-          'accent-content': '#ffffff'
+          'secondary-content': '#1e232a'
         }
       }
     ]

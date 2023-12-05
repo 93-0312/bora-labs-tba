@@ -112,7 +112,7 @@ strong {
   width: 100%;
   height: 6px;
   border-radius: 2px 0;
-  background-color: hsl(var(--s));
+  background-color: hsl(var(--p));
   transform: skew(40deg, 0);
 }
 
