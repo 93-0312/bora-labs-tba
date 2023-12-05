@@ -1,10 +1,10 @@
 <template>
   <main>
     <section
-      class="top-banner flex flex-col justify-center items-center w-full h-[75vh] px-5 bg-center bg-cover text-center text-base-100 md:h-[680px]"
+      class="top-banner flex flex-col justify-center items-center w-full h-[55vh] px-5 text-center text-base-100 md:h-[500px]"
     >
-      <strong class="mt-8 text-5xl leading-none md:mt-0 md:text-[80px]">Token Bound Account</strong>
-      <p class="mt-6 text-base leading-tight md:mt-7 md:text-2xl">
+      <strong class="mt-8 text-[32px] leading-none md:mt-0 md:text-7xl">Token Bound Account</strong>
+      <p class="mt-6 text-sm leading-tight md:mt-7 md:text-[22px]">
         <a href="https://eips.ethereum.org/EIPS/eip-6551" target="_blank">TBA, </a>
         or a token-bound account, allows you to use NFTs like wallets.
       </p>

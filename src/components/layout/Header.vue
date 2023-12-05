@@ -2,16 +2,11 @@
   <header
     :class="[
       'flex items-center justify-between fixed top-0 z-10 w-full h-16 px-5 text-base-100 md:h-20 lg:px-24',
-      { scrolled: isScroll, colorHeader: colorHeader }
+      { scrolled: isScroll }
     ]"
   >
     <RouterLink to="/" class="flex">
-      <img
-        :src="colorHeader ? icBoralabsBlack : icBoralabs"
-        alt="boralabs"
-        width="112"
-        height="20"
-      />
+      <img :src="icBoralabs" alt="boralabs" width="112" height="20" />
       <span class="badge badge-md badge-primary text-xs ml-2 md:ml-3"> Beta </span>
     </RouterLink>
     <SignBtn />
@@ -21,16 +16,13 @@
 <script setup lang="ts">
 import router from '@/router';
 import { storeToRefs } from 'pinia';
-import { watch, ref, onMounted, onBeforeUnmount, computed } from 'vue';
+import { watch, ref, onMounted, onBeforeUnmount } from 'vue';
 import SignBtn from '@/components/service/SignBtn.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAccountStore } from '@/stores/account.module';
 import { useAssetStore } from '@/stores/asset.module';
 import MetamaskService from '@/services/metamask.service';
-import icBoralabsBlack from '@/assets/ic-boralabs-black.svg';
 import icBoralabs from '@/assets/ic-boralabs.svg';
-
-// const boralabsURL = import.meta.env.VITE_BORALABS_MAINPAGE_URL;
 
 const accountStore = useAccountStore();
 const assetStore = useAssetStore();
@@ -53,8 +45,6 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.addEventListener('scroll', onScroll);
 });
-
-const colorHeader = computed(() => router.currentRoute.value.fullPath !== '/');
 
 watch(
   () => isSigned.value,

@@ -17,10 +17,7 @@
     Sign in
   </button>
 
-  <div
-    v-else
-    class="flex items-center h-8 bg-base-content bg-opacity-[15%] rounded-lg backdrop-blur-md md:h-12"
-  >
+  <div v-else class="flex items-center h-8 bg-base-content/20 rounded-lg backdrop-blur-md md:h-12">
     <button
       type="button"
       class="btn-wallet flex items-center ic-metamask w-32 h-8 px-2 rounded-l-lg text-xs transition md:w-40 md:h-12 md:px-3 md:text-sm"
@@ -46,7 +43,7 @@
 
     <button
       type="button"
-      class="btn-wallet h-8 px-1.5 rounded-r-lg transition md:h-12 md:px-3 hover:bg-[#939094]/30"
+      class="btn-wallet h-8 px-1.5 rounded-r-lg transition md:h-12 md:px-3 hover:bg-base-content/20"
       aria-label="copy"
       @click="copy(walletAddress), changeIcon()"
     >
