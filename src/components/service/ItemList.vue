@@ -19,7 +19,7 @@
       :allow-touch-move="false"
       class="pt-12 after:content-[''] after:absolute after:top-12 after:w-full after:h-24 after:bg-gradient-to-b after:from-base-100 after:to-base-100/0 md:pt-0 md:after:top-0 md:after:h-[250px]"
     >
-      <swiper-slide v-for="i in 3" :key="i" class="max-w-[60vw] md:max-w-[600px]">
+      <swiper-slide v-for="i in 8" :key="i" class="max-w-[60vw] md:max-w-[600px]">
         <img
           :src="getImgUrl(i)"
           alt=""
