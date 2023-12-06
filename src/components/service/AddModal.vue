@@ -6,7 +6,7 @@
     :btn-click="async () => await confirmSend(toAddress)"
   >
     <p class="mb-2.5 text-sm md:mb-4 md:text-base">
-      Select the NFT to add to {{ addTo6551?.metadata?.name }}.
+      Select the NFT to add to {{ addTo6551?.name }}.
     </p>
     <ul
       class="overflow-auto grid grid-cols-3 gap-2 max-h-76 py-1 md:max-h-[410px] md:gap-x-5 md:gap-y-3 md:px-3"

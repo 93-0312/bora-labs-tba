@@ -22,7 +22,7 @@ export const setupModal = () => {
   };
 
   const showAddModal = (targetAsset: any) => {
-    addTo6551.value = targetAsset;
+    addTo6551.value = targetAsset?.metadata;
     toAddress.value = targetAsset?.metadata.walletAddress;
     toAmounts.value = '';
     addAsset.value = new Map();
