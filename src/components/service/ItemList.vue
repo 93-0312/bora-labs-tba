@@ -21,7 +21,7 @@
     >
       <swiper-slide v-for="i in 8" :key="i" class="max-w-[60vw] md:max-w-[600px]">
         <img
-          :src="`src/assets/swipe/img-${i}.webp`"
+          :src="getImgUrl(i)"
           alt=""
           width="600"
           height="600"
@@ -252,4 +252,6 @@ const { hasAsset, asset721, asset1155, asset6551, isAssetLoading } = storeToRefs
 const { showSendModal, showAddModal } = setupModal();
 const myModules = [Pagination, Navigation, Mousewheel];
 const emptyModules = [Autoplay];
+
+const getImgUrl = (i: number) => new URL(`/src/assets/swipe/img-${i}.webp`, import.meta.url).href;
 </script>
