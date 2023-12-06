@@ -19,9 +19,9 @@
       :allow-touch-move="false"
       class="pt-12 after:content-[''] after:absolute after:top-12 after:w-full after:h-24 after:bg-gradient-to-b after:from-base-100 after:to-base-100/0 md:pt-0 md:after:top-0 md:after:h-[250px]"
     >
-      <swiper-slide v-for="i in 8" :key="i" class="max-w-[60vw] md:max-w-[600px]">
+      <swiper-slide v-for="i in 3" :key="i" class="max-w-[60vw] md:max-w-[600px]">
         <img
-          :src="`src/assets/swipe/img-${i}.webp`"
+          :src="getImgUrl(i)"
           alt=""
           width="600"
           height="600"
@@ -252,4 +252,6 @@ const { hasAsset, asset721, asset1155, asset6551, isAssetLoading } = storeToRefs
 const { showSendModal, showAddModal } = setupModal();
 const myModules = [Pagination, Navigation, Mousewheel];
 const emptyModules = [Autoplay];
+
+const getImgUrl = (i: number) => new URL(`/src/assets/swipe/img-${i}.webp`, import.meta.url).href;
 </script>
