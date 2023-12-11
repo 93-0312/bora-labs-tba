@@ -2,7 +2,7 @@
   <button
     v-if="!isSigned"
     type="button"
-    class="btn btn-sm btn-neutral rounded-sm text-xs md:btn-md md:text-base"
+    class="btn btn-sm btn-white text-xs md:btn-md md:text-base"
     @click="connectWallet"
   >
     <!-- prettier-ignore -->
@@ -17,17 +17,17 @@
     Sign in
   </button>
 
-  <div v-else class="flex items-center h-8 bg-base-200 rounded-sm md:h-12">
+  <div v-else class="flex items-center h-8 bg-base-content/20 rounded-lg backdrop-blur-md md:h-12">
     <button
       type="button"
-      class="flex items-center ic-metamask w-[136px] h-8 px-2 rounded-l-sm text-xs transition md:w-40 md:h-12 md:px-3 md:text-sm hover:bg-base-300"
+      class="btn-wallet flex items-center ic-metamask w-32 h-8 px-2 rounded-l-lg text-xs transition md:w-40 md:h-12 md:px-3 md:text-sm"
       @click="disconnectWallet"
     >
       <p class="overflow-hidden h-5">
-        <span class="wallet-address flex items-center transition">{{
+        <span class="h-5 wallet-address flex items-center transition">{{
           truncate(walletAddress)
         }}</span>
-        <span class="sign-out flex items-center mt-0.5 transition md:mt-0">
+        <span class="h-5 sign-out flex items-center transition">
           <!-- prettier-ignore -->
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-5 h-auto mr-1">
             <path d="M304 336v40a40 40 0 0 1-40 40H104a40 40 0 0 1-40-40V136a40 40 0 0 1 40-40h152c22.09 0 48 17.91 48 40v40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"></path>
@@ -39,45 +39,41 @@
       </p>
     </button>
 
-    <span class="w-[1px] h-4 bg-neutral/50" />
+    <span class="divide-line absolute right-7 w-[1px] h-4 bg-base-100/30 md:right-11" />
 
     <button
       type="button"
-      class="h-8 px-1.5 rounded-r-sm md:h-12 md:px-3 hover:bg-base-300"
+      class="btn-wallet h-8 px-1.5 rounded-r-lg transition md:h-12 md:px-3 hover:bg-base-content/20"
+      aria-label="copy"
       @click="copy(walletAddress), changeIcon()"
     >
-      <img
-        v-if="isCopy"
-        :src="icCopy"
-        alt="copy"
-        width="20"
-        height="20"
-        class="w-4 h-auto md:w-5"
-      />
-      <img v-else :src="icCheck" alt="check" width="20" height="20" class="w-4 h-auto md:w-5" />
+      <!-- prettier-ignore -->
+      <svg v-if="isCopy" width="24" height="24" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-4 h-auto md:w-5">
+        <path d="M4.79175 17.7502C4.37508 17.7502 4.02091 17.6043 3.72925 17.3127C3.43758 17.021 3.29175 16.6668 3.29175 16.2502V5.66683H4.54175V16.2502C4.54175 16.3196 4.56591 16.3785 4.61425 16.4268C4.66314 16.4757 4.7223 16.5002 4.79175 16.5002H12.8751V17.7502H4.79175ZM7.70841 14.8335C7.29175 14.8335 6.93758 14.6877 6.64591 14.396C6.35425 14.1043 6.20841 13.7502 6.20841 13.3335V3.85433C6.20841 3.42377 6.35425 3.06266 6.64591 2.771C6.93758 2.47933 7.29175 2.3335 7.70841 2.3335H14.6876C15.1181 2.3335 15.4792 2.47933 15.7709 2.771C16.0626 3.06266 16.2084 3.42377 16.2084 3.85433V13.3335C16.2084 13.7502 16.0626 14.1043 15.7709 14.396C15.4792 14.6877 15.1181 14.8335 14.6876 14.8335H7.70841ZM7.70841 13.5835H14.6876C14.757 13.5835 14.8195 13.5591 14.8751 13.5102C14.9306 13.4618 14.9584 13.4029 14.9584 13.3335V3.85433C14.9584 3.78488 14.9306 3.72239 14.8751 3.66683C14.8195 3.61127 14.757 3.5835 14.6876 3.5835H7.70841C7.63897 3.5835 7.58008 3.61127 7.53175 3.66683C7.48286 3.72239 7.45841 3.78488 7.45841 3.85433V13.3335C7.45841 13.4029 7.48286 13.4618 7.53175 13.5102C7.58008 13.5591 7.63897 13.5835 7.70841 13.5835Z" fill="currentColor" />
+      </svg>
+      <!-- prettier-ignore -->
+      <svg v-else xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" class="w-4 h-auto md:w-5">
+        <mask id="check" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+          <rect width="24" height="24" fill="currentColor" />
+        </mask>
+        <g mask="url(#check)">
+          <path d="M9.33333 18.5333L4 13.2L5.86667 11.3333L9.33333 14.8L18.1333 6L20 7.86667L9.33333 18.5333Z" fill="currentColor" />
+        </g>
+      </svg>
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
+import { copy, truncate } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
 import { setupAccount } from '@/setups/account.composition';
+import { setupCommon } from '@/setups/common.composition';
 import { useAccountStore } from '@/stores/account.module.ts';
-import { copy, truncate } from '@/constant/utils';
-import icCheck from '@/assets/ic-check.svg';
-import icCopy from '@/assets/ic-copy.svg';
 
-const isCopy = ref(true);
+const { changeIcon, isCopy } = setupCommon();
 
 const accountStore = useAccountStore();
-
 const { isSigned, walletAddress } = storeToRefs(accountStore);
-
 const { connectWallet, disconnectWallet } = setupAccount();
-
-const changeIcon = () => {
-  isCopy.value = false;
-  setTimeout(() => (isCopy.value = true), 3000);
-};
 </script>

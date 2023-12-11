@@ -1,14 +1,14 @@
 <template>
   <dialog class="modal" ref="modalRef">
     <div class="modal-box p-5 md:p-6">
-      <p class="mb-4 text-lg font-bold md:text-2xl">{{ props.title }}</p>
+      <p class="mb-4 text-lg font-PB md:text-2xl">{{ props.title }}</p>
       <slot />
 
       <!-- bottom button -->
       <div class="flex justify-center mt-6 md:mt-8">
         <button
           type="button"
-          class="btn btn-neutral btn-wide rounded-lg"
+          class="btn btn-primary btn-wide rounded-lg"
           :disabled="btnDisable"
           @click="() => btnClick && btnClick()"
         >

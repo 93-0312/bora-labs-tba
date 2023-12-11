@@ -11,9 +11,11 @@ coverage
 # build
 .next/
 out/
-build
 dist
 *.local
+
+# Outer Resource
+chain
 
 #infrastructure
 .k8s*

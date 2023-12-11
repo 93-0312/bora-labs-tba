@@ -23,7 +23,7 @@
 
       <span
         v-if="is1155"
-        class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-medium"
+        class="absolute top-2 right-2 badge badge-lg px-1 rounded-sm bg-opacity-80 border-none backdrop-blur-sm text-sm font-PM"
       >
         <!-- prettier-ignore -->
         <svg fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-auto">
@@ -47,9 +47,7 @@
       </div>
       <!-- input error -->
       <label class="label py-1.5">
-        <span class="label-text-alt text-secondary-focus md:text-sm"
-          >Balance: {{ amountsOf1155 }}</span
-        >
+        <span class="label-text-alt text-neutral md:text-sm">Balance: {{ amountsOf1155 }}</span>
         <span v-if="isAmountError" class="label-text-alt text-error md:text-sm">
           Exceed balance
         </span>
@@ -76,34 +74,33 @@
       </label>
     </div>
 
-    <p class="mt-2 text-xs text-secondary-focus md:mt-4 md:text-sm">
+    <p class="mt-2 text-xs text-neutral md:mt-4 md:text-sm">
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>
 </template>
 
 <script setup lang="ts">
-import ItemCard from './ItemCard.vue';
+import { isValidAddress } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
 import { computed } from 'vue';
+import ItemCard from '@/components/service/ItemCard.vue';
 import ModalLayout from '@/components/ui/ModalLayout.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAssetStore } from '@/stores/asset.module';
 import { useModalStore } from '@/stores/modal.module';
-import type { asset } from '@/types/asset';
+import type { Asset } from '@/types/asset';
 
 const modalStore = useModalStore();
 
 const { sendModalRef } = storeToRefs(modalStore);
-
-defineEmits(['modalRef']);
 
 const { sendNft, sendNftFrom6551 } = setupAsset();
 const assetStore = useAssetStore();
 
 const { sendAsset, toAddress, toAmounts, from6551 } = storeToRefs(assetStore);
 
-const confirmSend = async (sendToAddress: string, sendAsset: asset) => {
+const confirmSend = async (sendToAddress: string, sendAsset: Asset) => {
   if (!from6551.value.from6551) await sendNft(sendToAddress, sendAsset, sendModalRef);
   else await sendNftFrom6551(sendAsset, sendModalRef);
   toAddress.value = '';
@@ -124,15 +121,6 @@ const isInputError = computed(() => {
 const isAmountError = computed(() => {
   return Number(toAmounts.value) > Number(amountsOf1155.value);
 });
-
-const isValidAddress = (address: string) => {
-  if (/^(0x)[0]{40}$/.test(address)) {
-    return false;
-  } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
-    return true;
-  }
-  return false;
-};
 
 const isSendBtnDisable = computed(() => {
   return is1155.value

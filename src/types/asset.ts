@@ -5,7 +5,7 @@ export interface Erc20 {
   formatEtherAmount: string;
 }
 
-export type asset = [
+export type Asset = [
   bigint,
   {
     metadata: Metadata6551 | Metadata;

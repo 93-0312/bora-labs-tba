@@ -25,7 +25,7 @@
     <template v-if="props.hasBadge">
       <!-- 1155 -->
       <p
-        class="absolute left-3 top-3 badge badge-sm bg-base-100/90 border-none backdrop-blur-md md:base-base"
+        class="absolute left-3 top-3 badge badge-outline badge-sm bg-base-100/10 backdrop-blur-md text-base-100 md:badge-md"
       >
         {{ props.badgeName }}
       </p>
@@ -35,7 +35,7 @@
     <input
       v-if="props.hasCheckbox"
       type="checkbox"
-      class="checkbox checkbox-warning absolute top-2 right-2 rounded-full border border-base-300/70 bg-neutral/70 transition hover:bg-neutral/90"
+      class="checkbox checkbox-secondary absolute top-2 right-2 rounded-full border border-base-300/70 bg-neutral/70 transition hover:bg-neutral/90 md:w-7 md:h-7"
       aria-label="checkbox"
       :checked="addAsset.has(props.asset?.[0])"
       @click="selectAddAsset"
@@ -52,7 +52,7 @@
       <!-- name -->
       <p
         :class="[
-          'truncate font-bold',
+          'truncate font-PM',
           props.isSmall ? 'text-sm md:text-base' : 'text-md md:text-[20px]'
         ]"
       >
@@ -63,8 +63,10 @@
       <p
         v-if="showNetwork"
         :class="[
-          'flex items-center text-neutral/60 font-medium',
-          props.isSmall ? 'mt-0.5 pl-[1px] text-[10px] md:text-[12px]' : 'text-xs md:text-sm'
+          'flex items-center text-base-content/70 font-PM',
+          props.isSmall
+            ? 'mt-0.5 pl-[1px] text-[10px] leading-tight md:text-[12px] md:leading-normal'
+            : 'text-xs md:text-sm'
         ]"
       >
         {{ chainName }}
@@ -77,9 +79,7 @@
 
 <script lang="ts" setup>
 import { storeToRefs } from 'pinia';
-import { ref } from 'vue';
 import { useAssetStore } from '@/stores/asset.module';
-import { copy, truncate } from '@/constant/utils';
 
 const chainName = import.meta.env.VITE_BORACHAIN_CHAIN_NAME;
 
@@ -125,21 +125,6 @@ const props = defineProps({
 
   imgSrc: String,
   badgeName: String,
-  cardName: String,
-  walletAddress: {
-    type: String,
-    default: ''
-  },
-  linkDisable: {
-    type: Boolean,
-    default: false
-  }
+  cardName: String
 });
-
-const isCopy = ref(true);
-
-const changeIcon = () => {
-  isCopy.value = false;
-  setTimeout(() => (isCopy.value = true), 3000);
-};
 </script>

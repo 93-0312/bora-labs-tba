@@ -1,7 +1,4 @@
-import TbaDetail from '@/views/Detail.vue';
-import Home from '@/views/Index.vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import NotFound from '@/components/service/NotFound.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,12 +6,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: () => import('@/views/Index.vue')
     },
     {
       path: '/tba/721/:id',
       name: 'detail721',
-      component: TbaDetail,
+      component: () => import('@/views/Detail.vue'),
       meta: {
         type: 721
       }
@@ -22,7 +19,8 @@ const router = createRouter({
     {
       path: '/tba/1155/:id',
       name: 'detail1155',
-      component: TbaDetail,
+      component: () => import('@/views/Detail.vue'),
+
       meta: {
         type: 1155
       }
@@ -30,7 +28,8 @@ const router = createRouter({
     {
       path: '/tba/6551/:id',
       name: 'detail6551',
-      component: TbaDetail,
+      component: () => import('@/views/Detail.vue'),
+
       meta: {
         type: 6551
       }
@@ -38,7 +37,7 @@ const router = createRouter({
     {
       path: '/:pathMatch(.*)',
       name: 'notfound',
-      component: NotFound
+      component: () => import('@/components/service/NotFound.vue')
     }
   ]
 });

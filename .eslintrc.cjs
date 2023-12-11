@@ -9,8 +9,12 @@ module.exports = {
     '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier/skip-formatting'
   ],
+  plugins: [
+    'filename-rules',
+  ],
   rules: {
-    'vue/multi-word-component-names': 0
+    'vue/multi-word-component-names': 0,
+    'filename-rules/match': [2, { '.vue': 'pascalcase' }],
   },
   parserOptions: {
     ecmaVersion: 'latest'

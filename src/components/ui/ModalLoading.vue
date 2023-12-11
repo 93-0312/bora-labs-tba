@@ -1,5 +1,5 @@
 <template>
-  <dialog class="modal" ref="modalRef">
+  <dialog class="modal" ref="modalRef" @keydown="(e) => e.preventDefault()">
     <div class="modal-box flex flex-col items-center px-5 py-8 md:px-6 md:py-10">
       <!-- step -->
       <ul v-if="props.isStep" class="steps mt-2">
@@ -15,15 +15,15 @@
         class="radial-progress text-primary mt-2 mb-1"
         :style="`--value: ${progressTime}; --size: 100px; --thickness: 6px`"
       >
-        <p class="text-sm font-medium text-center">{{ props.progressName }} in<br />progress</p>
+        <p class="text-sm font-PM text-center">{{ props.progressName }} in<br />progress</p>
       </div>
 
       <!-- common -->
       <p class="w-[90%] mt-5 text-center text-sm md:text-base">{{ props.desc }}</p>
 
-      <p class="mt-5 text-xs text-secondary-focus text-center leading-relaxed md:text-sm">
+      <p class="mt-5 text-xs text-neutral text-center leading-relaxed md:text-sm">
         <!-- prettier-ignore -->
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block stroke-secondary-focus w-4 h-auto mr-0.5 -mt-0.5 md:w-[18px]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block stroke-neutral w-4 h-auto mr-0.5 -mt-0.5 md:w-[18px]">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         Don't worry! You may close the window without affecting the {{ props.progressName }}.

@@ -15,9 +15,9 @@
           type="button"
           :class="[
             'btn btn-outline btn-xs absolute w-12 top-2 left-2 rounded-lg md:top-3 md:left-3',
-            { 'bg-base-content text-base-300 border-base-content': isSelected }
+            { 'bg-base-content text-base-100 border-base-content': isSelected }
           ]"
-          @click="isSelected = !isSelected"
+          @click="clickMax"
         >
           Max
         </button>
@@ -38,7 +38,7 @@
 
       <!-- input error -->
       <label class="label">
-        <span class="label-text-alt text-secondary-focus md:text-sm"
+        <span class="label-text-alt text-neutral md:text-sm"
           >Balance: {{ sendErc20Asset?.formatEtherAmount }} {{ sendErc20Asset?.tknSymbol }}</span
         >
         <span v-if="isAmountError" class="label-text-alt text-error md:text-sm">
@@ -67,15 +67,16 @@
       </label>
     </div>
 
-    <p class="mt-2 text-xs text-secondary-focus md:text-sm">
+    <p class="mt-2 text-xs text-neutral md:text-sm">
       The recipient must be connected to the same chain as the NFT to check.
     </p>
   </ModalLayout>
 </template>
 
 <script setup lang="ts">
+import { isValidAddress } from '@/utils/utils';
 import { storeToRefs } from 'pinia';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 import ModalLayout from '@/components/ui/ModalLayout.vue';
 import { setupAsset } from '@/setups/asset.composition';
 import { useAssetStore } from '@/stores/asset.module';
@@ -84,16 +85,6 @@ import { useModalStore } from '@/stores/modal.module';
 const modalStore = useModalStore();
 
 const { sendTokenModalRef } = storeToRefs(modalStore);
-
-const modalRef = ref<HTMLDialogElement>();
-
-const isSelected = ref(false);
-
-defineProps({
-  isDisabled: { type: Boolean }
-});
-
-const emit = defineEmits(['modalRef']);
 
 const { send20Token } = setupAsset();
 const assetStore = useAssetStore();
@@ -104,22 +95,19 @@ const confirmSendToken = async () => {
   await send20Token(sendTokenModalRef.value!);
 };
 
+const clickMax = () => {
+  if (toAmounts.value === sendErc20Asset.value?.formatEtherAmount!) {
+    toAmounts.value = '';
+    return;
+  }
+  toAmounts.value = sendErc20Asset.value?.formatEtherAmount!;
+};
+
 const isInputError = computed(() => {
   return toAddress.value !== '' && !isValidAddress(toAddress.value);
 });
 
-const isValidAddress = (address: string) => {
-  if (/^(0x)[0]{40}$/.test(address)) {
-    return false;
-  } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
-    return true;
-  }
-  return false;
-};
-
 const isAmountError = computed(() => {
-  console.log(toAmounts.value);
-  console.log(sendErc20Asset.value?.formatEtherAmount);
   return Number(toAmounts.value) > Number(sendErc20Asset.value?.formatEtherAmount);
 });
 
@@ -129,6 +117,9 @@ const isSendBtnDisable = computed(() => {
   );
 });
 
+const isSelected = computed(
+  () => Number(toAmounts.value) === Number(sendErc20Asset.value?.formatEtherAmount!)
+);
 watch(
   () => isSelected.value,
   (isSelected: boolean) => {
@@ -137,16 +128,4 @@ watch(
     }
   }
 );
-
-watch(
-  () => toAmounts.value,
-  (toAmounts: string) => {
-    if (toAmounts === sendErc20Asset.value?.formatEtherAmount) isSelected.value = true;
-    else isSelected.value = false;
-  }
-);
-
-onMounted(() => {
-  emit('modalRef', modalRef);
-});
 </script>

@@ -8,10 +8,14 @@ export const truncate = (text: string, num = 6): string => {
 };
 
 export const copy = (ref: string): void => {
-  const copyText = document.createElement('input');
-  document.body.appendChild(copyText);
-  copyText.value = ref;
-  copyText.select();
-  document.execCommand('copy');
-  document.body.removeChild(copyText);
+  window.navigator.clipboard.writeText(ref);
+};
+
+export const isValidAddress = (address: string) => {
+  if (/^(0x)[0]{40}$/.test(address)) {
+    return false;
+  } else if (/^(0x)[0-9a-fA-F]{40}$/.test(address)) {
+    return true;
+  }
+  return false;
 };

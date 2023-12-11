@@ -1,6 +1,6 @@
 <template>
   <main
-    class="flex flex-col items-start justify-center w-full mx-auto py-10 bg-neutral-content/70 text-center md:py-20"
+    class="bg-detail flex flex-col items-start justify-center w-full mx-auto pb-10 pt-20 text-center md:pb-48 md:pt-60"
   >
     <strong class="mx-auto text-404 text-6xl md:text-8xl">404</strong>
     <strong class="flex justify-center items-center mt-8 mx-auto text-2xl md:text-4xl md:mt-16"
@@ -11,9 +11,7 @@
       </svg>
     </strong>
     <p class="mt-1 mx-auto text-sm md:text-base">Could you please check and try again?</p>
-    <router-link
-      to="/"
-      class="btn btn-sm btn-primary mt-5 mx-auto rounded-sm text-base-100 md:btn-md"
+    <router-link to="/" class="btn btn-sm btn-primary mt-5 mx-auto md:btn-md"
       >Go back home</router-link
     >
   </main>
