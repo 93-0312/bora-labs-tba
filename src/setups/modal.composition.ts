@@ -7,10 +7,10 @@ export const setupModal = () => {
   const assetStore = useAssetStore();
   const modalStore = useModalStore();
 
-  const { setSendAsset, setSendErc20Asset, setFrom6551 } = assetStore;
+  const { setSendAsset, setSendErc20Asset, setFrom6551, setAddAsset } = assetStore;
   const { addModalRef, sendModalRef, sendTokenModalRef } = storeToRefs(modalStore);
 
-  const { toAddress, toAmounts, addAsset, addTo6551 } = storeToRefs(assetStore);
+  const { toAddress, toAmounts, addTo6551 } = storeToRefs(assetStore);
 
   const showSendModal = (sendAsset: Asset, tokenId?: bigint) => {
     toAddress.value = '';
@@ -25,7 +25,7 @@ export const setupModal = () => {
     addTo6551.value = targetAsset?.metadata;
     toAddress.value = targetAsset?.metadata.walletAddress;
     toAmounts.value = '';
-    addAsset.value = new Map();
+    setAddAsset(new Map());
     addModalRef.value?.showModal();
     return;
   };

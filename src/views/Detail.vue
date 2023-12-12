@@ -318,7 +318,13 @@ const tbaAddress = computed(
 
 onMounted(async () => {
   ercType.value = route?.meta.type as number;
-  tokenId.value = BigInt(route?.params.id as string);
+
+  try {
+    tokenId.value = BigInt(route?.params.id as string);
+  } catch {
+    router.replace('/');
+  }
+
   // CHECK OWNER LOGIC
   const isOwner = await checkOwner(tokenId.value, ercType.value);
   !isOwner && router.replace('/');
