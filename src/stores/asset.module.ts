@@ -61,23 +61,12 @@ export const setupAssetStore = () => {
     sendAsset.value = data;
   };
 
-  const setAddAsset = (data: any) => {
+  const setAddAsset = (data: ErcAsset) => {
     addAsset.value = data;
   };
 
   const setSendErc20Asset = (data: Erc20) => {
     sendErc20Asset.value = data;
-  };
-
-  const setSelectedAsset = (data: any) => {
-    selectedAsset.value.set = data;
-  };
-
-  const setToAddress = (data: any) => {
-    toAddress.value = data;
-  };
-  const setToAmounts = (data: any) => {
-    toAddress.value = data;
   };
 
   const setTba20 = (data: Erc20[]) => {
@@ -133,9 +122,6 @@ export const setupAssetStore = () => {
     setSendAsset,
     setAddAsset,
     setSendErc20Asset,
-    setSelectedAsset,
-    setToAddress,
-    setToAmounts,
     setTba20,
     resetAsset,
     setTbaMintStep,

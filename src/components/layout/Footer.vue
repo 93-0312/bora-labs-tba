@@ -1,7 +1,7 @@
 <template>
   <footer class="mt-auto bg-base-content pt-12 pb-7 px-5 md:pt-[60px] md:pb-[90px] lg:px-24">
     <div class="relative flex">
-      <div class="">
+      <div class="shrink-0">
         <a :href="boraLabs" class="flex md:items-center">
           <img
             :src="icBoraLabs"
@@ -25,28 +25,32 @@
         </a>
       </div>
 
-      <div class="flex flex-col-reverse ml-auto -mt-[5px] -mr-[10px] md:flex-row md:mr-0">
-        <a
-          class="shrink-0 p-[10px] md:ml-[50px] transition hover:opacity-80"
-          target="_blank"
-          :href="boraPortal"
-        >
+      <div
+        class="flex items-start flex-col-reverse ml-auto -mt-[5px] -mr-[10px] md:flex-row md:mr-0"
+      >
+        <a class="shrink-0 p-[10px] transition hover:opacity-80" target="_blank" :href="boraPortal">
           <img :src="icBora" width="51" height="16" alt="bora portal" class="w-auto h-4" />
         </a>
         <a
-          class="shrink-0 p-[10px] md:ml-[50px] transition hover:opacity-80"
+          class="shrink-0 p-[10px] transition hover:opacity-80 md:ml-[30px] lg:ml-[50px]"
           target="_blank"
           :href="boraScope"
         >
           <img :src="icBorascope" width="96" height="16" alt="bora scope" class="w-auto h-4" />
         </a>
         <a
-          class="shrink-0 p-[10px] md:ml-[50px] transition hover:opacity-80"
+          class="shrink-0 p-[10px] transition hover:opacity-80 md:ml-[30px] lg:ml-[50px]"
           target="_blank"
           :href="boraLabs"
         >
           <img :src="icBoraLabsColor" width="96" height="16" alt="boralabs" class="w-auto h-4" />
         </a>
+        <a
+          class="shrink-0 p-[10px] text-base-100 text-sm leading-[1.2] transition hover:opacity-80 md:ml-[30px] lg:ml-[50px]"
+          target="_blank"
+          :href="`${boraLabs}policy.html`"
+          >Terms of Use</a
+        >
       </div>
     </div>
 
