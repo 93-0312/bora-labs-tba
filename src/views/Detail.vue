@@ -243,7 +243,7 @@
     <ModalLoading
       @modal-ref="(ref) => (modalConvertRef = ref.value)"
       :is-radial="true"
-      desc="It takes about 5 minutes. Once complete, you can check in TBA menu."
+      desc="It takes about 1-2 minutes. Once complete, you can check in TBA menu."
       progress-name="Convert"
     />
   </main>
