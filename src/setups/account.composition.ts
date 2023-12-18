@@ -12,7 +12,8 @@ export const setupAccount = () => {
 
   const getBgas = async (cntWallet: string) => {
     try {
-      await axios.get(`https://api.boralabs.net/bgas/${cntWallet}`);
+      const boralabsApi = import.meta.env.VITE_BORALABS_API_URL;
+      await axios.get(`${boralabsApi}/bgas/${cntWallet}`);
     } catch {
       return;
     }
