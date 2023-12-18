@@ -159,7 +159,7 @@
             >
               <div class="flex items-center mr-4 font-PM text-md">
                 <img
-                  src="https://static.boraportal.com/logo/coins/mainnet/token-ic-bid.svg"
+                  src="https://static.boraportal.com/logo/coins/testnet/ic-bananas.svg"
                   :alt="asset.tknSymbol"
                   class="w-8 h-8 mr-1"
                 />
