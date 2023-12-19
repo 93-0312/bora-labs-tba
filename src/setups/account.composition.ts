@@ -28,7 +28,13 @@ export const setupAccount = () => {
 
       const isMo = deviceType === 'mobile';
 
-      if (isMo) {
+      if (!isMo) {
+        const wallet = new MetamaskService();
+        if (!wallet.hasWallet()) {
+          window.open('https://metamask.io/download/', '_blank');
+          return;
+        }
+      } else if (isMo && !window.ethereum) {
         const link = (link: string) => {
           if (deviceName?.includes('android')) {
             return `intent://${link}/#Intent;scheme=dapp;package=io.metamask;end`;
@@ -41,21 +47,16 @@ export const setupAccount = () => {
           link(`${window.location.hostname}${window.location.pathname}?connect=metamask`),
           '_self'
         );
-      } else {
-        const wallet = new MetamaskService();
-        await wallet.init();
-
-        if (!wallet.hasWallet()) {
-          window.open('https://metamask.io/download/', '_blank');
-          return;
-        }
-        await wallet.switchNetworkChain(Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID));
-        const cntWallet = await wallet.getAddress();
-        setWalletAddress(cntWallet);
-
-        await getBgas(cntWallet);
-        setIsSigned(true);
       }
+      const wallet = new MetamaskService();
+      await wallet.init();
+
+      await wallet.switchNetworkChain(Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID));
+      const cntWallet = await wallet.getAddress();
+      setWalletAddress(cntWallet);
+
+      await getBgas(cntWallet);
+      setIsSigned(true);
     } catch (err) {
       console.error({ err });
     }
