@@ -22,9 +22,6 @@ export const setupAccount = () => {
 
   const connectWallet = async () => {
     try {
-      const wallet = new MetamaskService();
-      await wallet.init();
-
       const deviceParser = new UAParser(navigator.userAgent);
       const deviceType = deviceParser.getDevice().type;
       const deviceName = deviceParser.getOS().name;
@@ -39,11 +36,15 @@ export const setupAccount = () => {
             return `https://metamask.app.link/dapp/${link}`;
           }
         };
+
         return window.open(
           link(`${window.location.hostname}${window.location.pathname}?connect=metamask`),
           '_self'
         );
       } else {
+        const wallet = new MetamaskService();
+        await wallet.init();
+
         if (!wallet.hasWallet()) {
           window.open('https://metamask.io/download/', '_blank');
           return;
