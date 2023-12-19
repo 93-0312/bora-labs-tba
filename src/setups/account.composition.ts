@@ -30,6 +30,8 @@ export const setupAccount = () => {
 
       if (!isMo) {
         const wallet = new MetamaskService();
+        await wallet.init();
+
         if (!wallet.hasWallet()) {
           window.open('https://metamask.io/download/', '_blank');
           return;
