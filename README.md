@@ -50,7 +50,7 @@ real-world applications, and reshape the landscape of blockchain asset ownership
 
 ## Quick Start
 
-### Visit our 👉 [live demo](https://tba.boralabs.net/)
+### Visit our 👉 [live demo](https://tba.boralabs.com/)
 
 ### Local Environment Setup
 
