@@ -2,8 +2,8 @@ const addBorachain = {
   chainId: `0x${Number(import.meta.env.VITE_BORACHAIN_CHAIN_ID).toString(16)}`,
   chainName: import.meta.env.VITE_BORACHAIN_CHAIN_NAME,
   nativeCurrency: {
-    name: 'BGAS',
-    symbol: 'BGAS',
+    name: 'BORA',
+    symbol: 'BORA',
     decimals: 18
   },
   rpcUrls: [import.meta.env.VITE_BORACHAIN_RPC_URL],
