@@ -48,5 +48,5 @@ phases:
       - |
         aws ssm send-command --document-name "AWS-RunShellScript" \
           --parameters "commands=[\"sudo docker pull $REPOSITORY_URL:$BUILD_TAG && sudo docker service update --image $REPOSITORY_URL:$BUILD_TAG $SERVICE_NAME\"]" \
-          --targets "Key=instanceids,Values=i-0576122d332dbf7a2" \
+          --targets "Key=instanceids,Values=$INSTANCE_ID" \
           --comment "BoraLabs DAO API - Code Deploy"
