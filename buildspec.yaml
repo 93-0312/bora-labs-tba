@@ -9,7 +9,7 @@ env:
     AWS_DEFAULT_REGION: 'ap-northeast-2'
     AWS_REGION: 'ap-northeast-2'
     DOCKERFILE_PATH: storage/build/Dockerfile
-    INSTANCE_ID: 'i-08cfad7e388143ca0'
+    INSTANCE_ID: 'i-0576122d332dbf7a2'
     SERVICE_NAME: 'tba-www'
 batch:
   fast-fail: true
