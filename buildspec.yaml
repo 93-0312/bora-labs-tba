@@ -6,11 +6,11 @@ version: 0.2
 env:
   variables:
     IMAGE_REPO_NAME: boralabs-tba
-    AWS_DEFAULT_REGION: "ap-northeast-2"
-    AWS_REGION: "ap-northeast-2"
+    AWS_DEFAULT_REGION: 'ap-northeast-2'
+    AWS_REGION: 'ap-northeast-2'
     DOCKERFILE_PATH: storage/build/Dockerfile
-    INSTANCE_ID: "i-08cfad7e388143ca0"
-    SERVICE_NAME: "tba-www"
+    INSTANCE_ID: 'i-08cfad7e388143ca0'
+    SERVICE_NAME: 'tba-www'
 batch:
   fast-fail: true
 
@@ -48,5 +48,5 @@ phases:
       - |
         aws ssm send-command --document-name "AWS-RunShellScript" \
           --parameters "commands=[\"sudo docker pull $REPOSITORY_URL:$BUILD_TAG && sudo docker service update --image $REPOSITORY_URL:$BUILD_TAG $SERVICE_NAME\"]" \
-          --targets "Key=instanceids,Values=i-08cfad7e388143ca0" \
+          --targets "Key=instanceids,Values=i-0576122d332dbf7a2" \
           --comment "BoraLabs DAO API - Code Deploy"
