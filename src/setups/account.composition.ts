@@ -59,13 +59,25 @@ export const setupAccount = () => {
 
       await getBgas(cntWallet);
       setIsSigned(true);
-    } catch (err) {
+    } catch (err: any) {
       console.error({ err });
+      const message = err.message || '';
+
+      if (message.indexOf('nativeCurrency.symbol') > -1) {
+        alert('Please change the symbol of the "Borachain Testnet" from BGAS to BORA.');
+        return;
+      }
     }
   };
 
-  const disconnectWallet = () => {
+  const disconnectWallet = async () => {
     if (confirm('Disconnect Wallet?')) {
+      const wallet = new MetamaskService();
+      if (wallet.hasWallet()) {
+        const walletAddress = await wallet.getAddress();
+        wallet.disconnectWallet(walletAddress);
+      }
+
       resetAsset();
       setWalletAddress('');
       setIsSigned(false);

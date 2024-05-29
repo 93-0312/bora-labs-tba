@@ -46,6 +46,17 @@ export default class MetamaskService {
     return this.provider;
   }
 
+  async disconnectWallet(walletAddress: string): Promise<void> {
+    await this.metamask.request({
+      method: 'wallet_revokePermissions',
+      params: [
+        {
+          eth_accounts: walletAddress
+        }
+      ]
+    });
+  }
+
   async addToken(address: string, symbol: string): Promise<void> {
     await this.metamask.request({
       method: 'wallet_watchAsset',
