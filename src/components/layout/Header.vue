@@ -7,7 +7,6 @@
   >
     <RouterLink to="/" class="flex">
       <img :src="icBoralabs" alt="boralabs" width="112" height="20" />
-      <span class="badge badge-md badge-primary text-xs ml-2 md:ml-3"> Beta </span>
     </RouterLink>
     <SignBtn />
   </header>
